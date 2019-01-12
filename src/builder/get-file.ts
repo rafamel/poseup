@@ -1,23 +1,6 @@
 import Liftoff from 'liftoff';
 import fs from 'fs';
 import path from 'path';
-import pify from 'pify';
-import yaml from 'js-yaml';
-
-export async function readConfig(configPath: string): Promise<any> {
-  const { ext } = path.parse(configPath);
-
-  switch (ext) {
-    case '.js':
-      return require(configPath);
-    case '.json':
-      return JSON.parse(await pify(fs.readFile)(configPath));
-    case '.yml':
-      return yaml.safeLoad(await pify(fs.readFile)(configPath));
-    default:
-      return Error(`Extension not valid`);
-  }
-}
 
 export function getExplicitFile(configPath: string): Promise<string> {
   const { ext } = path.parse(configPath);

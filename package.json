@@ -53,6 +53,7 @@
     "@types/jest": "^23.3.12",
     "@types/js-yaml": "^3.11.4",
     "@types/liftoff": "^2.5.0",
+    "@types/loglevel": "^1.5.3",
     "@types/pify": "^3.0.2",
     "@types/uuid": "^3.4.4",
     "babel-core": "^7.0.0-bridge.0",
@@ -90,9 +91,11 @@
     "typescript": "^3.2.1"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
     "commander": "^2.19.0",
     "js-yaml": "^3.12.1",
     "liftoff": "^2.5.0",
+    "loglevel": "^1.6.1",
     "pify": "^4.0.1",
     "slimconf": "^0.3.0",
     "uuid": "^3.3.2"
