@@ -13,7 +13,7 @@ export interface IPoseup {
   write?: string;
   directory?: string;
   environment?: string;
-  args?: string;
+  args?: string[];
 }
 
 export interface IPoseupConfig {
