@@ -23,7 +23,6 @@ export default async function builder(
   const writeDir = path.parse(write).dir;
   if (environment) process.env.NODE_ENV = environment;
   if (log) logger.setLevel(log);
-  // TODO: check binaries available: docker docker-compose
 
   // Get config file path
   const configPath = await (file ? getExplicitFile(file) : getDefaultFile());

@@ -9,7 +9,6 @@ export default function compose(
   o: IPoseup = {},
   { dry }: { dry?: boolean } = {}
 ) {
-  logger.setDefaultLevel('info');
   return wrap(async () => {
     if (dry && !o.write) {
       throw Error('Compose cannot be dry run without a write path');

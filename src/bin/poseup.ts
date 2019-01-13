@@ -18,7 +18,7 @@ import args from './cmd-args';
     .version(pkg.version)
     .description('Flexible containerized development workflow & deployment')
     .command('compose', 'Runs docker-compose')
-    // .command('search [query]', 'search with optional query')
+    .command('run', 'Runs task')
     .parse(args.set());
 
   // If no command is executed, show help and exit 1
