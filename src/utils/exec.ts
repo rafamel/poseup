@@ -5,23 +5,20 @@ import onExit from '~/utils/on-exit';
 import { waitUntil } from 'promist';
 
 let exitAdded = false;
-const processes: any[] = [];
+let processes: any[] = [];
 
 function addExit() {
   if (exitAdded) return;
   exitAdded = true;
   onExit('Wait for child processes to complete', () =>
-    waitUntil(() => {
-      return !processes.filter(
-        (x) => x.exitCode === undefined || x.exitCode === null
-      ).length;
-    })
+    waitUntil(() => !processes.length)
   );
 }
 
 export default async function exec(
   cmd: string,
-  args?: string[]
+  args?: string[],
+  opts: { stdio?: boolean } = { stdio: true }
 ): Promise<void> {
   addExit();
 
@@ -30,12 +27,17 @@ export default async function exec(
   );
 
   const ps = spawn(cmd, args, {
-    stdio: [process.stdin, process.stdout, process.stderr]
+    stdio: opts.stdio ? [null, process.stdout, process.stderr] : []
   });
+  // Pipe instead of directly attaching in order to intercept
+  // signals through the main process
+  if (opts.stdio) process.stdin.pipe(ps.stdin);
   processes.push(ps);
 
   return new Promise((resolve, reject) => {
     ps.on('close', (code: number) => {
+      if (opts.stdio) process.stdin.emit('end');
+      processes = processes.filter((x) => x !== ps);
       code ? reject(Error(`Process failed (${code}): ${cmd}`)) : resolve();
     });
   });
