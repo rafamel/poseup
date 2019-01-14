@@ -12,6 +12,7 @@ import onExit from '~/utils/on-exit';
 import cmdBuilder from './cmd-builder';
 import logger from 'loglevel';
 import { IPoseupBuild, IPoseupConfig } from '~/types';
+import validateConfig from './validate-config';
 
 const TMP_DIR = path.join(os.tmpdir(), 'poseup');
 
@@ -28,7 +29,7 @@ export default async function builder(
   const configPath = await (file ? getExplicitFile(file) : getDefaultFile());
   // Read configuration
   let config = await readConfig(configPath);
-  // TODO validate config
+  validateConfig(config);
   if (cb) config = cb(config);
   if (!log && config.log) logger.setLevel(config.log);
 
