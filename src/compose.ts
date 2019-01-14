@@ -1,12 +1,15 @@
 import builder from '~/builder';
-import { IPoseupBuild } from '~/types';
+import { IPoseup } from '~/types';
 import exec from '~/utils/exec';
 import logger from 'loglevel';
 import chalk from 'chalk';
 import wrap from '~/utils/wrap-entry';
+import write from '~/utils/write-yaml';
 
-interface ICompose extends IPoseupBuild {
+interface ICompose extends IPoseup {
+  write?: string;
   dry?: boolean;
+  args?: string[];
 }
 
 export default function compose(o: ICompose = {}) {
@@ -15,7 +18,9 @@ export default function compose(o: ICompose = {}) {
       throw Error('Compose cannot be dry run without a write path');
     }
 
-    const { cmd, args } = await builder(o);
+    const { config, getCmd } = await builder(o);
+    const file = await write({ data: config.compose, path: o.write });
+    const { cmd, args } = getCmd({ file, args: o.args });
 
     return o.dry
       ? logger.debug(

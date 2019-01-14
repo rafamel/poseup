@@ -3,7 +3,7 @@ import { IPoseup } from '~/types';
 import exec from '~/utils/exec';
 import wrap from '~/utils/wrap-entry';
 import strip from './strip-services';
-import path from 'path';
+import write from '~/utils/write-yaml';
 
 interface IClean extends IPoseup {
   volumes?: boolean;
@@ -11,17 +11,15 @@ interface IClean extends IPoseup {
 
 export default function clean(o: IClean = {}) {
   return wrap(async () => {
-    const { cmd, args } = await builder(
-      { ...o, write: path.join(__dirname, '../docker/tmp.yml') },
-      (config) => ({
-        ...config,
-        compose: strip(config.persist, config.compose)
-      })
-    );
+    const { config, getCmd } = await builder(o);
+    const compose = strip(config.persist, config.compose);
 
-    return exec(
-      cmd,
-      args.concat('down').concat(o.volumes ? ['--volumes'] : [])
-    );
+    const file = await write({ data: compose });
+    const { cmd, args } = getCmd({
+      file,
+      args: ['down'].concat(o.volumes ? ['--volumes'] : [])
+    });
+
+    return exec(cmd, args);
   });
 }

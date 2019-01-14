@@ -14,11 +14,6 @@ export interface IPoseup {
   environment?: string;
 }
 
-export interface IPoseupBuild extends IPoseup {
-  write?: string;
-  args?: string[];
-}
-
 export interface IPoseupConfig {
   log?: ELoglevel;
   project: string;
