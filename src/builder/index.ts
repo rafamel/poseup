@@ -11,16 +11,16 @@ import readConfig from './read-config';
 import onExit from '~/utils/on-exit';
 import cmdBuilder from './cmd-builder';
 import logger from 'loglevel';
-import { IPoseup, IPoseupConfig } from '~/types';
+import { IPoseupBuild, IPoseupConfig } from '~/types';
 
 const TMP_DIR = path.join(os.tmpdir(), 'poseup');
 
 export default async function builder(
-  { log, file, write, directory, environment, args }: IPoseup = {},
+  { log, file, write, directory, environment, args }: IPoseupBuild = {},
   cb?: (o: IPoseupConfig) => IPoseupConfig
 ) {
-  if (!write) write = path.join(TMP_DIR, uuid() + '.yml');
-  const writeDir = path.parse(write).dir;
+  const writePath = write || path.join(TMP_DIR, uuid() + '.yml');
+  const writeDir = path.parse(writePath).dir;
   if (environment) process.env.NODE_ENV = environment;
   if (log) logger.setLevel(log);
 
@@ -40,12 +40,15 @@ export default async function builder(
   });
 
   // Write docker-compose
-  await pify(fs.writeFile)(write, yaml.safeDump(config.compose));
-  onExit('Remove temporary files', () => pify(fs.unlink)(write));
+  await pify(fs.writeFile)(writePath, yaml.safeDump(config.compose));
+  if (!write) {
+    // Only remove if it's a temp file
+    onExit('Remove temporary files', () => pify(fs.unlink)(writePath));
+  }
 
   return cmdBuilder({
     project: config.project,
-    file: write,
+    file: writePath,
     directory: directory || path.parse(configPath).dir,
     args: args || []
   });

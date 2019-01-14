@@ -10,9 +10,12 @@ export enum ELoglevel {
 export interface IPoseup {
   log?: ELoglevel;
   file?: string;
-  write?: string;
   directory?: string;
   environment?: string;
+}
+
+export interface IPoseupBuild extends IPoseup {
+  write?: string;
   args?: string[];
 }
 

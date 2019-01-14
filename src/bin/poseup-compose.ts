@@ -19,17 +19,15 @@ program
   .option('--log <level>', 'Logging level')
   .parse(argv);
 
-compose(
-  {
-    file: program.file,
-    environment: program.env,
-    directory: program.dir,
-    write: program.write,
-    log: program.log,
-    args: composeArgs
-  },
-  { dry: !!program.dry }
-).catch(async (e) => {
+compose({
+  file: program.file,
+  environment: program.env,
+  directory: program.dir,
+  write: program.write,
+  log: program.log,
+  args: composeArgs,
+  dry: !!program.dry
+}).catch(async (e) => {
   console.log('\n' + chalk.red('Error: ') + e.message);
   process.exit(1);
 });
