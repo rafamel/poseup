@@ -3,9 +3,17 @@ import exec from '~/utils/exec';
 import containerLs from '~/utils/container-ls';
 import logger from 'loglevel';
 import wrap from '~/utils/wrap-entry';
+import { ELoglevel } from '~/types';
 
-export default function cleanSystem({ force }: { force: boolean }) {
+interface IPurge {
+  force: boolean;
+  log: ELoglevel;
+}
+
+export default function purge({ force, log }: IPurge) {
   return wrap(async () => {
+    if (log) logger.setLevel(log);
+
     logger.info(chalk.yellow('\nStarting docker system-wide cleanup'));
 
     const args = force ? ['--force'] : [];
