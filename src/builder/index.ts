@@ -1,18 +1,15 @@
 // TODO npm remove slimconf, remove docker dir
 
 import path from 'path';
-import fs from 'fs';
 import os from 'os';
-import pify from 'pify';
-import yaml from 'js-yaml';
 import uuid from 'uuid/v4';
 import { getExplicitFile, getDefaultFile } from './get-file';
 import readConfig from './read-config';
-import onExit from '~/utils/on-exit';
 import cmdBuilder from './cmd-builder';
 import logger from 'loglevel';
 import { IPoseupBuild, IPoseupConfig } from '~/types';
 import validateConfig from './validate-config';
+import writeYaml from './write-yaml';
 
 const TMP_DIR = path.join(os.tmpdir(), 'poseup');
 
@@ -21,7 +18,6 @@ export default async function builder(
   cb?: (o: IPoseupConfig) => IPoseupConfig
 ) {
   const writePath = write || path.join(TMP_DIR, uuid() + '.yml');
-  const writeDir = path.parse(writePath).dir;
   if (environment) process.env.NODE_ENV = environment;
   if (log) logger.setLevel(log);
 
@@ -33,19 +29,7 @@ export default async function builder(
   if (cb) config = cb(config);
   if (!log && config.log) logger.setLevel(config.log);
 
-  // If writeDir doesn't exist, create
-  await new Promise((resolve) => {
-    fs.access(writeDir, fs.constants.F_OK, (err) => {
-      return resolve(err && pify(fs.mkdir)(writeDir));
-    });
-  });
-
-  // Write docker-compose
-  await pify(fs.writeFile)(writePath, yaml.safeDump(config.compose));
-  if (!write) {
-    // Only remove if it's a temp file
-    onExit('Remove temporary files', () => pify(fs.unlink)(writePath));
-  }
+  await writeYaml({ data: config.compose, path: writePath, remove: !write });
 
   return cmdBuilder({
     project: config.project,
