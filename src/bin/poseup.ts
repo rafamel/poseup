@@ -11,7 +11,7 @@ import args from './cmd-args';
     await pify(fs.readFile)(path.join(__dirname, '../package.json'))
   );
 
-  const commands = ['compose'];
+  const commands = ['compose', 'run', 'clean', 'purge'];
 
   // Init
   program
@@ -19,6 +19,14 @@ import args from './cmd-args';
     .description('Flexible containerized development workflow & deployment')
     .command('compose', 'Runs docker-compose')
     .command('run', 'Runs task')
+    .command(
+      'clean',
+      'Cleans not persisted containers and networks. Optionally, also volumes.'
+    )
+    .command(
+      'purge',
+      'Purges dangling containers, networks, and volumes from system.'
+    )
     .parse(args.set());
 
   // If no command is executed, show help and exit 1
