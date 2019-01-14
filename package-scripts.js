@@ -23,7 +23,11 @@ module.exports = scripts({
     'nps private.build docs'
   ),
   publish: `nps build && cd ${OUT_DIR} && npm publish`,
-  watch: `onchange "./src/**/*.{${EXTENSIONS}}" --initial --kill -- nps private.watch`,
+  watch: series(
+    exit0(`shx rm -r ${OUT_DIR}`),
+    `shx mkdir ${OUT_DIR}`,
+    `onchange "./src/**/*.{${EXTENSIONS}}" --initial --kill -- nps private.watch`
+  ),
   fix: [
     'prettier',
     `--write "./**/*.{${EXTENSIONS},.json,.scss}"`,
@@ -46,7 +50,9 @@ module.exports = scripts({
           '"Interactive spellcheck?"',
           `"mdspell --en-us '**/*.md' '!**/node_modules/**/*.md'"`,
           `"mdspell -r --en-us '**/*.md' '!**/node_modules/**/*.md'"`,
-          '4'
+          'No',
+          '4',
+          'log'
         ].join(',') +
         ']'
     ),
@@ -58,7 +64,10 @@ module.exports = scripts({
   },
   validate: series(
     'nps test lint.md lint.scripts',
-    'npm outdated || jake countdown[8]'
+    // prettier-ignore
+    process.env.MSG
+      ? `npm outdated || jake run:conditional["\n${process.env.MSG}","shx echo","exit 1",Yes,6]`
+      : exit0('npm outdated')
   ),
   update: series('npm update --save/save-dev', 'npm outdated'),
   clean: series(
