@@ -7,19 +7,23 @@ type StackCallback = () => Promise<void> | void;
 // Stack of functions to execute on exit/sigterm
 const stack: Array<{ task: string; cb: StackCallback }> = [];
 
+export const state = {
+  start: false,
+  done: status(deferred())
+};
+
 let isAttached = false;
 let hasCleanup = false;
-let hasRun = false;
-const p = status(deferred());
 export function attach() {
   if (isAttached) return;
   isAttached = true;
+
   cleanup((code, signal) => {
-    if (p.status === 'resolved') return true;
+    if (state.done.status === 'resolved') return true;
     if (hasCleanup) return false;
     hasCleanup = true;
     run();
-    p.then(() => {
+    state.done.then(() => {
       process.kill(process.pid, signal || 'SIGTERM');
     });
     return false;
@@ -27,8 +31,8 @@ export function attach() {
 }
 
 export async function run() {
-  if (hasRun) return p;
-  hasRun = true;
+  if (state.start) return state.done;
+  state.start = true;
 
   if (stack.length) {
     logger.info('\nPreparing exit');
@@ -44,7 +48,7 @@ export async function run() {
     }
     logger.info('Done');
   }
-  p.resolve(null);
+  state.done.resolve(null);
 }
 
 export default function onExit(taskName: string, cb: StackCallback) {
