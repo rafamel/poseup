@@ -7,6 +7,14 @@ export enum ELoglevel {
   ERROR = 'error'
 }
 
+export interface IBuild {
+  config: IPoseupConfig;
+  getCmd(opts: {
+    file: string;
+    args?: string[];
+  }): { cmd: string; args: string[] };
+}
+
 export interface IPoseup {
   log?: ELoglevel;
   file?: string;
@@ -14,16 +22,19 @@ export interface IPoseup {
   environment?: string;
 }
 
+export interface ITask {
+  primary?: string;
+  services?: string[];
+  cmd?: string[];
+  exec?: Array<{ [key: string]: string[] }>;
+}
+
 export interface IPoseupConfig {
   log?: ELoglevel;
   project: string;
   persist?: string[];
   tasks?: {
-    [key: string]: {
-      primary: string;
-      cmd: { [key: string]: string };
-      exec: Array<{ [key: string]: string }> | { [key: string]: string };
-    };
+    [key: string]: ITask;
   };
   compose: {
     [key: string]: any;
