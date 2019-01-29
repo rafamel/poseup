@@ -1,15 +1,14 @@
 # Project Specific #
 ####################
-/docs
-/docker
-/poseup.config.js
+poseup.config.js
+/lib
+/bin
+/dist
+/build
+_test.*
 
 # Node, Frameworks, Editors #
 #############################
-_test.js
-_test.ts
-build
-dist
 .cache
 .env
 .env.local

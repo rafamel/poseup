@@ -1,18 +1,16 @@
-const { EXTENSIONS } = require('./project.config');
-const EXT_ARR = EXTENSIONS.split(',');
+const { EXT_JS, EXT_TS } = require('./project.config');
+const EXT = EXT_JS + ',' + EXT_TS;
+const EXT_ARR = EXT.split(',').map((x) => x.trim());
 
 module.exports = {
   testEnvironment: 'node',
   collectCoverage: true,
-  collectCoverageFrom: [`<rootDir>/src/**/*.{${EXTENSIONS}}`],
-  modulePathIgnorePatterns: ['<rootDir>/build'],
-  moduleFileExtensions: EXT_ARR.concat(['json']),
-  testMatch: [
-    `**/__tests__/**/*.{${EXTENSIONS}}`,
-    `**/?(*.)+(spec|test).{${EXTENSIONS}}`
+  collectCoverageFrom: [`<rootDir>/src/**/*.{${EXT}}`],
+  modulePathIgnorePatterns: [
+    '<rootDir>/build',
+    '<rootDir>/src/@types',
+    '<rootDir>/src/bin'
   ],
-  testPathIgnorePatterns: ['/node_modules/'],
-  transform: {
-    [`^.+\\.(${EXT_ARR.join('|')})$`]: 'babel-jest'
-  }
+  moduleFileExtensions: EXT_ARR.concat(['json']),
+  testPathIgnorePatterns: ['/node_modules/']
 };

@@ -1,29 +1,51 @@
 const fs = require('fs');
 const path = require('path');
+const hjson = require('hjson');
 
-desc('Modifies package.json in output directory');
-task('fixpackage', (OUT_DIR) => {
-  const rootDir = path.join(__dirname, '../../../');
-  // Copy all files
-  fs.readdirSync(rootDir)
-    .filter((x) => !fs.lstatSync(path.join(rootDir, x)).isDirectory())
-    .forEach((x) => {
-      if (x === 'package.json') return;
-      fs.createReadStream(path.join(rootDir, x)).pipe(
-        fs.createWriteStream(path.join(rootDir, OUT_DIR, x))
-      );
-    });
+desc(
+  'Modifies package.json & tsconfig.json (if present) in output directory to match build structure'
+);
+task('fixpackage', (ROOT_DIR, OUT_DIR, mode = 'package') => {
+  if (!ROOT_DIR || !OUT_DIR) {
+    throw Error('No root or output paths were passed');
+  }
 
   // Modify package.json
-  const plain = fs.readFileSync(path.join(rootDir, 'package.json'));
-  const packagejson = JSON.parse(plain);
+  const plain = fs.readFileSync(path.join(ROOT_DIR, 'package.json'));
+  const pkg = JSON.parse(plain);
 
-  packagejson.main = './index.js';
-  delete packagejson.scripts.prepublishOnly;
-  delete packagejson.scripts.publish;
+  pkg.main = pkg.main ? pkg.main.replace(/^(\.\/)?src\//, './') : './index.js';
+
+  if (pkg.bin) {
+    pkg.bin = Object.keys(pkg.bin).reduce((acc, key) => {
+      acc[key] = pkg.bin[key].replace(/^(\.\/)?src\//, './');
+      return acc;
+    }, {});
+  }
+
+  delete pkg.scripts.prepublishOnly;
+  delete pkg.scripts.publish;
 
   fs.writeFileSync(
-    path.join(rootDir, OUT_DIR, 'package.json'),
-    JSON.stringify(packagejson, null, 2)
+    path.join(ROOT_DIR, OUT_DIR, 'package.json'),
+    JSON.stringify(pkg, null, 2)
   );
+
+  // Modify tsconfig
+  if (fs.existsSync(path.join(ROOT_DIR, 'tsconfig.json'))) {
+    const tsconfig = hjson.parse(
+      String(fs.readFileSync(path.join(ROOT_DIR, 'tsconfig.json')))
+    );
+    delete tsconfig.include;
+    delete tsconfig.exclude;
+    const cpo = tsconfig.compilerOptions;
+    cpo.paths = Object.keys(cpo.paths || {}).reduce((acc, key) => {
+      acc[key] = cpo.paths[key].map((x) => x.replace(/^(\.\/)?src\//, './'));
+      return acc;
+    }, {});
+    fs.writeFileSync(
+      path.join(ROOT_DIR, OUT_DIR, 'tsconfig.json'),
+      JSON.stringify(tsconfig, null, 2)
+    );
+  }
 });
