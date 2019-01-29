@@ -10,32 +10,27 @@ export const config = {
     persist: { type: 'array', items: { type: 'string' } },
     tasks: {
       type: 'object',
-      properties: {
-        primary: { type: 'string' },
-        cmd: {
-          describe: 'Replaces default container command (CMD)',
+      additionalProperties: false,
+      patternProperties: {
+        '^.*$': {
           type: 'object',
-          additionalProperties: false,
-          patternProperties: { '^.*$': { type: 'string' } }
-        },
-        exec: {
-          describe:
-            'Executed after CMDs for all primary dependent containers (from primary, if present) have executed',
-          anyOf: [
-            {
+          properties: {
+            primary: { type: 'string' },
+            services: { type: 'array', items: { type: 'string' } },
+            cmd: { type: 'array', items: { type: 'string' } },
+            exec: {
+              describe:
+                'Execute before cmd on primary. Only valid for containers linked to primary.',
               type: 'array',
               items: {
                 type: 'object',
                 additionalProperties: false,
-                patternProperties: { '^.*$': { type: 'string' } }
+                patternProperties: {
+                  '^.*$': { type: 'array', items: { type: 'string' } }
+                }
               }
-            },
-            {
-              type: 'object',
-              additionalProperties: false,
-              patternProperties: { '^.*$': { type: 'string' } }
             }
-          ]
+          }
         }
       }
     },

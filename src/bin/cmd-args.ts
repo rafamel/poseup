@@ -4,8 +4,7 @@ const SPACE = ':__SPACE__:';
 const rgxTag = new RegExp('^' + TAG);
 const rgxSpace = new RegExp(SPACE, 'g');
 export default {
-  set(): string[] {
-    const argv = process.argv;
+  set(argv = process.argv): string[] {
     const separator = argv.indexOf('--');
     if (separator === -1) return argv;
 
@@ -15,8 +14,7 @@ export default {
         TAG + JSON.stringify(argv.slice(separator + 1)).replace(/ /g, SPACE)
       );
   },
-  get(): string[][] {
-    const argv = process.argv;
+  get(argv = process.argv): string[][] {
     let index = -1;
     for (let i = 0; i < argv.length; i++) {
       if (rgxTag.exec(argv[i])) {

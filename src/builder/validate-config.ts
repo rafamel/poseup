@@ -3,10 +3,10 @@ import { config as schema } from '~/schemas';
 import logger from 'loglevel';
 import chalk from 'chalk';
 import { IPoseupConfig } from '~/types';
+import draft06 from 'ajv/lib/refs/json-schema-draft-06.json';
 
 const ajv = new Ajv();
-// tslint:disable-next-line
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+ajv.addMetaSchema(draft06);
 
 export default function validateConfig(config: IPoseupConfig): void {
   // Validate schema

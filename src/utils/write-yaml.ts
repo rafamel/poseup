@@ -27,7 +27,9 @@ export default async function writeYaml(args: IWriteYaml): Promise<string> {
   await pify(fs.writeFile)(writePath, yaml.safeDump(args.data));
   if (!args.path) {
     // Only remove if it's a temp file
-    onExit('Remove temporary files', () => pify(fs.unlink)(writePath));
+    onExit('Remove temporary file: ' + writePath.split('/').slice(-1)[0], () =>
+      pify(fs.unlink)(writePath)
+    );
   }
 
   return writePath;
