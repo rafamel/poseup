@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import { config as schema } from '~/schemas';
-import logger from 'loglevel';
+import logger from '~/utils/logger';
 import chalk from 'chalk';
 import { IPoseupConfig } from '~/types';
 import draft06 from 'ajv/lib/refs/json-schema-draft-06.json';

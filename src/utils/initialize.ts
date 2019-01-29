@@ -1,14 +1,9 @@
-import logger from 'loglevel';
 import has from '~/utils/has';
-import { DEFAULT_LOG_LEVEL } from '~/constants';
-import { options, attach, add } from 'exits';
-// TODO update exits to export the resolver from root
-import resolver from 'exits/utils/resolver';
+import { options, attach, add, resolver } from 'exits';
 import { IPoseup } from '~/types';
 import { ADD_TYPES } from './add';
 import chalk from 'chalk';
-
-// TODO: logger shouldn't be global
+import logger, { setLevel } from '~/utils/logger';
 
 /**
  * Should be called by all functions that are entry points.
@@ -23,8 +18,8 @@ export default async function initialize({
   environment,
   log
 }: IPoseup): Promise<void> {
+  if (log) setLevel(log);
   if (environment) process.env.NODE_ENV = environment;
-  logger.setDefaultLevel(log || DEFAULT_LOG_LEVEL);
 
   // Check binaries are available: docker docker-compose
   const bins = await has.all('docker', 'docker-compose');
@@ -39,7 +34,6 @@ export default async function initialize({
   }
 
   options({
-    logger: log || DEFAULT_LOG_LEVEL,
     spawned: {
       signals: 'all',
       wait: 'all'
@@ -59,7 +53,6 @@ export default async function initialize({
     switch (type) {
       case 'exception':
       case 'rejection':
-        // TODO update exits to recognize the type of arg in add callback
         // @ts-ignore
         logger.error('\n' + chalk.red('Error: ') + arg.message);
         break;

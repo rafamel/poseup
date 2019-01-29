@@ -1,11 +1,6 @@
-export enum ELoglevel {
-  SILENT = 'silent',
-  TRACE = 'trace',
-  DEBUG = 'debug',
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error'
-}
+import { LogLevelDesc } from 'loglevel';
+
+export type TLogger = LogLevelDesc;
 
 export interface IBuild {
   config: IPoseupConfig;
@@ -16,7 +11,7 @@ export interface IBuild {
 }
 
 export interface IPoseup {
-  log?: ELoglevel;
+  log?: TLogger;
   file?: string;
   directory?: string;
   environment?: string;
@@ -30,7 +25,7 @@ export interface ITask {
 }
 
 export interface IPoseupConfig {
-  log?: ELoglevel;
+  log?: TLogger;
   project: string;
   persist?: string[];
   tasks?: {

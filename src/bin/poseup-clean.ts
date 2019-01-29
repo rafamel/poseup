@@ -3,8 +3,7 @@
 import program from 'commander';
 import args from './cmd-args';
 import clean from '~/clean';
-// TODO update exits to support exit(type, arg) [as terminate()?]
-import handler from 'exits/utils/handler';
+import { terminate } from 'exits';
 
 const [argv] = args.get();
 
@@ -32,4 +31,4 @@ clean({
   volumes: !!program.volumes
 })
   // Avoids unhandled rejection warning on console
-  .catch((err) => handler('rejection', err));
+  .catch((err) => terminate('rejection', err));

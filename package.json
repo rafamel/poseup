@@ -65,7 +65,6 @@
     "@types/jest": "^23.3.9",
     "@types/js-yaml": "^3.12.0",
     "@types/liftoff": "^2.5.0",
-    "@types/loglevel": "^1.5.3",
     "@types/pify": "^3.0.2",
     "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "^1.1.0",
@@ -107,10 +106,11 @@
     "typescript": "^3.2.1"
   },
   "dependencies": {
+    "@types/loglevel": "^1.5.3",
     "ajv": "^6.7.0",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
-    "exits": "^0.1.4",
+    "exits": "^0.2.1",
     "hasbin": "^1.2.3",
     "js-yaml": "^3.12.1",
     "liftoff": "^2.5.0",

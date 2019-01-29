@@ -1,4 +1,4 @@
-import logger from 'loglevel';
+import logger from '~/utils/logger';
 import { add as _add } from 'exits';
 
 export enum ADD_TYPES {

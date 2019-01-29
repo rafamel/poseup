@@ -4,7 +4,7 @@ import path from 'path';
 import { getExplicitFile, getDefaultFile } from './get-file';
 import readConfig from './read-config';
 import cmdBuilder from './cmd-builder';
-import logger from 'loglevel';
+import { setLevel } from '~/utils/logger';
 import { IPoseup, IPoseupConfig, IBuild } from '~/types';
 import validateConfig from './validate-config';
 
@@ -19,7 +19,7 @@ export default async function builder({
   // Read configuration
   const config: IPoseupConfig = await readConfig(configPath);
   validateConfig(config);
-  if (!log && config.log) logger.setLevel(config.log);
+  if (!log && config.log) setLevel(config.log);
 
   return {
     config,
