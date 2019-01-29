@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 import program from 'commander';
-import chalk from 'chalk';
 import args from './cmd-args';
 import clean from '~/clean';
+// TODO update exits to support exit(type, arg) [as terminate()?]
+import handler from 'exits/utils/handler';
 
 const [argv] = args.get();
 
@@ -29,7 +30,6 @@ clean({
   directory: program.dir,
   log: program.log,
   volumes: !!program.volumes
-}).catch(async (e) => {
-  console.log('\n' + chalk.red('Error: ') + e.message);
-  process.exit(1);
-});
+})
+  // Avoids unhandled rejection warning on console
+  .catch((err) => handler('rejection', err));

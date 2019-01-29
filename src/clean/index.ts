@@ -1,18 +1,18 @@
 import builder from '~/builder';
 import { IPoseup, IBuild } from '~/types';
-import exec from '~/utils/exec';
-import wrap from '~/utils/wrap-entry';
+import initialize from '~/utils/initialize';
 import strip from './strip-services';
 import write from '~/utils/write-yaml';
+import { spawn } from 'exits';
 
 interface IClean extends IPoseup {
   volumes?: boolean;
 }
-export default function clean(o: IClean = {}): Promise<void> {
-  return wrap(async () => {
-    const { cmd, args } = await cleanBuild(await builder(o), o.volumes);
-    return exec(cmd, args);
-  });
+export default async function clean(o: IClean = {}): Promise<void> {
+  await initialize(o);
+
+  const { cmd, args } = await cleanBuild(await builder(o), o.volumes);
+  await spawn(cmd, args, { stdio: 'inherit' }).promise;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

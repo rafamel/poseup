@@ -11,12 +11,8 @@ import validateConfig from './validate-config';
 export default async function builder({
   log,
   file,
-  directory,
-  environment
+  directory
 }: IPoseup = {}): Promise<IBuild> {
-  if (environment) process.env.NODE_ENV = environment;
-  if (log) logger.setLevel(log);
-
   // Get config file path
   const configPath = await (file ? getExplicitFile(file) : getDefaultFile());
 

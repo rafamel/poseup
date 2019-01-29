@@ -1,5 +1,7 @@
 # Project Specific #
 ####################
+/_src
+/docker
 poseup.config.js
 /lib
 /bin
