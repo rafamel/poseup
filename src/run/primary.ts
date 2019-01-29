@@ -12,7 +12,7 @@ export default function runPrimary(
   config: IPoseupConfig,
   cmd: string,
   args: string[]
-) {
+): Promise<void> {
   if (!task.primary) throw Error('Task has no primary container');
   logger.info(chalk.green('Running primary: ') + task.primary);
 

@@ -8,7 +8,7 @@ const ajv = new Ajv();
 // tslint:disable-next-line
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
-export default function validateConfig(config: IPoseupConfig) {
+export default function validateConfig(config: IPoseupConfig): void {
   // Validate schema
   const validate = ajv.compile(schema);
   const valid = validate(config);

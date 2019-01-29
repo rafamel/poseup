@@ -10,7 +10,7 @@ interface IPurge {
   log: ELoglevel;
 }
 
-export default function purge({ force, log }: IPurge) {
+export default function purge({ force, log }: IPurge): Promise<void> {
   return wrap(async () => {
     if (log) logger.setLevel(log);
 

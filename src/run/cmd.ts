@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { ITask } from '~/types';
 import exec from '~/utils/exec';
 
-export default function runCmd(task: ITask) {
+export default function runCmd(task: ITask): Promise<void> {
   if (!task.cmd || !task.cmd.length) throw Error('Task has no cmd');
   logger.info(chalk.green('Running cmd: ') + task.cmd[0]);
 

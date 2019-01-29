@@ -19,14 +19,14 @@ interface IRun extends IPoseup {
   wait?: number;
   sandbox?: boolean;
 }
-export default function run(o: IRun = {}) {
+export default function run(o: IRun = {}): Promise<void> {
   async function runTask(
     task: ITask,
     config: IPoseupConfig,
     cmd: string,
     args: string[],
     clean: () => Promise<void>
-  ) {
+  ): Promise<void> {
     // Bring up linked
     const linked = (
       task.services ||
@@ -76,7 +76,7 @@ export default function run(o: IRun = {}) {
     if (o.sandbox) config.project = config.project + '_' + uuid().split('-')[0];
 
     const cleanCmd = await cleanBuild({ config, getCmd });
-    const clean = () =>
+    const clean = (): Promise<void> =>
       exec(cleanCmd.cmd, cleanCmd.args, { stdio: silentStdio() });
     const file = await write({ data: config.compose });
     const { cmd, args } = getCmd({ file });

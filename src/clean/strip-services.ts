@@ -35,7 +35,8 @@ export default function stripServices(
       .reduce((acc: any, name) => {
         const service = composeObj.services[name];
         acc[name] = opts.removeDeps
-          ? { ...service, depends_on: [], volumes: [], networks: [] }
+          ? // eslint-disable-next-line @typescript-eslint/camelcase
+            { ...service, depends_on: [], volumes: [], networks: [] }
           : service;
         return acc;
       }, {}),

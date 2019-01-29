@@ -13,7 +13,7 @@ import {
 let exitAdded = false;
 let processes: any[] = [];
 
-function addExit() {
+function addExit(): void {
   if (exitAdded) return;
   exitAdded = true;
   onExit('Wait for child processes to complete', async () => {
@@ -53,7 +53,7 @@ export default async function exec(
     ps.on('error', (err) => {
       logger.error(err);
     });
-    ps.on('close', (code, status) => {
+    ps.on('close', (code) => {
       if (ps.stdin) process.stdin.emit('end');
       processes = processes.filter((x) => x !== ps);
       code ? reject(Error(`Process failed (${code}): ${cmd}`)) : resolve();

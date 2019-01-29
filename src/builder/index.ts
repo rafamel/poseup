@@ -5,7 +5,7 @@ import { getExplicitFile, getDefaultFile } from './get-file';
 import readConfig from './read-config';
 import cmdBuilder from './cmd-builder';
 import logger from 'loglevel';
-import { IPoseup, IPoseupConfig } from '~/types';
+import { IPoseup, IPoseupConfig, IBuild } from '~/types';
 import validateConfig from './validate-config';
 
 export default async function builder({
@@ -13,7 +13,7 @@ export default async function builder({
   file,
   directory,
   environment
-}: IPoseup = {}) {
+}: IPoseup = {}): Promise<IBuild> {
   if (environment) process.env.NODE_ENV = environment;
   if (log) logger.setLevel(log);
 
@@ -28,7 +28,7 @@ export default async function builder({
   return {
     config,
     // tslint:disable-next-line no-shadowed-variable
-    getCmd({ file, args }: { file: string; args?: string[] }) {
+    getCmd({ file, args }) {
       return cmdBuilder({
         project: config.project,
         file,

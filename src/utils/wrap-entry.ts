@@ -10,8 +10,10 @@ import { attach, run } from '~/utils/on-exit';
  * - Runs on-exit hook runner if process is not terminated
  */
 
-export default function wrapEntry<T>(cb: () => Promise<T>): Promise<T>;
-export default async function wrapEntry<T>(cb: () => T): Promise<T> {
+export default wrapEntry;
+
+function wrapEntry<T>(cb: () => Promise<T>): Promise<T>;
+async function wrapEntry<T>(cb: () => T): Promise<T> {
   // Initialize logger
   logger.setDefaultLevel('info');
 

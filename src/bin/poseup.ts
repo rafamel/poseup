@@ -10,7 +10,6 @@ import args from './cmd-args';
   const pkg = JSON.parse(
     await pify(fs.readFile)(path.join(__dirname, '../package.json'))
   );
-
   const commands = ['compose', 'run', 'clean', 'purge'];
 
   // Init

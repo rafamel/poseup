@@ -12,7 +12,7 @@ interface ICompose extends IPoseup {
   args?: string[];
 }
 
-export default function compose(o: ICompose = {}) {
+export default function compose(o: ICompose = {}): Promise<void> {
   return wrap(async () => {
     if (o.dry && !o.write) {
       throw Error('Compose cannot be dry run without a write path');

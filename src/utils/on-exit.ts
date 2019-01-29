@@ -14,7 +14,7 @@ export const state = {
 
 let isAttached = false;
 let hasCleanup = false;
-export function attach() {
+export function attach(): void {
   if (isAttached) return;
   isAttached = true;
 
@@ -30,7 +30,7 @@ export function attach() {
   });
 }
 
-export async function run() {
+export async function run(): Promise<any> {
   if (state.start) return state.done;
   state.start = true;
 
@@ -51,7 +51,10 @@ export async function run() {
   state.done.resolve(null);
 }
 
-export default function onExit(taskName: string, cb: StackCallback) {
+export default function onExit(
+  taskName: string,
+  cb: StackCallback
+): StackCallback {
   stack.unshift({ task: taskName, cb });
   return cb;
 }
