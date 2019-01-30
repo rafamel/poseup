@@ -10,5 +10,6 @@ export default function spawn(
 ) {
   if (!opts) opts = {};
   if (!opts.stdio) opts.stdio = DEFAULT_STDIO;
+
   return _spawn(cmd, args, opts).promise;
 }

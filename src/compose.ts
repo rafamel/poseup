@@ -1,6 +1,6 @@
 import builder from '~/builder';
 import { IPoseup } from '~/types';
-import logger from 'loglevel';
+import logger from '~/utils/logger';
 import chalk from 'chalk';
 import initialize from '~/utils/initialize';
 import write from '~/utils/write-yaml';

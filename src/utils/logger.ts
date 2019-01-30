@@ -5,6 +5,7 @@ import { TLogger } from '~/types';
 
 const logger = loglevel.getLogger('_poseup_logger_');
 logger.setDefaultLevel(DEFAULT_LOG_LEVEL);
+options({ logger: DEFAULT_LOG_LEVEL });
 
 export default logger;
 export function setLevel(level: TLogger): void {

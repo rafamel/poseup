@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import containerLs from '~/utils/container-ls';
-import logger from 'loglevel';
+import logger from '~/utils/logger';
 import { TLogger } from '~/types';
 import initialize from '~/utils/initialize';
 import spawn from '~/utils/spawn';
@@ -12,8 +12,6 @@ interface IPurge {
 
 export default async function purge({ force, log }: IPurge): Promise<void> {
   await initialize({ log });
-
-  if (log) logger.setLevel(log);
 
   logger.info(chalk.yellow('\nStarting docker system-wide cleanup'));
 
