@@ -14,6 +14,7 @@ import logger, { setLevel } from '~/utils/logger';
  * - Sets default logging level
  */
 
+let added = false;
 export default async function initialize({
   environment,
   log
@@ -49,24 +50,27 @@ export default async function initialize({
 
   attach();
 
-  add((type, arg) => {
-    switch (type) {
-      case 'exception':
-      case 'rejection':
-        // @ts-ignore
-        logger.error('\n' + chalk.red('Error: ') + arg.message);
-        break;
-      case 'exit':
-        if (arg !== 0) {
-          logger.error(
-            '\n' +
-              chalk.red('Error: ') +
-              `Spawned process exited with code ${arg}`
-          );
-        }
-        break;
-      default:
-        break;
-    }
-  }, ADD_TYPES.END_LOG);
+  if (!added) {
+    added = true;
+    add((type, arg) => {
+      switch (type) {
+        case 'exception':
+        case 'rejection':
+          // @ts-ignore
+          logger.error('\n' + chalk.red('Error: ') + arg.message);
+          break;
+        case 'exit':
+          if (arg !== 0) {
+            logger.error(
+              '\n' +
+                chalk.red('Error: ') +
+                `Spawned process exited with code ${arg}`
+            );
+          }
+          break;
+        default:
+          break;
+      }
+    }, ADD_TYPES.END_LOG);
+  }
 }
