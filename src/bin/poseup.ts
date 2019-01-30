@@ -21,6 +21,10 @@ import args from './cmd-args';
       'clean',
       'Cleans not persisted containers and networks. Optionally, also volumes.'
     )
+    .command(
+      'purge',
+      'Purges dangling containers, networks, and volumes from system.'
+    )
     .parse(args.set());
 
   // If no command is passed, show help and exit 1
