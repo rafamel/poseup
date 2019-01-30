@@ -22,8 +22,13 @@ export default async function purge({ force, log }: IPurge): Promise<void> {
   await spawn('docker', ['image', 'prune', '--all'].concat(args));
 
   // Show running container information
-  logger.info('\n' + chalk.green('Docker containers in system:'));
-  (await containerLs({ all: true })).map(({ ID, Status, Names }) => {
+  const containers = await containerLs({ all: true });
+  logger.info(
+    '\n' +
+      chalk.green('Docker containers in system: ') +
+      String(containers.length)
+  );
+  containers.map(({ ID, Status, Names }) => {
     logger.info(`${ID}\t${Status.split(' ')[0]}\t   ${Names}`);
   });
 }

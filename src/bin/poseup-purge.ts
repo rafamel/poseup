@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import program from 'commander';
-import chalk from 'chalk';
 import args from './cmd-args';
 import purge from '~/purge';
+import { terminate } from 'exits';
 
 const [argv] = args.get();
 
@@ -18,7 +18,6 @@ program
 purge({
   force: !!program.force,
   log: program.log
-}).catch(async (e) => {
-  console.log('\n' + chalk.red('Error: ') + e.message);
-  process.exit(1);
-});
+})
+  // Avoids unhandled rejection warning on console
+  .catch((err) => terminate('rejection', err));
