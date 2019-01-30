@@ -12,27 +12,30 @@ import runCmd from './cmd';
 import spawn, { silent } from '~/utils/spawn';
 import initialize from '~/utils/initialize';
 import add, { ADD_TYPES } from '~/utils/add';
+import { control } from 'exits';
 
 interface IRun extends IPoseup {
   tasks?: string[];
   wait?: number | string;
   sandbox?: boolean;
 }
-// TODO into generator via exits control
+
 // TODO stop and down with no stdin
-export default async function run(o: IRun = {}): Promise<void> {
+export default control(run);
+
+function* run(o: IRun = {}): IterableIterator<any> {
   initialize(o);
-  const { config, getCmd } = await builder(o);
+  const { config, getCmd } = yield builder(o);
 
   if (!o.tasks || !o.tasks.length) throw Error('No tasks to run');
   if (!config.tasks) throw Error('There are no tasks defined');
 
   if (o.sandbox) config.project = config.project + '_' + uuid().split('-')[0];
 
-  const cleanCmd = await cleanBuild({ config, getCmd });
+  const cleanCmd = yield cleanBuild({ config, getCmd });
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const clean = () => spawn(cleanCmd.cmd, cleanCmd.args, { stdio: silent() });
-  const file = await write({ data: config.compose });
+  const file = yield write({ data: config.compose });
   const { cmd, args } = getCmd({ file });
 
   add(ADD_TYPES.STOP, 'Stop services', () => {
@@ -50,7 +53,7 @@ export default async function run(o: IRun = {}): Promise<void> {
     }
     logger.info(chalk.green('Running task:') + ' ' + taskName);
     const task = config.tasks[taskName];
-    await runTask(task, config, cmd, args, clean, o.wait);
+    yield runTask(task, config, cmd, args, clean, o.wait);
   }
 }
 
