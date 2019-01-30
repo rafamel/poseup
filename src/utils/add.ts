@@ -2,15 +2,17 @@ import logger from '~/utils/logger';
 import { add as _add } from 'exits';
 
 export enum ADD_TYPES {
-  REMOVE_TEMP_FILES = 10,
-  END_LOG = 9999 + 1
+  REMOVE_TEMP_FILES = 3,
+  STOP = 2,
+  CLEAN = 1,
+  END_LOG = -9999 - 1
 }
 
 let any = false;
 export default function add(
   type: ADD_TYPES,
   message: string,
-  cb: (type: string, arg: any, context: any) => void | Promise<void>
+  cb: (type: string, arg: any, context: any) => any | Promise<any>
 ): () => void {
   if (!any) {
     any = true;
