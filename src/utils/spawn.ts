@@ -1,6 +1,7 @@
-import { spawn as _spawn } from 'exits';
+import { spawn as _spawn, state as getState } from 'exits';
 import { SpawnOptions } from 'child_process';
-import { DEFAULT_STDIO } from '~/constants';
+import { DEFAULT_STDIO, EXIT_LOG_LEVEL_STDIO } from '~/constants';
+import logger from '~/utils/logger';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function spawn(
@@ -8,8 +9,17 @@ export default function spawn(
   args: string[],
   opts?: SpawnOptions
 ) {
+  const state = getState();
   if (!opts) opts = {};
-  if (!opts.stdio) opts.stdio = DEFAULT_STDIO;
-
+  if (!opts.stdio) {
+    // Make it silent by default if running inside a task
+    // (exits tasks have been triggered)
+    opts.stdio = state.triggered ? silent() : DEFAULT_STDIO;
+  }
   return _spawn(cmd, args, opts).promise;
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function silent() {
+  return logger.getLevel() > EXIT_LOG_LEVEL_STDIO ? 'ignore' : DEFAULT_STDIO;
 }

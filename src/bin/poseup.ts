@@ -17,6 +17,7 @@ import args from './cmd-args';
     .version(pkg.version)
     .description('Flexible containerized development workflow & deployment')
     .command('compose', 'Runs docker-compose')
+    .command('run', 'Runs task')
     .command(
       'clean',
       'Cleans not persisted containers and networks. Optionally, also volumes.'

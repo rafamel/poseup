@@ -54,5 +54,6 @@ export default async function compose(o: ICompose = {}): Promise<void> {
     });
   }
 
-  await spawn(cmd, args.concat(o.args || []));
+  const signal = await spawn(cmd, args.concat(o.args || []));
+  if (signal) throw Error(`Process finished early (${signal})`);
 }

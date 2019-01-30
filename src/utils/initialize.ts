@@ -36,7 +36,7 @@ export default async function initialize({
 
   options({
     spawned: {
-      signals: 'all',
+      signals: 'none',
       wait: 'all'
     },
     resolver(type, arg) {

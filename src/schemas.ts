@@ -20,7 +20,7 @@ export const config = {
             cmd: { type: 'array', items: { type: 'string' } },
             exec: {
               describe:
-                'Execute before cmd on primary. Only valid for containers linked to primary.',
+                'Execute before cmd on primary. Only valid for services linked to primary.',
               type: 'array',
               items: {
                 type: 'object',

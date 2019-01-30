@@ -10,8 +10,8 @@ interface IClean extends IPoseup {
 }
 export default async function clean(o: IClean = {}): Promise<void> {
   await initialize(o);
-
   const { cmd, args } = await cleanBuild(await builder(o), o.volumes);
+
   await spawn(cmd, args);
 }
 
