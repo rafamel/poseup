@@ -3,7 +3,7 @@ import { IPoseup, IBuild } from '~/types';
 import initialize from '~/utils/initialize';
 import strip from './strip-services';
 import write from '~/utils/write-yaml';
-import { spawn } from 'exits';
+import spawn from '~/utils/spawn';
 
 interface IClean extends IPoseup {
   volumes?: boolean;
@@ -12,7 +12,7 @@ export default async function clean(o: IClean = {}): Promise<void> {
   await initialize(o);
 
   const { cmd, args } = await cleanBuild(await builder(o), o.volumes);
-  await spawn(cmd, args, { stdio: 'inherit' }).promise;
+  await spawn(cmd, args);
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
