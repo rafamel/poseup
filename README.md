@@ -1,7 +1,7 @@
 # Poseup
 
 [![Version](https://img.shields.io/npm/v/poseup.svg)](https://www.npmjs.com/package/poseup)
-[![Types](https://img.shields.io/npm/types/exits.svg)](https://www.npmjs.com/package/exits)
+[![Types](https://img.shields.io/npm/types/poseup.svg)](https://www.npmjs.com/package/poseup)
 [![Build Status](https://img.shields.io/travis/rafamel/poseup.svg)](https://travis-ci.org/rafamel/poseup)
 [![Coverage](https://img.shields.io/coveralls/rafamel/poseup.svg)](https://coveralls.io/github/rafamel/poseup)
 [![Dependencies](https://img.shields.io/david/rafamel/poseup.svg)](https://david-dm.org/rafamel/poseup)

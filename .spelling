@@ -15,5 +15,11 @@ TypeDoc
 TravisCI
 repo
 config
-JS
+npm
+js
+api
+transpiled
+typings
+JSON
+transpile
 Poseup

@@ -1,4 +1,3 @@
-const pkg = require('./package.json');
 const path = require('path');
 const dir = (file) => path.join(CONFIG_DIR, file);
 const series = (...x) => `(${x.map((x) => x || 'shx echo').join(') && (')})`;
@@ -24,7 +23,7 @@ module.exports = scripts({
   build: {
     default:
       'cross-env NODE_ENV=production' +
-      ' nps validate build.prepare build.transpile build.declarations',
+      ' nps validate build.prepare build.transpile build.declaration',
     prepare: series(
       `jake run:zero["shx rm -r ${OUT_DIR}"]`,
       `shx mkdir ${OUT_DIR}`,
@@ -32,10 +31,9 @@ module.exports = scripts({
       `jake fixpackage["${__dirname}","${OUT_DIR}"]`
     ),
     transpile: `babel src --out-dir ${OUT_DIR} --extensions ${DOT_EXT} --source-maps inline`,
-    declarations: series(
-      TS && `tsc --emitDeclarationOnly --outDir ${OUT_DIR}/typings`,
-      TS && `shx cp -r ${OUT_DIR}/typings/src/* ${OUT_DIR}/`,
-      TS && `shx rm -r ${OUT_DIR}/typings`
+    declaration: series(
+      TS && `ttsc --project ttsconfig.json --outDir ${OUT_DIR}`,
+      `shx echo "${TS ? 'Declaration files built' : ''}"`
     )
   },
   publish: `cd ${OUT_DIR} && npm publish`,
@@ -54,7 +52,7 @@ module.exports = scripts({
     ].join(' '),
     md: "mdspell --en-us '**/*.md' '!**/node_modules/**/*.md'"
   },
-  types: TS && 'tsc --noEmit',
+  types: TS && 'tsc',
   lint: {
     default: `eslint ./src ./test --ext ${DOT_EXT} -c ${dir('.eslintrc.js')}`,
     md: series(
@@ -82,7 +80,7 @@ module.exports = scripts({
     TS && `jake run:zero["shx rm -r ${DOCS_DIR}"]`,
     TS && `typedoc --out ${DOCS_DIR} ./src`
   ),
-  changelog: 'conventional-changelog -p angular -i CHANGELOG.md -s',
+  changelog: 'conventional-changelog -p angular -i CHANGELOG.md -s -r 0',
   update: series('npm update --save/save-dev', 'npm outdated'),
   clean: series(
     `jake run:zero["shx rm -r ${OUT_DIR} ${DOCS_DIR} coverage CHANGELOG.md"]`,
@@ -91,7 +89,7 @@ module.exports = scripts({
   // Private
   private: {
     watch:
-      'concurrently "nps build.transpile" "nps build.declarations" "nps lint"' +
+      'concurrently "nps build.transpile" "nps build.declaration" "nps lint"' +
       ' -n babel,tsc,eslint -c green,magenta,yellow',
     preversion: series(
       'shx echo "Recommended version bump is:"',
