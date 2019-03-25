@@ -11,7 +11,8 @@ import args from './cmd-args';
     await pify(fs.readFile)(path.join(__dirname, '../package.json'))
   );
   const commands = ['compose', 'run', 'clean', 'purge'];
-
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const failedHelp = () => Boolean(program.outputHelp()) || process.exit(1);
   // Init
   program
     .version(pkg.version)
@@ -30,6 +31,6 @@ import args from './cmd-args';
 
   // If no command is passed, show help and exit 1
   if (!program.args.filter((x: any) => commands.includes(x)).length) {
-    program.help();
+    failedHelp();
   }
 })();

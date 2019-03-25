@@ -20,9 +20,9 @@ program
     '-s, --sandbox',
     'Create new containers for all services, remove all on exit'
   )
-  .option('-f, --file <path>', 'Path for config file [js,json,yml]')
   .option('-e, --env <env>', 'Environment for config file should be run on')
   .option('-d, --dir <dir>', 'Project directory [cwd by default]')
+  .option('-f, --file <path>', 'Path for config file [js,json,yml]')
   .option('--log <level>', 'Logging level')
   .parse(argv);
 

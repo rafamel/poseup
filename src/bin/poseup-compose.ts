@@ -15,9 +15,9 @@ program
   .option('-s, --stop', 'Stop all services on exit')
   .option('-c, --clean', 'Run clean on exit')
   .option('--dry', "Don't run docker compose - write only docker compose file")
-  .option('-f, --file <path>', 'Path for config file [js,json,yml]')
   .option('-e, --env <env>', 'Environment for config file should be run on')
   .option('-d, --dir <dir>', 'Project directory [cwd by default]')
+  .option('-f, --file <path>', 'Path for config file [js,json,yml]')
   .option('--log <level>', 'Logging level')
   .parse(argv);
 
