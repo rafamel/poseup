@@ -15,6 +15,7 @@ export default async function readConfig(
     case '.json':
       return JSON.parse(await pify(fs.readFile)(configPath));
     case '.yml':
+    case '.yaml':
       return yaml.safeLoad(await pify(fs.readFile)(configPath));
     default:
       throw Error(`Extension not valid`);

@@ -4,7 +4,7 @@ import path from 'path';
 
 export function getExplicitFile(configPath: string): Promise<string> {
   const { ext } = path.parse(configPath);
-  const validExt = ['.js', '.json', '.yml'].includes(ext);
+  const validExt = ['.js', '.json', '.yml', '.yaml'].includes(ext);
   if (!validExt) return Promise.reject(Error(`Extension ${ext} is not valid`));
 
   if (configPath.slice(0) !== '/') {
@@ -28,7 +28,8 @@ export function getDefaultFile(directory?: string): Promise<string> {
     extensions: {
       '.js': null,
       '.json': null,
-      '.yml': null
+      '.yml': null,
+      '.yaml': null
     }
   });
 
@@ -36,7 +37,7 @@ export function getDefaultFile(directory?: string): Promise<string> {
     poseUp.launch({ cwd: directory || process.cwd() }, (env) => {
       return env.configPath
         ? resolve(env.configPath)
-        : reject(Error(`poseup.config.{js,json,yml} could't be found`));
+        : reject(Error(`poseup.config.{js,json,yml,yaml} could't be found`));
     });
   });
 }
