@@ -2,26 +2,35 @@ import Liftoff from 'liftoff';
 import fs from 'fs';
 import path from 'path';
 
-export function getExplicitFile(configPath: string): Promise<string> {
-  const { ext } = path.parse(configPath);
+export interface IGetFile {
+  file?: string;
+  directory?: string;
+}
+
+export default async function getFile(opts: IGetFile = {}): Promise<string> {
+  const dir = opts.directory || process.cwd();
+  return opts.file ? getExplicitFile(opts.file, dir) : getDefaultFile(dir);
+}
+
+export function getExplicitFile(
+  file: string,
+  directory: string
+): Promise<string> {
+  const { ext } = path.parse(file);
   const validExt = ['.js', '.json', '.yml', '.yaml'].includes(ext);
   if (!validExt) return Promise.reject(Error(`Extension ${ext} is not valid`));
 
-  if (configPath.slice(0) !== '/') {
-    configPath = path.join(process.cwd(), configPath);
-  }
+  if (file[0] !== '/') file = path.join(directory, file);
 
   return new Promise((resolve, reject) => {
-    fs.access(configPath, fs.constants.F_OK, (err) => {
-      return err
-        ? reject(Error(`File ${configPath} doesn't exist.`))
-        : resolve(configPath);
+    fs.access(file, fs.constants.F_OK, (err) => {
+      return err ? reject(Error(`File ${file} doesn't exist.`)) : resolve(file);
     });
   });
 }
 
-export function getDefaultFile(directory?: string): Promise<string> {
-  const poseUp = new Liftoff({
+export function getDefaultFile(directory: string): Promise<string> {
+  const poseup = new Liftoff({
     name: 'poseup',
     processTitle: 'poseup',
     configName: 'poseup.config',
@@ -34,7 +43,7 @@ export function getDefaultFile(directory?: string): Promise<string> {
   });
 
   return new Promise((resolve, reject) => {
-    poseUp.launch({ cwd: directory || process.cwd() }, (env) => {
+    poseup.launch({ cwd: directory }, (env) => {
       return env.configPath
         ? resolve(env.configPath)
         : reject(Error(`poseup.config.{js,json,yml,yaml} could't be found`));
