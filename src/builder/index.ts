@@ -14,7 +14,9 @@ export default async function builder({
   directory
 }: IPoseup = {}): Promise<IBuild> {
   // Get config file path
-  const configPath = await (file ? getExplicitFile(file) : getDefaultFile());
+  const configPath = await (file
+    ? getExplicitFile(file)
+    : getDefaultFile(directory));
 
   // Read configuration
   const config: IPoseupConfig = await readConfig(configPath);

@@ -20,7 +20,7 @@ export function getExplicitFile(configPath: string): Promise<string> {
   });
 }
 
-export function getDefaultFile(): Promise<string> {
+export function getDefaultFile(directory?: string): Promise<string> {
   const poseUp = new Liftoff({
     name: 'poseup',
     processTitle: 'poseup',
@@ -33,7 +33,7 @@ export function getDefaultFile(): Promise<string> {
   });
 
   return new Promise((resolve, reject) => {
-    poseUp.launch({}, (env) => {
+    poseUp.launch({ cwd: directory || process.cwd() }, (env) => {
       return env.configPath
         ? resolve(env.configPath)
         : reject(Error(`poseup.config.{js,json,yml} could't be found`));
