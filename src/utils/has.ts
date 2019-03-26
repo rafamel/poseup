@@ -1,12 +1,8 @@
 import hasbin from 'hasbin';
 
-function bin(name: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    try {
-      hasbin(name, (result) => resolve(!!result));
-    } catch (e) {
-      reject(e);
-    }
+async function bin(name: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    hasbin(name, (result) => resolve(!!result));
   });
 }
 
