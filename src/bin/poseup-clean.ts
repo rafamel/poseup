@@ -2,7 +2,7 @@
 
 import program from 'commander';
 import args from './cmd-args';
-import clean from '~/clean';
+import { clean } from '~/commands';
 import { terminate } from 'exits';
 
 const [argv] = args.get();

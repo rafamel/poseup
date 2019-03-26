@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import program from 'commander';
-import compose from '~/compose';
+import { compose } from '~/commands';
 import args from './cmd-args';
 import { terminate } from 'exits';
 

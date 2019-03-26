@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import initialize from '~/utils/initialize';
 import write from '~/utils/write-yaml';
 import { cleanBuild } from './clean';
-import { STOP_WAIT_TIME } from './constants';
+import { STOP_WAIT_TIME } from '~/constants';
 import spawn from '~/utils/spawn';
 import add, { ADD_TYPES } from '~/utils/add';
 

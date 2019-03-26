@@ -3,7 +3,7 @@ import { IPoseup, ITask, IPoseupConfig } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import write from '~/utils/write-yaml';
-import { cleanBuild } from '~/clean';
+import { cleanBuild } from '../clean';
 import uuid from 'uuid/v4';
 import { wait } from 'promist';
 import { STOP_WAIT_TIME, RUN_DEFAULT_WAIT_BEFORE_EXEC } from '~/constants';

@@ -3,6 +3,7 @@ import { SpawnOptions } from 'child_process';
 import { DEFAULT_STDIO, EXIT_LOG_LEVEL_STDIO } from '~/constants';
 import logger from '~/utils/logger';
 
+// TODO pass environment vars to spawned processes
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function spawn(
   cmd: string,
@@ -12,8 +13,8 @@ export default function spawn(
   const state = getState();
   if (!opts) opts = {};
   if (!opts.stdio) {
-    // Make it silent by default if running inside a task
-    // (exits tasks have been triggered)
+    // Make it silent by default if running inside
+    // an exit task (exits tasks have been triggered)
     opts.stdio = state.triggered ? silent() : DEFAULT_STDIO;
   }
   return _spawn(cmd, args, opts).promise;

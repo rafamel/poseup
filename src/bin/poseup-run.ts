@@ -2,7 +2,7 @@
 
 import program from 'commander';
 import args from './cmd-args';
-import run from '~/run';
+import { run } from '~/commands';
 import { RUN_DEFAULT_WAIT_BEFORE_EXEC } from '~/constants';
 import { terminate } from 'exits';
 
