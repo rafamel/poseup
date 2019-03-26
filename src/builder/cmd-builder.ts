@@ -1,19 +1,18 @@
 interface ICmdBuilder {
-  project: string;
+  project?: string;
+  args?: string[];
   file: string;
   directory: string;
-  args: string[];
 }
 
-export default function cmdBuilder({
-  project,
-  file,
-  directory,
-  args
-}: ICmdBuilder): { cmd: string; args: string[] } {
+export default function cmdBuilder(
+  opts: ICmdBuilder
+): { cmd: string; args: string[] } {
+  const args = opts.args || [];
+
   args.unshift(
-    ...['-f', file, '--project-directory', directory].concat(
-      project ? ['-p', project] : []
+    ...['-f', opts.file, '--project-directory', opts.directory].concat(
+      opts.project ? ['-p', opts.project] : []
     )
   );
 

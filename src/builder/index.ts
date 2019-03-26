@@ -29,9 +29,9 @@ export default async function builder(opts: IPoseup = {}): Promise<IBuild> {
     getCmd({ file, args }) {
       return cmdBuilder({
         project: config.project,
+        args,
         file,
-        directory: opts.directory || path.parse(file).dir,
-        args: args || []
+        directory: opts.directory || path.parse(file).dir
       });
     }
   };
