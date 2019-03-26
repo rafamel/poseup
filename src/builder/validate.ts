@@ -1,14 +1,14 @@
 import Ajv from 'ajv';
-import { config as schema } from '~/schemas';
+import { config as schema } from '~/schema';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import { IPoseupConfig } from '~/types';
 import draft06 from 'ajv/lib/refs/json-schema-draft-06.json';
 
 const ajv = new Ajv();
-ajv.addMetaSchema(draft06);
+ajv.addMetaSchema(draft06); // TODO to draft7
 
-export default function validateConfig(config: IPoseupConfig): void {
+export default function validate(config: IPoseupConfig): void {
   // Validate schema
   const validate = ajv.compile(schema);
   const valid = validate(config);

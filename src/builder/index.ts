@@ -2,11 +2,11 @@
 
 import path from 'path';
 import getFile from './get-file';
-import readConfig from './read-config';
+import readFile from './read-file';
+import validate from './validate';
 import cmdBuilder from './cmd-builder';
 import { setLevel } from '~/utils/logger';
 import { IPoseup, IPoseupConfig, IBuild } from '~/types';
-import validateConfig from './validate-config';
 
 export default async function builder(opts: IPoseup = {}): Promise<IBuild> {
   // Get poseup file path
@@ -16,10 +16,8 @@ export default async function builder(opts: IPoseup = {}): Promise<IBuild> {
   });
 
   // Read poseup file
-  const config: IPoseupConfig = await readConfig(file);
-
-  // Validate poseup file
-  validateConfig(config);
+  const config: IPoseupConfig = await readFile(file);
+  validate(config);
 
   // Set logging level as per config file
   // if it hasn't been previously set by args
