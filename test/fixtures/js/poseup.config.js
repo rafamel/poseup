@@ -1,3 +1,3 @@
-module.exports = {
-  project: 'foo'
-};
+const project = 'foo';
+
+module.exports = { project };
