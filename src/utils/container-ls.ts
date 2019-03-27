@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+import ensureError from './ensure-error';
 
 export interface IContainerInfo {
   CreatedAt: string;
@@ -34,17 +35,11 @@ export default async function containerLs(
       ].filter(Boolean)
     );
     ps.stdout.on('data', (buffer: Buffer) => (acc += buffer.toString()));
-    ps.on('close', (code: number) =>
-      code ? reject(Error('docker failed.')) : resolve(acc)
-    );
+    ps.on('close', (code: number) => {
+      return code ? reject(Error('docker failed.')) : resolve(acc);
+    });
     ps.on('error', (err: any) => {
-      return reject(
-        Error(
-          err && err.hasOwnProperty('message')
-            ? err.message
-            : `Docker execution error`
-        )
-      );
+      return reject(ensureError(err));
     });
   });
 

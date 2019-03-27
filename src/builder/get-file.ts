@@ -1,6 +1,7 @@
 import Liftoff from 'liftoff';
 import fs from 'fs';
 import path from 'path';
+import ensureError from '~/utils/ensure-error';
 
 export interface IGetFile {
   file?: string;
@@ -22,11 +23,17 @@ export function getExplicitFile(
 
   if (file[0] !== '/') file = path.join(directory, file);
 
-  return new Promise((resolve, reject) => {
-    fs.access(file, fs.constants.F_OK, (err) => {
-      return err ? reject(Error(`File ${file} doesn't exist.`)) : resolve(file);
+  try {
+    return new Promise((resolve, reject) => {
+      fs.access(file, fs.constants.F_OK, (err) => {
+        return err
+          ? reject(Error(`File ${file} doesn't exist.`))
+          : resolve(file);
+      });
     });
-  });
+  } catch (err) {
+    throw ensureError(err);
+  }
 }
 
 export function getDefaultFile(directory: string): Promise<string> {
