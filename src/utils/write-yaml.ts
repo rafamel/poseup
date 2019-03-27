@@ -5,7 +5,7 @@ import yaml from 'js-yaml';
 import uuid from 'uuid/v4';
 import add, { ADD_TYPES } from '~/utils/add';
 import { TMP_DIR } from '~/constants';
-import ensureError from './ensure-error';
+import ensure from './ensure';
 
 interface IWriteYaml {
   data: any;
@@ -13,11 +13,7 @@ interface IWriteYaml {
 }
 
 export default async function writeYaml(args: IWriteYaml): Promise<string> {
-  try {
-    return trunk(args);
-  } catch (err) {
-    throw ensureError(err);
-  }
+  return ensure.rejection(() => trunk(args));
 }
 
 export async function trunk(args: IWriteYaml): Promise<string> {
@@ -38,7 +34,7 @@ export async function trunk(args: IWriteYaml): Promise<string> {
     add(
       ADD_TYPES.REMOVE_TEMP_FILES,
       'Remove temporary file: ' + writePath.split('/').slice(-1)[0],
-      () => pify(fs.unlink)(writePath).catch((err) => ensureError(err))
+      () => ensure.rejection(() => pify(fs.unlink)(writePath))
     );
   }
 

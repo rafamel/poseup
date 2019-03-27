@@ -1,6 +1,6 @@
 import _add from '../../src/utils/add';
 import writeYaml from '../../src/utils/write-yaml';
-import ensureError from '../../src/utils/ensure-error';
+import ensure from '../../src/utils/ensure';
 import { TMP_DIR } from '../../src/constants';
 import fs from 'fs-extra';
 import path from 'path';
@@ -22,10 +22,11 @@ afterAll(async () => {
   await pify(fs.remove)(path.parse(nested).dir);
 });
 
-const read = (file: string): Promise<string> =>
-  pify(fs.readFile)(file)
-    .then((x) => String(x).trim())
-    .catch((e) => Promise.reject(ensureError(e)));
+const read = (file: string): Promise<string> => {
+  return ensure.rejection(() =>
+    pify(fs.readFile)(file).then((x) => String(x).trim())
+  );
+};
 
 describe(`explicit path`, () => {
   test(`creates file`, async () => {

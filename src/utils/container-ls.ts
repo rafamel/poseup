@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import ensureError from './ensure-error';
+import ensure from './ensure';
 
 export interface IContainerInfo {
   CreatedAt: string;
@@ -39,7 +39,7 @@ export default async function containerLs(
       return code ? reject(Error('docker failed.')) : resolve(acc);
     });
     ps.on('error', (err: any) => {
-      return reject(ensureError(err));
+      return reject(ensure.error(err));
     });
   });
 
