@@ -1,12 +1,12 @@
 import logger from '~/utils/logger';
 import chalk from 'chalk';
-import { ITask, IPoseupConfig } from '~/types';
+import { ITask, IConfig } from '~/types';
 import uuid from 'uuid/v4';
 import spawn from '~/utils/spawn';
 
 export default async function runPrimary(
   task: ITask,
-  config: IPoseupConfig,
+  config: IConfig,
   cmd: string,
   args: string[]
 ): Promise<void> {

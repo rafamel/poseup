@@ -1,16 +1,18 @@
-import builder from '~/builder';
-import { IPoseup, IBuild } from '~/types';
+import builder, { IBuild } from '~/builder';
+import { ICleanOptions } from '~/types';
 import initialize from '~/utils/initialize';
 import strip from './strip-services';
 import write from '~/utils/write-yaml';
 import spawn from '~/utils/spawn';
 
-interface IClean extends IPoseup {
-  volumes?: boolean;
-}
-export default async function clean(o: IClean = {}): Promise<void> {
-  await initialize(o);
-  const { cmd, args } = await cleanBuild(await builder(o), o.volumes);
+export default async function clean(
+  options: ICleanOptions = {}
+): Promise<void> {
+  await initialize(options);
+  const { cmd, args } = await cleanBuild(
+    await builder(options),
+    options.volumes
+  );
 
   await spawn(cmd, args);
 }

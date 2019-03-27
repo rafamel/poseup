@@ -2,29 +2,37 @@ import { LogLevelDesc } from 'loglevel';
 
 export type TLogger = LogLevelDesc;
 
-export interface IBuild {
-  config: IPoseupConfig;
-  getCmd(opts: {
-    file: string;
-    args?: string[];
-  }): { cmd: string; args: string[] };
-}
-
-export interface IPoseup {
+export interface IOptions {
   log?: TLogger;
   file?: string;
   directory?: string;
   environment?: string;
 }
 
-export interface ITask {
-  primary?: string;
-  services?: string[];
-  cmd?: string[];
-  exec?: Array<{ [key: string]: string[] }>;
+export interface IRunOptions extends IOptions {
+  tasks?: string[];
+  wait?: number | string;
+  sandbox?: boolean;
 }
 
-export interface IPoseupConfig {
+export interface IComposeOptions extends IOptions {
+  write?: string;
+  dry?: boolean;
+  clean?: boolean;
+  stop?: boolean;
+  args?: string[];
+}
+
+export interface ICleanOptions extends IOptions {
+  volumes?: boolean;
+}
+
+export interface IPurgeOptions {
+  force: boolean;
+  log?: TLogger;
+}
+
+export interface IConfig {
   log?: TLogger;
   project: string;
   persist?: string[];
@@ -34,4 +42,11 @@ export interface IPoseupConfig {
   compose: {
     [key: string]: any;
   };
+}
+
+export interface ITask {
+  primary?: string;
+  services?: string[];
+  cmd?: string[];
+  exec?: Array<{ [key: string]: string[] }>;
 }

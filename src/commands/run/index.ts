@@ -1,5 +1,5 @@
 import builder from '~/builder';
-import { IPoseup, ITask, IPoseupConfig } from '~/types';
+import { ITask, IConfig, IRunOptions } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import write from '~/utils/write-yaml';
@@ -14,23 +14,21 @@ import initialize from '~/utils/initialize';
 import add, { ADD_TYPES } from '~/utils/add';
 import { control } from 'exits';
 
-interface IRun extends IPoseup {
-  tasks?: string[];
-  wait?: number | string;
-  sandbox?: boolean;
+export default async function run(options: IRunOptions = {}): Promise<void> {
+  await control(trunk)(options);
 }
 
 // TODO stop and down with no stdin
-export default control(run);
+function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
+  initialize(opts);
+  const { config, getCmd } = yield builder(opts);
 
-function* run(o: IRun = {}): IterableIterator<any> {
-  initialize(o);
-  const { config, getCmd } = yield builder(o);
-
-  if (!o.tasks || !o.tasks.length) throw Error('No tasks to run');
+  if (!opts.tasks || !opts.tasks.length) throw Error('No tasks to run');
   if (!config.tasks) throw Error('There are no tasks defined');
 
-  if (o.sandbox) config.project = config.project + '_' + uuid().split('-')[0];
+  if (opts.sandbox) {
+    config.project = config.project + '_' + uuid().split('-')[0];
+  }
 
   const cleanCmd = yield cleanBuild({ config, getCmd });
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -43,23 +41,24 @@ function* run(o: IRun = {}): IterableIterator<any> {
   });
   add(
     ADD_TYPES.CLEAN,
-    'Clean ' + (o.sandbox ? 'sandbox' : 'ephemeral containers'),
-    () => (o.sandbox ? spawn(cmd, args.concat('down', '--volumes')) : clean())
+    'Clean ' + (opts.sandbox ? 'sandbox' : 'ephemeral containers'),
+    () =>
+      opts.sandbox ? spawn(cmd, args.concat('down', '--volumes')) : clean()
   );
 
-  for (const taskName of o.tasks) {
+  for (const taskName of opts.tasks) {
     if (!config.tasks.hasOwnProperty(taskName)) {
       throw Error(`Task ${taskName} is not defined`);
     }
     logger.info(chalk.green('Running task:') + ' ' + taskName);
     const task = config.tasks[taskName];
-    yield runTask(task, config, cmd, args, clean, o.wait);
+    yield runTask(task, config, cmd, args, clean, opts.wait);
   }
 }
 
 async function runTask(
   task: ITask,
-  config: IPoseupConfig,
+  config: IConfig,
   cmd: string,
   args: string[],
   clean: () => Promise<any>,

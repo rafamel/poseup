@@ -2,11 +2,11 @@ import Ajv from 'ajv';
 import { config as schema } from '~/schema';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
-import { IPoseupConfig } from '~/types';
+import { IConfig } from '~/types';
 
 const ajv = new Ajv();
 
-export default function validate(config: IPoseupConfig): void {
+export default function validate(config: IConfig): void {
   // Validate schema
   const validate = ajv.compile(schema);
   const valid = validate(config);

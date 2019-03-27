@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import pify from 'pify';
 import yaml from 'js-yaml';
-import { IPoseupConfig } from '~/types';
+import { IConfig } from '~/types';
 
-export default async function readFile(file: string): Promise<IPoseupConfig> {
+export default async function readFile(file: string): Promise<IConfig> {
   const { ext } = path.parse(file);
 
   switch (ext) {

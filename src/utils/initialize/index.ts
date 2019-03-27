@@ -1,4 +1,4 @@
-import { IPoseup } from '~/types';
+import { IOptions } from '~/types';
 import { setLevel } from '~/utils/logger';
 import trunk from './trunk';
 
@@ -12,9 +12,9 @@ import trunk from './trunk';
  */
 
 let done = false;
-export default async function initialize(opts: IPoseup): Promise<void> {
-  if (opts.log) setLevel(opts.log);
-  if (opts.environment) process.env.NODE_ENV = opts.environment;
+export default async function initialize(options: IOptions): Promise<void> {
+  if (options.log) setLevel(options.log);
+  if (options.environment) process.env.NODE_ENV = options.environment;
 
   if (!done) {
     done = true;
