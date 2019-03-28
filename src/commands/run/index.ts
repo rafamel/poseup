@@ -3,7 +3,7 @@ import { ITask, IConfig, IRunOptions } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import write from '~/utils/write-yaml';
-import { cleanBuild } from '../clean';
+import { getCmd as getCleanCmd } from '../clean';
 import uuid from 'uuid/v4';
 import { wait } from 'promist';
 import { STOP_WAIT_TIME, RUN_DEFAULT_WAIT_BEFORE_EXEC } from '~/constants';
@@ -30,7 +30,7 @@ function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
     config.project = config.project + '_' + uuid().split('-')[0];
   }
 
-  const cleanCmd = yield cleanBuild({ config, getCmd });
+  const cleanCmd = yield getCleanCmd({ config, getCmd });
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const clean = () => spawn(cleanCmd.cmd, cleanCmd.args, { stdio: silent() });
   const file = yield write({ data: config.compose });
