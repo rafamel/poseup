@@ -5,7 +5,6 @@
  * If removeDeps = true, it also scrubs depends_on,
  * networks, and volumes properties out of services
  */
-
 export default function stripServices(
   stripArr?: string[],
   composeObj: { [key: string]: any } = {},
@@ -16,6 +15,13 @@ export default function stripServices(
   let toStripVolumes: string[] = [];
 
   toStripServices.forEach((name) => {
+    if (
+      !composeObj.hasOwnProperty('services') ||
+      !composeObj.services.hasOwnProperty(name)
+    ) {
+      throw Error(`Compose has no service named ${name}`);
+    }
+
     const service = composeObj.services[name];
     toStripNetworks = toStripNetworks.concat(service.networks || []);
     toStripVolumes = toStripVolumes.concat(service.volumes || []);
