@@ -5,7 +5,9 @@ import { IPurgeOptions } from '~/types';
 import initialize from '~/utils/initialize';
 import spawn from '~/utils/spawn';
 
-export default async function purge(options: IPurgeOptions): Promise<void> {
+export default async function purge(
+  options: IPurgeOptions = {}
+): Promise<void> {
   await initialize({ log: options.log });
 
   logger.info(chalk.yellow('\nStarting docker system-wide cleanup'));

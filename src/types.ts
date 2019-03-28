@@ -28,7 +28,7 @@ export interface ICleanOptions extends IOptions {
 }
 
 export interface IPurgeOptions {
-  force: boolean;
+  force?: boolean;
   log?: TLogger;
 }
 
