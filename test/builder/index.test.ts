@@ -13,10 +13,6 @@ jest.mock('~/builder/read-file');
 jest.mock('~/builder/validate');
 jest.mock('~/builder/cmd-builder');
 
-readFile.mockImplementation(() => ({ project: 'foo' }));
-getFile.mockImplementation(() => 'bar/baz/foo.js');
-cmdBuilder.mockImplementation(() => 'CMD');
-
 describe(`args`, () => {
   test(`succeeds on empty`, async () => {
     await expect(builder()).resolves.not.toBeUndefined();
@@ -47,7 +43,7 @@ describe(`readFile()`, () => {
 
     await expect(builder()).resolves.not.toBeUndefined();
     expect(readFile).toHaveBeenCalledTimes(1);
-    expect(readFile).toHaveBeenCalledWith('bar/baz/foo.js');
+    expect(readFile).toHaveBeenCalledWith('foo/bar/baz.js');
   });
   test(`fails`, async () => {
     readFile.mockClear();
@@ -63,7 +59,7 @@ describe(`validate()`, () => {
 
     await expect(builder()).resolves.not.toBeUndefined();
     expect(validate).toHaveBeenCalledTimes(1);
-    expect(validate).toHaveBeenCalledWith({ project: 'foo' });
+    expect(validate).toHaveBeenCalledWith({ project: 'foo', compose: {} });
   });
   test(`fails`, async () => {
     validate.mockClear();
@@ -78,7 +74,8 @@ describe(`validate()`, () => {
 describe(`response`, () => {
   test(`config`, async () => {
     await expect(builder()).resolves.toHaveProperty('config', {
-      project: 'foo'
+      project: 'foo',
+      compose: {}
     });
   });
   test(`getCmd with no dir, no args`, async () => {
@@ -88,7 +85,10 @@ describe(`response`, () => {
     expect(typeof res.getCmd).toBe('function');
 
     const getCmd = res.getCmd;
-    expect(getCmd({ file: 'some/file.js' })).toBe('CMD');
+    expect(getCmd({ file: 'some/file.js' })).toEqual({
+      cmd: 'foo',
+      args: ['bar', 'baz']
+    });
     expect(cmdBuilder).toHaveBeenCalledTimes(1);
     expect(cmdBuilder).toHaveBeenCalledWith({
       project: 'foo',
@@ -104,7 +104,10 @@ describe(`response`, () => {
     expect(typeof res.getCmd).toBe('function');
 
     const getCmd = res.getCmd;
-    expect(getCmd({ file: 'some/file.js' })).toBe('CMD');
+    expect(getCmd({ file: 'some/file.js' })).toEqual({
+      cmd: 'foo',
+      args: ['bar', 'baz']
+    });
     expect(cmdBuilder).toHaveBeenCalledTimes(1);
     expect(cmdBuilder).toHaveBeenCalledWith({
       project: 'foo',
@@ -120,7 +123,10 @@ describe(`response`, () => {
     expect(typeof res.getCmd).toBe('function');
 
     const getCmd = res.getCmd;
-    expect(getCmd({ file: 'some/file.js', args: ['foo'] })).toBe('CMD');
+    expect(getCmd({ file: 'some/file.js', args: ['foo'] })).toEqual({
+      cmd: 'foo',
+      args: ['bar', 'baz']
+    });
     expect(cmdBuilder).toHaveBeenCalledTimes(1);
     expect(cmdBuilder).toHaveBeenCalledWith({
       project: 'foo',

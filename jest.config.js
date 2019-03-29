@@ -9,7 +9,8 @@ module.exports = {
   modulePathIgnorePatterns: [
     '<rootDir>/build',
     '<rootDir>/src/@types',
-    '<rootDir>/src/bin'
+    '<rootDir>/src/bin',
+    '<rootDir>/src/.*/__mocks__'
   ],
   moduleFileExtensions: EXT_ARR.concat(['json']),
   testPathIgnorePatterns: ['/node_modules/']

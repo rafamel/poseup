@@ -1,4 +1,4 @@
-interface ICmdBuilder {
+export interface ICmdBuilder {
   project?: string;
   args?: string[];
   file: string;
