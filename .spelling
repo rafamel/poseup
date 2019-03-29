@@ -22,4 +22,5 @@ transpiled
 typings
 JSON
 transpile
-Poseup
+poseup
+yaml

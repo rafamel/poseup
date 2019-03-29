@@ -8,11 +8,17 @@
 [![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/poseup.svg)](https://snyk.io/test/npm/poseup)
 [![License](https://img.shields.io/github/license/rafamel/poseup.svg)](https://github.com/rafamel/poseup/blob/master/LICENSE)
 
-![Poseup logo](https://raw.githubusercontent.com/rafamel/poseup/master/setup/assets/logo.png)
-
-<!-- markdownlint-disable MD036 -->
-**Containerized development workflow & tests for the masses.**
-<!-- markdownlint-enable MD036 -->
+<!-- markdownlint-disable MD033 -->
+<div style="display:block;max-width:100%;text-align:center;">
+  <br />
+  <img alt="Poseup logo" style="max-width:350px" src="https://raw.githubusercontent.com/rafamel/poseup/master/setup/assets/logo.png" />
+  <br />
+  <br />
+  <p>
+    <strong>Containerized development workflow & tests for the masses.</strong>
+  </p>
+</div>
+<!-- markdownlint-enable MD033 -->
 
 ## Install
 
