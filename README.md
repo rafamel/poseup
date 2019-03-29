@@ -8,18 +8,55 @@
 [![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/poseup.svg)](https://snyk.io/test/npm/poseup)
 [![License](https://img.shields.io/github/license/rafamel/poseup.svg)](https://github.com/rafamel/poseup/blob/master/LICENSE)
 
+![Poseup logo](https://raw.githubusercontent.com/rafamel/poseup/master/setup/assets/logo.png)
+
 <!-- markdownlint-disable MD036 -->
-**Poseup is a thin `docker-compose` wrapper allowing for flexible containerized development workflow & deployment.**
+**Containerized development workflow & tests for the masses.**
 <!-- markdownlint-enable MD036 -->
 
 ## Install
 
-[`npm install poseup`](https://www.npmjs.com/package/poseup)
+Requires [`docker` to be installed on your system.](https://docs.docker.com/install/)
+
+To install *poseup* on your system -globally-, run:
+
+[`npm install -g poseup`](https://www.npmjs.com/package/poseup)
+
+You can also just install it within the scope of your project by running `npm install poseup`.
 
 ## Motivation
 
-## CLI
+<!-- TODO -->
+
+## Features
+
+Poseup is a thin `docker-compose` wrapper allowing for flexible containerized development workflow.
+
+<!-- TODO -->
 
 ## Usage
 
-## Programmatic usage
+* CLI
+  * `poseup compose` runs `docker-compose` as per your `poseup.config` file.
+  * `poseup run` is a task runner for docker.
+  * `poseup clean` cleans all non persisted containers.
+  * `poseup purge` purges volumes, networks, and images from your system.
+* Configuration: how to get the most out of *poseup* through your `poseup.config` file.
+  * Extensions: the allowed file extensions for a config file.
+  * Path: how *poseup* resolves the path for your config file by default.
+  * Structure: what you should put where in the configuration file.
+  * Environments: how to define different configurations for several environments.
+  * Examples: a real-world example configuration.
+* Programmatic usage: call *poseup* commands from a script without spawning a process.
+
+### CLI
+
+<!-- TODO -->
+
+### Configuration
+
+<!-- TODO -->
+
+### Programmatic usage
+
+<!-- TODO -->
