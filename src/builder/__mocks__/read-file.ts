@@ -1,3 +1,6 @@
 export default jest.fn().mockImplementation(async () => {
-  return { project: 'foo', compose: {} };
+  return {
+    project: 'foo',
+    compose: { services: { foo: {}, bar: {} } }
+  };
 });

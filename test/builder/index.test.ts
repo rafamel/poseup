@@ -59,7 +59,10 @@ describe(`validate()`, () => {
 
     await expect(builder()).resolves.not.toBeUndefined();
     expect(validate).toHaveBeenCalledTimes(1);
-    expect(validate).toHaveBeenCalledWith({ project: 'foo', compose: {} });
+    expect(validate).toHaveBeenCalledWith({
+      project: 'foo',
+      compose: { services: { foo: {}, bar: {} } }
+    });
   });
   test(`fails`, async () => {
     validate.mockClear();
@@ -75,7 +78,7 @@ describe(`response`, () => {
   test(`config`, async () => {
     await expect(builder()).resolves.toHaveProperty('config', {
       project: 'foo',
-      compose: {}
+      compose: { services: { foo: {}, bar: {} } }
     });
   });
   test(`getCmd with no dir, no args`, async () => {

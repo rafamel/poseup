@@ -8,8 +8,6 @@ const write: any = _write;
 jest.mock('~/commands/clean/strip-services');
 jest.mock('~/utils/write-yaml');
 
-strip.mockImplementation((a: string[], b: any) => b);
-write.mockImplementation(() => Promise.resolve('foo/bar'));
 let args: any[] | null = null;
 const build: IBuild = {
   config: { persist: ['foo', 'bar'], compose: { baz: 'foobar' } },
@@ -51,16 +49,18 @@ describe(`builder().getCmd call`, () => {
   test(`succeeds wo/ volumes`, async () => {
     args = [];
     await expect(getCmd(build)).resolves.toBe('response');
-    expect(args).toEqual([{ file: 'foo/bar', args: ['down'] }]);
+    expect(args).toEqual([{ file: 'foo/bar/baz.js', args: ['down'] }]);
 
     args = [];
     await expect(getCmd(build, false)).resolves.toBe('response');
-    expect(args).toEqual([{ file: 'foo/bar', args: ['down'] }]);
+    expect(args).toEqual([{ file: 'foo/bar/baz.js', args: ['down'] }]);
   });
   test(`succeeds w/ volumes`, async () => {
     args = [];
 
     await expect(getCmd(build, true)).resolves.toBe('response');
-    expect(args).toEqual([{ file: 'foo/bar', args: ['down', '--volumes'] }]);
+    expect(args).toEqual([
+      { file: 'foo/bar/baz.js', args: ['down', '--volumes'] }
+    ]);
   });
 });

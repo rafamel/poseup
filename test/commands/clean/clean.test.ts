@@ -14,12 +14,7 @@ jest.mock('~/commands/clean/get-cmd');
 jest.mock('~/builder');
 jest.mock('~/utils/spawn');
 
-initialize.mockImplementation(() => Promise.resolve());
-getCmd.mockImplementation(() =>
-  Promise.resolve({ cmd: 'foobar', args: ['foo', 'bar', 'baz'] })
-);
 builder.mockImplementation(() => Promise.resolve('builder'));
-spawn.mockImplementation(() => Promise.resolve(null));
 
 describe(`initialize call`, () => {
   test(`succeeds`, async () => {
@@ -78,7 +73,7 @@ describe(`spawn call`, () => {
 
     await expect(clean()).resolves.toBeUndefined();
     expect(spawn).toHaveBeenCalledTimes(1);
-    expect(spawn).toHaveBeenCalledWith('foobar', ['foo', 'bar', 'baz']);
+    expect(spawn).toHaveBeenCalledWith('foo', ['down', 'bar', 'baz']);
   });
   test(`fails`, async () => {
     spawn.mockImplementationOnce(() => Promise.reject(Error()));

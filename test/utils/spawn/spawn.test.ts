@@ -1,17 +1,15 @@
 import { spawn as _exitsSpawn, state as _exitsState } from 'exits';
 import { DEFAULT_STDIO } from '~/constants';
-import spawn, { silent as _silent } from '~/utils/spawn';
+import spawn from '~/utils/spawn';
 
 jest.mock('exits');
 jest.mock('~/utils/spawn/silent');
 const exitsSpawn: any = _exitsSpawn;
 const exitsState: any = _exitsState;
-const silent: any = _silent;
 
 const spawnResponse = { promise: Promise.resolve() };
 exitsSpawn.mockImplementation(() => spawnResponse);
 exitsState.mockImplementation(() => ({ triggered: {} }));
-silent.mockImplementation(() => 'bar');
 
 describe(`spawn`, () => {
   test(`doesn't throw`, () => {
@@ -25,7 +23,9 @@ describe(`spawn`, () => {
 
     expect(spawn('foo')).toBe(spawnResponse.promise);
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
-    expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, { stdio: 'bar' });
+    expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
+      stdio: 'ignore'
+    });
   });
   test(`passes defaults wo/ state triggered`, () => {
     exitsSpawn.mockClear();
@@ -56,7 +56,7 @@ describe(`spawn`, () => {
     );
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
     expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
-      stdio: 'bar',
+      stdio: 'ignore',
       bar: 'baz'
     });
   });
@@ -66,7 +66,7 @@ describe(`spawn`, () => {
     expect(spawn('foo', ['a', 'b', 'c'])).toBe(spawnResponse.promise);
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
     expect(exitsSpawn).toHaveBeenCalledWith('foo', ['a', 'b', 'c'], {
-      stdio: 'bar'
+      stdio: 'ignore'
     });
   });
   test(`passes all`, () => {

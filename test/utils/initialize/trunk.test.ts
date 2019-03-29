@@ -16,10 +16,6 @@ const options: any = _options;
 const resolver: any = _resolver;
 const has: any = _has;
 
-has.all.mockImplementation(() =>
-  Promise.resolve({ all: true, docker: true, 'docker-compose': true })
-);
-
 describe(`trunk`, () => {
   test(`succeeds`, async () => {
     await expect(trunk()).resolves.toBeUndefined();

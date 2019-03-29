@@ -15,7 +15,6 @@ jest.mock('~/utils/container-ls');
 const initialize: any = _initialize;
 const spawn: any = _spawn;
 const containerLs: any = _containerLs;
-spawn.mockImplementation(() => Promise.resolve());
 containerLs.mockImplementation(() => Promise.resolve(out));
 
 test(`doesn't reject`, async () => {
