@@ -1,14 +1,14 @@
-import _add from '../../src/utils/add';
-import writeYaml from '../../src/utils/write-yaml';
-import ensure from '../../src/utils/ensure';
-import { TMP_DIR } from '../../src/constants';
+import _add from '~/utils/add';
+import writeYaml from '~/utils/write-yaml';
+import ensure from '~/utils/ensure';
+import { TMP_DIR } from '~/constants';
 import fs from 'fs-extra';
 import path from 'path';
 import uuid from 'uuid/v4';
 import pify from 'pify';
 
 const add: any = _add;
-jest.mock('../../src/utils/add');
+jest.mock('~/utils/add');
 
 const file = path.join(TMP_DIR, 'foo.yml');
 const nested = path.join(TMP_DIR, uuid(), 'foo.yml');

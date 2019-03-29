@@ -1,6 +1,6 @@
 import path from 'path';
 import { spawn as _spawn } from 'child_process';
-import containerLs from '../../src/utils/container-ls';
+import containerLs from '~/utils/container-ls';
 import uuid from 'uuid/v4';
 import out from '../fixtures/container-ls/out';
 

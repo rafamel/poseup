@@ -1,10 +1,10 @@
-import initialize from '../../../src/utils/initialize';
-import _trunk from '../../../src/utils/initialize/trunk';
-import { setLevel as _setLevel } from '../../../src/utils/logger';
+import initialize from '~/utils/initialize';
+import _trunk from '~/utils/initialize/trunk';
+import { setLevel as _setLevel } from '~/utils/logger';
 import { wait } from 'promist';
 
-jest.mock('../../../src/utils/initialize/trunk');
-jest.mock('../../../src/utils/logger');
+jest.mock('~/utils/initialize/trunk');
+jest.mock('~/utils/logger');
 const trunk: any = _trunk;
 const setLevel: any = _setLevel;
 trunk.mockImplementation(() => wait(500));

@@ -1,4 +1,4 @@
-import has from '../../src/utils/has';
+import has from '~/utils/has';
 import uuid from 'uuid/v4';
 
 describe(`bin`, () => {

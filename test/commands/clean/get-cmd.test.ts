@@ -1,12 +1,12 @@
-import getCmd from '../../../src/commands/clean/get-cmd';
-import _strip from '../../../src/commands/clean/strip-services';
-import _write from '../../../src/utils/write-yaml';
-import { IBuild } from '../../../src/builder';
+import getCmd from '~/commands/clean/get-cmd';
+import _strip from '~/commands/clean/strip-services';
+import _write from '~/utils/write-yaml';
+import { IBuild } from '~/builder';
 
 const strip: any = _strip;
 const write: any = _write;
-jest.mock('../../../src/commands/clean/strip-services');
-jest.mock('../../../src/utils/write-yaml');
+jest.mock('~/commands/clean/strip-services');
+jest.mock('~/utils/write-yaml');
 
 strip.mockImplementation((a: string[], b: any) => b);
 write.mockImplementation(() => Promise.resolve('foo/bar'));

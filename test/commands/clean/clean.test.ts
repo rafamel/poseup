@@ -1,18 +1,18 @@
-import clean from '../../../src/commands/clean/clean';
-import _initialize from '../../../src/utils/initialize';
-import _getCmd from '../../../src/commands/clean/get-cmd';
-import _builder from '../../../src/builder';
-import _spawn from '../../../src/utils/spawn';
+import clean from '~/commands/clean/clean';
+import _initialize from '~/utils/initialize';
+import _getCmd from '~/commands/clean/get-cmd';
+import _builder from '~/builder';
+import _spawn from '~/utils/spawn';
 import { wait } from 'promist';
 
 const initialize: any = _initialize;
 const getCmd: any = _getCmd;
 const builder: any = _builder;
 const spawn: any = _spawn;
-jest.mock('../../../src/utils/initialize');
-jest.mock('../../../src/commands/clean/get-cmd');
-jest.mock('../../../src/builder');
-jest.mock('../../../src/utils/spawn');
+jest.mock('~/utils/initialize');
+jest.mock('~/commands/clean/get-cmd');
+jest.mock('~/builder');
+jest.mock('~/utils/spawn');
 
 initialize.mockImplementation(() => Promise.resolve());
 getCmd.mockImplementation(() =>

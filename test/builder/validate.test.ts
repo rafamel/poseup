@@ -1,4 +1,4 @@
-import validate from '../../src/builder/validate';
+import validate from '~/builder/validate';
 
 describe(`schema`, () => {
   test(`succeeds`, () => {

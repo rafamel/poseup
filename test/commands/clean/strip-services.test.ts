@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import strip from '../../../src/commands/clean/strip-services';
+import strip from '~/commands/clean/strip-services';
 
 const compose = {
   version: '3.4',

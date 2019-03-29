@@ -1,4 +1,4 @@
-import cmdBuilder from '../../src/builder/cmd-builder';
+import cmdBuilder from '~/builder/cmd-builder';
 
 test(`no args, no project`, () => {
   const opts1 = {

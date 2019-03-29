@@ -1,16 +1,16 @@
-import trunk, { onDone } from '../../../src/utils/initialize/trunk';
+import trunk, { onDone } from '~/utils/initialize/trunk';
 import {
   attach as _attach,
   options as _options,
   resolver as _resolver
 } from 'exits';
-import _has from '../../../src/utils/has';
-import logger from '../../../src/utils/logger';
+import _has from '~/utils/has';
+import logger from '~/utils/logger';
 
 logger.setLevel('silent');
 
 jest.mock('exits');
-jest.mock('../../../src/utils/has');
+jest.mock('~/utils/has');
 const attach: any = _attach;
 const options: any = _options;
 const resolver: any = _resolver;

@@ -1,17 +1,17 @@
-import purge from '../../src/commands/purge';
-import _initialize from '../../src/utils/initialize';
-import _spawn from '../../src/utils/spawn';
-import _containerLs from '../../src/utils/container-ls';
-import { setLevel } from '../../src/utils/logger';
+import purge from '~/commands/purge';
+import _initialize from '~/utils/initialize';
+import _spawn from '~/utils/spawn';
+import _containerLs from '~/utils/container-ls';
+import { setLevel } from '~/utils/logger';
 import { wait } from 'promist';
 import out from '../fixtures/container-ls/out';
 
 setLevel('silent');
 afterEach(() => setLevel('silent'));
 
-jest.mock('../../src/utils/initialize');
-jest.mock('../../src/utils/spawn');
-jest.mock('../../src/utils/container-ls');
+jest.mock('~/utils/initialize');
+jest.mock('~/utils/spawn');
+jest.mock('~/utils/container-ls');
 const initialize: any = _initialize;
 const spawn: any = _spawn;
 const containerLs: any = _containerLs;

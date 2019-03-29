@@ -1,5 +1,5 @@
-import add from '../../src/utils/add';
-import logger from '../../src/utils/logger';
+import add from '~/utils/add';
+import logger from '~/utils/logger';
 import { add as _exitsAdd } from 'exits';
 
 logger.setLevel('silent');

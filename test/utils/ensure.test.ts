@@ -1,4 +1,4 @@
-import ensure, { DEFAULT_MESSAGE } from '../../src/utils/ensure';
+import ensure, { DEFAULT_MESSAGE } from '~/utils/ensure';
 
 describe(`error`, () => {
   test(`returns same object when instance of Error`, () => {

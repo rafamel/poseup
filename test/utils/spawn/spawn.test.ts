@@ -1,9 +1,9 @@
 import { spawn as _exitsSpawn, state as _exitsState } from 'exits';
-import { DEFAULT_STDIO } from '../../../src/constants';
-import spawn, { silent as _silent } from '../../../src/utils/spawn';
+import { DEFAULT_STDIO } from '~/constants';
+import spawn, { silent as _silent } from '~/utils/spawn';
 
 jest.mock('exits');
-jest.mock('../../../src/utils/spawn/silent');
+jest.mock('~/utils/spawn/silent');
 const exitsSpawn: any = _exitsSpawn;
 const exitsState: any = _exitsState;
 const silent: any = _silent;

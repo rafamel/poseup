@@ -1,6 +1,6 @@
-import silent from '../../../src/utils/spawn/silent';
-import { DEFAULT_STDIO, EXIT_LOG_LEVEL_STDIO } from '../../../src/constants';
-import logger from '../../../src/utils/logger';
+import silent from '~/utils/spawn/silent';
+import { DEFAULT_STDIO, EXIT_LOG_LEVEL_STDIO } from '~/constants';
+import logger from '~/utils/logger';
 
 test(`succeeds for greater than ${EXIT_LOG_LEVEL_STDIO}`, () => {
   logger.setLevel((EXIT_LOG_LEVEL_STDIO + 1) as any);

@@ -1,5 +1,5 @@
-import { DEFAULT_LOG_LEVEL } from '../../src/constants';
-import logger, { setLevel } from '../../src/utils/logger';
+import { DEFAULT_LOG_LEVEL } from '~/constants';
+import logger, { setLevel } from '~/utils/logger';
 import exitsLogger from 'exits/utils/logger';
 
 test(`default logging level is set`, () => {

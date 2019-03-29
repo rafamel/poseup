@@ -1,17 +1,17 @@
-import _getFile from '../../src/builder/get-file';
-import _readFile from '../../src/builder/read-file';
-import _validate from '../../src/builder/validate';
-import _cmdBuilder from '../../src/builder/cmd-builder';
-import builder from '../../src/builder';
+import _getFile from '~/builder/get-file';
+import _readFile from '~/builder/read-file';
+import _validate from '~/builder/validate';
+import _cmdBuilder from '~/builder/cmd-builder';
+import builder from '~/builder';
 
 const getFile: any = _getFile;
 const readFile: any = _readFile;
 const validate: any = _validate;
 const cmdBuilder: any = _cmdBuilder;
-jest.mock('../../src/builder/get-file');
-jest.mock('../../src/builder/read-file');
-jest.mock('../../src/builder/validate');
-jest.mock('../../src/builder/cmd-builder');
+jest.mock('~/builder/get-file');
+jest.mock('~/builder/read-file');
+jest.mock('~/builder/validate');
+jest.mock('~/builder/cmd-builder');
 
 readFile.mockImplementation(() => ({ project: 'foo' }));
 getFile.mockImplementation(() => 'bar/baz/foo.js');

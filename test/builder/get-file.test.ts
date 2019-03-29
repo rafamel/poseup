@@ -1,5 +1,5 @@
 import path from 'path';
-import getFile from '../../src/builder/get-file';
+import getFile from '~/builder/get-file';
 
 const at = (str?: string): string => {
   return path.join(__dirname, '../fixtures', str || '');
