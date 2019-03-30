@@ -3,10 +3,9 @@ import chalk from 'chalk';
 import { ITask } from '~/types';
 import spawn from '~/utils/spawn';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function runCmd(task: ITask) {
+export default async function runCmd(task: ITask): Promise<void> {
   if (!task.cmd || !task.cmd.length) throw Error('Task has no cmd');
   logger.info(chalk.green('Running cmd: ') + task.cmd[0]);
 
-  return spawn(task.cmd[0], task.cmd.slice(1));
+  await spawn(task.cmd[0], task.cmd.slice(1));
 }
