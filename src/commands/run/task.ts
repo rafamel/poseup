@@ -32,14 +32,16 @@ export default async function runTask(
       { stdio: silent() }
     );
     if (signal) throw Error(`Process finished early ${signal}`);
-  }
 
-  if (swait != undefined && Number(swait) < 0) {
-    throw Error(`Waiting time must be greater than or equal to 0`);
+    // eslint-disable-next-line eqeqeq
+    if (swait != undefined && Number(swait) < 0) {
+      throw Error(`Waiting time must be greater than or equal to 0`);
+    }
+    await wait(
+      // eslint-disable-next-line eqeqeq
+      (swait == undefined ? RUN_DEFAULT_WAIT_BEFORE_EXEC : Number(swait)) * 1000
+    );
   }
-  await wait(
-    (swait == undefined ? RUN_DEFAULT_WAIT_BEFORE_EXEC : Number(swait)) * 1000
-  );
 
   // Run before hooks
   if (task.exec && task.exec.length) {
