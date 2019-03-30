@@ -1,18 +1,16 @@
 import builder from '~/builder';
-import { ITask, IConfig, IRunOptions } from '~/types';
+import { IRunOptions } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import write from '~/utils/write-yaml';
 import { getCmd as getCleanCmd } from '../clean';
 import uuid from 'uuid/v4';
-import { wait } from 'promist';
-import { STOP_WAIT_TIME, RUN_DEFAULT_WAIT_BEFORE_EXEC } from '~/constants';
-import runPrimary from './primary';
-import runCmd from './cmd';
+import { STOP_WAIT_TIME } from '~/constants';
 import spawn, { silent } from '~/utils/spawn';
 import initialize from '~/utils/initialize';
 import add, { ADD_TYPES } from '~/utils/add';
 import { control } from 'exits';
+import runTask from './task';
 
 export default async function run(options: IRunOptions = {}): Promise<void> {
   await control(trunk)(options);
@@ -54,57 +52,4 @@ function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
     const task = config.tasks[taskName];
     yield runTask(task, config, cmd, args, clean, opts.wait);
   }
-}
-
-async function runTask(
-  task: ITask,
-  config: IConfig,
-  cmd: string,
-  args: string[],
-  clean: () => Promise<any>,
-  swait?: number | string
-): Promise<void> {
-  // Bring up linked
-  const linked = (
-    task.services ||
-    (task.primary &&
-      config.compose.services.hasOwnProperty(task.primary) &&
-      config.compose.services[task.primary].depends_on) ||
-    []
-  ).filter((x: string, i: number, arr: string[]) => arr.indexOf(x) === i);
-
-  if (linked.length) {
-    logger.info(chalk.green('Bringing up services:') + ' ' + linked.join(', '));
-    const signal = await spawn(
-      cmd,
-      args.concat(['up', '--detach']).concat(linked),
-      { stdio: silent() }
-    );
-    if (signal) throw Error(`Process finished early ${signal}`);
-  }
-
-  await wait((swait ? Number(swait) : RUN_DEFAULT_WAIT_BEFORE_EXEC) * 1000);
-
-  // Run before hooks
-  if (task.exec && task.exec.length) {
-    logger.info(chalk.green('Running exec commands'));
-    for (const obj of task.exec) {
-      const services = Object.keys(obj);
-      for (const service of services) {
-        const execCmd = obj[service];
-        const signal = await spawn(
-          cmd,
-          args.concat(['exec', service]).concat(execCmd)
-        );
-        if (signal) throw Error(`Process finished early ${signal}`);
-      }
-    }
-  }
-
-  // Run cmd
-  await (task.primary ? runPrimary(task, config, cmd, args) : runCmd(task));
-
-  logger.info(chalk.green('Cleaning environment'));
-  const signal = await clean();
-  if (signal) throw Error(`Process finished early ${signal}`);
 }
