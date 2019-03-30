@@ -18,43 +18,51 @@ const run = (task: any = { primary: 'bar' }): Promise<void> =>
     ['bar', 'baz']
   );
 
-test(`fails on !task.primary`, async () => {
-  await expect(run({})).rejects.toBeInstanceOf(Error);
+describe(`task.primary`, () => {
+  test(`succeeds`, async () => {
+    await expect(run()).resolves.toBeUndefined();
+  });
+  test(`fails`, async () => {
+    await expect(run({})).rejects.toBeInstanceOf(Error);
+  });
 });
-test(`succeeds on task.primary`, async () => {
-  await expect(run()).resolves.toBeUndefined();
-});
-test(`spawn call suceeds wo/ task.cmd`, async () => {
-  spawn.mockClear();
+describe(`spawn call`, () => {
+  test(`suceeds wo/ task.cmd`, async () => {
+    spawn.mockClear();
 
-  await expect(run()).resolves.toBeUndefined();
-  expect(spawn).toHaveBeenCalledTimes(1);
-  expect(spawn).toHaveBeenCalledWith(
-    'foo',
-    ['bar', 'baz', 'run', '--name', 'foo_bar_run_6812723d', '--rm', 'bar'],
-    { stdio: ['pipe', 'inherit', 'inherit'] }
-  );
-});
-test(`spawn call suceeds w/ task.cmd`, async () => {
-  spawn.mockClear();
+    await expect(run()).resolves.toBeUndefined();
+    expect(spawn).toHaveBeenCalledTimes(1);
+    expect(spawn).toHaveBeenCalledWith(
+      'foo',
+      ['bar', 'baz', 'run', '--name', 'foo_bar_run_6812723d', '--rm', 'bar'],
+      { stdio: ['pipe', 'inherit', 'inherit'] }
+    );
+  });
+  test(`suceeds w/ task.cmd`, async () => {
+    spawn.mockClear();
 
-  await expect(
-    run({ primary: 'bar', cmd: ['foobar', 'barbaz'] })
-  ).resolves.toBeUndefined();
-  expect(spawn).toHaveBeenCalledTimes(1);
-  expect(spawn).toHaveBeenCalledWith(
-    'foo',
-    [
-      'bar',
-      'baz',
-      'run',
-      '--name',
-      'foo_bar_run_6812723d',
-      '--rm',
-      'bar',
-      'foobar',
-      'barbaz'
-    ],
-    { stdio: ['pipe', 'inherit', 'inherit'] }
-  );
+    await expect(
+      run({ primary: 'bar', cmd: ['foobar', 'barbaz'] })
+    ).resolves.toBeUndefined();
+    expect(spawn).toHaveBeenCalledTimes(1);
+    expect(spawn).toHaveBeenCalledWith(
+      'foo',
+      [
+        'bar',
+        'baz',
+        'run',
+        '--name',
+        'foo_bar_run_6812723d',
+        '--rm',
+        'bar',
+        'foobar',
+        'barbaz'
+      ],
+      { stdio: ['pipe', 'inherit', 'inherit'] }
+    );
+  });
+  test(`fails`, async () => {
+    spawn.mockImplementationOnce(() => Promise.reject(Error()));
+    await expect(run()).rejects.toBeInstanceOf(Error);
+  });
 });
