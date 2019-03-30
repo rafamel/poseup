@@ -34,7 +34,12 @@ export default async function runTask(
     if (signal) throw Error(`Process finished early ${signal}`);
   }
 
-  await wait((swait ? Number(swait) : RUN_DEFAULT_WAIT_BEFORE_EXEC) * 1000);
+  if (swait != undefined && Number(swait) < 0) {
+    throw Error(`Waiting time must be greater than or equal to 0`);
+  }
+  await wait(
+    (swait == undefined ? RUN_DEFAULT_WAIT_BEFORE_EXEC : Number(swait)) * 1000
+  );
 
   // Run before hooks
   if (task.exec && task.exec.length) {
