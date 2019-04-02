@@ -8,7 +8,7 @@ import args from './cmd-args';
 
 (async function main() {
   const pkg = JSON.parse(
-    await pify(fs.readFile)(path.join(__dirname, '../package.json'))
+    await pify(fs.readFile)(path.join(__dirname, '../../package.json'))
   );
   const commands = ['compose', 'run', 'clean', 'purge'];
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

@@ -1,28 +1,39 @@
-# Poseup
-
-[![Version](https://img.shields.io/npm/v/poseup.svg)](https://www.npmjs.com/package/poseup)
-[![Types](https://img.shields.io/npm/types/poseup.svg)](https://www.npmjs.com/package/poseup)
-[![Build Status](https://img.shields.io/travis/rafamel/poseup.svg)](https://travis-ci.org/rafamel/poseup)
-[![Coverage](https://img.shields.io/coveralls/rafamel/poseup.svg)](https://coveralls.io/github/rafamel/poseup)
-[![Dependencies](https://img.shields.io/david/rafamel/poseup.svg)](https://david-dm.org/rafamel/poseup)
-[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/poseup.svg)](https://snyk.io/test/npm/poseup)
-[![License](https://img.shields.io/github/license/rafamel/poseup.svg)](https://github.com/rafamel/poseup/blob/master/LICENSE)
-
-<!-- markdownlint-disable MD033 -->
 <div align="center">
   <br />
-  <img
-    alt="Poseup logo"
-    width="350"
-    src="https://raw.githubusercontent.com/rafamel/poseup/master/setup/assets/logo.png"
-  />
+  <a href="https://www.npmjs.com/package/poseup" target="_blank">
+    <img alt="poseup" width="350" src="https://raw.githubusercontent.com/rafamel/poseup/master/scripts/assets/logo.png" />
+  </a>
   <br />
   <br />
-  <p>
-    <strong>Containerized development workflow for the masses.</strong>
-  </p>
+  <strong>Containerized development workflow for the masses</strong>
+  <br />
+  <br />
+  <a href="https://www.npmjs.com/package/poseup">
+    <img src="https://img.shields.io/npm/v/poseup.svg" alt="Version">
+  </a>
+  <a href="https://www.npmjs.com/package/poseup">
+    <img src="https://img.shields.io/npm/types/poseup.svg" alt="Types">
+  </a>
+  <a href="https://travis-ci.org/rafamel/poseup">
+    <img src="https://img.shields.io/travis/rafamel/poseup.svg" alt="Build Status">
+  </a>
+  <a href="https://coveralls.io/github/rafamel/poseup">
+    <img src="https://img.shields.io/coveralls/rafamel/poseup.svg" alt="Coverage">
+  </a>
+  <a href="https://david-dm.org/rafamel/poseup">
+    <img src="https://img.shields.io/david/rafamel/poseup.svg" alt="Dependencies">
+  </a>
+  <a href="https://snyk.io/test/npm/poseup">
+    <img src="https://img.shields.io/snyk/vulnerabilities/npm/poseup.svg" alt="Vulnerabilities">
+  </a>
+  <a href="https://github.com/rafamel/poseup/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/rafamel/poseup.svg" alt="License">
+  </a>
+  <br />
+  <br />
 </div>
-<!-- markdownlint-enable MD033 -->
+
+# Poseup
 
 ## Install
 

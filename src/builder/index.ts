@@ -1,5 +1,3 @@
-// TODO npm remove slimconf, remove docker dir
-
 import path from 'path';
 import getFile from './get-file';
 import readFile from './read-file';
