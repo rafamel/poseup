@@ -9,7 +9,7 @@ export default async function runCmd(task: ITask): Promise<void> {
     '  ' +
       chalk.bold('+') +
       ' Running cmd: ' +
-      chalk.bold(`["${task.cmd.join("', '")}"]`)
+      chalk.bold(`['${task.cmd.join("', '")}']`)
   );
 
   await spawn(task.cmd[0], task.cmd.slice(1));

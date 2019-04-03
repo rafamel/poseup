@@ -50,11 +50,18 @@ export default async function runTask(
 
   // Run before hooks
   if (task.exec && task.exec.length) {
-    logger.info('  ' + chalk.bold('+') + ' Running exec commands');
     for (const obj of task.exec) {
       const services = Object.keys(obj);
       for (const service of services) {
         const execCmd = obj[service];
+        logger.info(
+          '  ' +
+            chalk.bold('+') +
+            ' Running exec on ' +
+            chalk.bold(
+              service + ': ' + chalk.bold(`['${execCmd.join("', '")}']`)
+            )
+        );
         const signal = await spawn(
           cmd,
           args.concat(['exec', service]).concat(execCmd)

@@ -17,7 +17,7 @@ export default function add(
   cb: (type: string, arg: any, context: any) => any | Promise<any>
 ): () => void {
   return _add((...args) => {
-    logger.info('    ' + chalk.gray.dim(message));
+    logger.info('  ' + chalk.gray.dim('+ ' + message));
     return cb(...args);
   }, type);
 }
