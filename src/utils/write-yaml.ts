@@ -21,14 +21,19 @@ export async function trunk(args: IWriteYaml): Promise<string> {
   const writeDir = path.parse(writePath).dir;
 
   // If writeDir doesn't exist, create
-  await new Promise((resolve) => {
-    fs.access(writeDir, fs.constants.F_OK, (err) => {
-      return resolve(err && pify(fs.mkdir)(writeDir));
+  await ensure.rejection(() => {
+    return new Promise((resolve) => {
+      fs.access(writeDir, fs.constants.F_OK, (err) => {
+        return resolve(err && pify(fs.mkdir)(writeDir));
+      });
     });
   });
 
   // Write
-  await pify(fs.writeFile)(writePath, yaml.safeDump(args.data));
+  await ensure.rejection(() =>
+    pify(fs.writeFile)(writePath, yaml.safeDump(args.data))
+  );
+
   if (!args.path) {
     // Only remove if it's a temp file
     add(
