@@ -13,11 +13,11 @@ import { control } from 'exits';
 import runTask from './task';
 
 export default async function run(options: IRunOptions = {}): Promise<void> {
+  await initialize(options);
   await control(trunk)(options);
 }
 
 function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
-  initialize(opts);
   const { config, getCmd } = yield builder(opts);
 
   if (!opts.tasks || !opts.tasks.length) throw Error('No tasks to run');
