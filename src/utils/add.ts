@@ -1,4 +1,5 @@
 import logger from '~/utils/logger';
+import chalk from 'chalk';
 import { add as _add } from 'exits';
 
 // Sets priority (larger runs first)
@@ -16,7 +17,7 @@ export default function add(
   cb: (type: string, arg: any, context: any) => any | Promise<any>
 ): () => void {
   return _add((...args) => {
-    logger.info('  ' + message);
+    logger.info('    ' + chalk.gray.dim(message));
     return cb(...args);
   }, type);
 }

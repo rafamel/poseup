@@ -11,7 +11,7 @@ export default async function runPrimary(
   args: string[]
 ): Promise<void> {
   if (!task.primary) throw Error('Task has no primary container');
-  logger.info(chalk.green('Running primary: ') + task.primary);
+  logger.info('  ' + chalk.bold('+') + ' Running primary: ' + task.primary);
 
   // As docker-compose run doesn't exit on stdin signals,
   // we need to shut it down if it hasn't exited

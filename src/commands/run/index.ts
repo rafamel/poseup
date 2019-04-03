@@ -16,7 +16,6 @@ export default async function run(options: IRunOptions = {}): Promise<void> {
   await control(trunk)(options);
 }
 
-// TODO stop and down with no stdin
 function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
   initialize(opts);
   const { config, getCmd } = yield builder(opts);
@@ -48,7 +47,9 @@ function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
     if (!config.tasks.hasOwnProperty(taskName)) {
       throw Error(`Task ${taskName} is not defined`);
     }
-    logger.info(chalk.green('Running task:') + ' ' + taskName);
+    logger.info(
+      '\n' + chalk.yellow.bold('-') + ' Running task: ' + chalk.bold(taskName)
+    );
     const task = config.tasks[taskName];
     yield runTask(task, config, cmd, args, clean, opts.wait);
   }

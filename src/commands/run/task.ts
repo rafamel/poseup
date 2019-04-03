@@ -25,7 +25,12 @@ export default async function runTask(
   ).filter((x: string, i: number, arr: string[]) => arr.indexOf(x) === i);
 
   if (linked.length) {
-    logger.info(chalk.green('Bringing up services:') + ' ' + linked.join(', '));
+    logger.info(
+      '  ' +
+        chalk.bold('+') +
+        ' Bringing up services: ' +
+        chalk.bold(linked.join(', '))
+    );
     const signal = await spawn(
       cmd,
       args.concat(['up', '--detach']).concat(linked),
@@ -45,7 +50,7 @@ export default async function runTask(
 
   // Run before hooks
   if (task.exec && task.exec.length) {
-    logger.info(chalk.green('Running exec commands'));
+    logger.info('  ' + chalk.bold('+') + ' Running exec commands');
     for (const obj of task.exec) {
       const services = Object.keys(obj);
       for (const service of services) {
@@ -62,7 +67,7 @@ export default async function runTask(
   // Run cmd
   await (task.primary ? runPrimary(task, config, cmd, args) : runCmd(task));
 
-  logger.info(chalk.green('Cleaning environment'));
+  logger.info('  ' + chalk.bold('+') + ' Cleaning environment');
   const signal = await clean();
   if (signal) throw Error(`Process finished early ${signal}`);
 }

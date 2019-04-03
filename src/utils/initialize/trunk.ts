@@ -34,13 +34,18 @@ export default async function trunk(): Promise<void> {
   }
 
   // Add hooks
-  on('triggered', () => logger.info('\nWaiting on termination'));
-  add(() => logger.info('\nPreparing exit'), ADD_TYPES.START_LOG);
+  on('triggered', () =>
+    logger.info('\n' + chalk.yellow.bold('-') + ' Waiting on termination')
+  );
+  add(
+    () => logger.info(chalk.yellow.bold('-') + ' Preparing exit'),
+    ADD_TYPES.START_LOG
+  );
   on('done', onDone);
 }
 
 export function onDone(getState: () => IState): void {
-  logger.info('Done');
+  logger.info(chalk.green.bold('✓') + ' Done');
   const { triggered } = getState();
   if (triggered) {
     switch (triggered.type) {
@@ -49,6 +54,7 @@ export function onDone(getState: () => IState): void {
         logger.error(
           '\n' + chalk.red('Error: ') + (triggered.arg as Error).message
         );
+        logger.debug(triggered.arg);
         break;
       case 'exit':
         if (triggered.arg !== 0) {
