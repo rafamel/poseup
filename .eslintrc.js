@@ -82,7 +82,10 @@ module.exports = {
         '@typescript-eslint/no-object-literal-type-assertion': 0,
         /* WARNINGS */
         '@typescript-eslint/camelcase': 1,
-        '@typescript-eslint/explicit-function-return-type': 1,
+        '@typescript-eslint/explicit-function-return-type': [
+          1,
+          { allowExpressions: true, allowTypedFunctionExpressions: true }
+        ],
         '@typescript-eslint/no-unused-vars': [
           1,
           {
