@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
+import path from 'path';
 import program from 'commander';
 import args from './cmd-args';
 import { clean } from '~/commands';
 import { terminate } from 'exits';
-
 const [argv] = args.get();
 
 program
@@ -26,7 +26,11 @@ program
 clean({
   file: program.file,
   environment: program.env,
-  directory: program.dir,
+  directory: program.dir
+    ? path.isAbsolute(program.dir)
+      ? program.dir
+      : path.join(process.cwd(), program.dir)
+    : undefined,
   log: program.log,
   volumes: !!program.volumes
 })

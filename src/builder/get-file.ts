@@ -21,7 +21,7 @@ export function getExplicitFile(
   const validExt = ['.js', '.json', '.yml', '.yaml'].includes(ext);
   if (!validExt) return Promise.reject(Error(`Extension ${ext} is not valid`));
 
-  if (file[0] !== '/') file = path.join(directory, file);
+  if (!path.isAbsolute(file)) file = path.join(directory, file);
 
   return ensure.rejection(() => {
     return new Promise((resolve, reject) => {

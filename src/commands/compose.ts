@@ -1,3 +1,4 @@
+import path from 'path';
 import builder from '~/builder';
 import { IComposeOptions } from '~/types';
 import logger from '~/utils/logger';
@@ -13,7 +14,7 @@ export default async function compose(
   options: IComposeOptions = {}
 ): Promise<void> {
   await initialize(options);
-  const { config, getCmd } = await builder(options);
+  const { config, directory, getCmd } = await builder(options);
 
   if (options.dry) {
     if (options.clean) throw Error('Compose cannot be dry run with clean');
@@ -23,7 +24,14 @@ export default async function compose(
     }
   }
 
-  const file = await write({ data: config.compose, path: options.write });
+  const file = await write({
+    data: config.compose,
+    path: options.write
+      ? path.isAbsolute(options.write)
+        ? options.write
+        : path.join(directory, options.write)
+      : undefined
+  });
   const { cmd, args } = getCmd({ file });
 
   if (options.dry) {
