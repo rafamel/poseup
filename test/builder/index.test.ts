@@ -18,11 +18,16 @@ describe(`args`, () => {
     await expect(builder()).resolves.not.toBeUndefined();
     await expect(builder({})).resolves.not.toBeUndefined();
   });
+  test(`fails for non absolute path`, async () => {
+    await expect(builder({ directory: 'foo/bar' })).rejects.toBeInstanceOf(
+      Error
+    );
+  });
 });
 describe(`getFile()`, () => {
   test(`succeeds`, async () => {
     getFile.mockClear();
-    const opts = { file: 'foo.js', directory: 'bar/baz' };
+    const opts = { file: 'foo.js', directory: '/bar/baz' };
 
     await expect(builder(opts)).resolves.not.toBeUndefined();
     expect(getFile).toHaveBeenCalledTimes(1);
@@ -32,7 +37,7 @@ describe(`getFile()`, () => {
     getFile.mockClear();
     const err = Error();
     getFile.mockImplementationOnce(() => Promise.reject(err));
-    const opts = { file: 'foo.js', directory: 'bar/baz' };
+    const opts = { file: 'foo.js', directory: '/bar/baz' };
 
     await expect(builder(opts)).rejects.toBe(err);
   });
@@ -81,6 +86,13 @@ describe(`response`, () => {
       compose: { services: { foo: {}, bar: {} } }
     });
   });
+  test(`directory`, async () => {
+    await expect(builder()).resolves.toHaveProperty('directory', 'foo/bar');
+    await expect(builder({ directory: '/some/bar' })).resolves.toHaveProperty(
+      'directory',
+      '/some/bar'
+    );
+  });
   test(`getCmd with no dir, no args`, async () => {
     cmdBuilder.mockClear();
 
@@ -97,13 +109,13 @@ describe(`response`, () => {
       project: 'foo',
       args: undefined,
       file: 'some/file.js',
-      directory: 'some'
+      directory: 'foo/bar'
     });
   });
   test(`getCmd with no args`, async () => {
     cmdBuilder.mockClear();
 
-    const res = await builder({ directory: 'foobar' });
+    const res = await builder({ directory: '/foobar' });
     expect(typeof res.getCmd).toBe('function');
 
     const getCmd = res.getCmd;
@@ -116,7 +128,7 @@ describe(`response`, () => {
       project: 'foo',
       args: undefined,
       file: 'some/file.js',
-      directory: 'foobar'
+      directory: '/foobar'
     });
   });
   test(`getCmd with no dir`, async () => {
@@ -135,7 +147,7 @@ describe(`response`, () => {
       project: 'foo',
       args: ['foo'],
       file: 'some/file.js',
-      directory: 'some'
+      directory: 'foo/bar'
     });
   });
 });

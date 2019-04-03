@@ -3,6 +3,7 @@ export default jest.fn().mockImplementation(async () => ({
     project: 'foo',
     compose: { services: { foo: {}, bar: {} } }
   },
+  directory: 'foo/bar',
   getCmd() {
     return { cmd: 'foo', args: ['bar', 'baz'] };
   }

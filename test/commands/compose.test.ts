@@ -50,18 +50,28 @@ describe(`builder call`, () => {
   });
 });
 describe(`write call`, () => {
-  test(`succeeds`, async () => {
+  test(`succeeds for relative path`, async () => {
     write.mockClear();
 
     await expect(compose()).resolves.toBeUndefined();
-    await expect(compose({ write: 'foo/bar' })).resolves.toBeUndefined();
+    await expect(compose({ write: 'baz' })).resolves.toBeUndefined();
     expect(write).toHaveBeenCalledTimes(2);
     expect(write).toHaveBeenNthCalledWith(1, {
       data: { services: { foo: {}, bar: {} } }
     });
     expect(write).toHaveBeenNthCalledWith(2, {
       data: { services: { foo: {}, bar: {} } },
-      path: 'foo/bar'
+      path: 'foo/bar/baz'
+    });
+  });
+  test(`succeeds for absolute path`, async () => {
+    write.mockClear();
+
+    await expect(compose({ write: '/foo/bar/baz' })).resolves.toBeUndefined();
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(write).toHaveBeenCalledWith({
+      data: { services: { foo: {}, bar: {} } },
+      path: '/foo/bar/baz'
     });
   });
   test(`fails`, async () => {
