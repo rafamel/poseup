@@ -6,8 +6,8 @@ task('cpr', (SRC_DIR, DEST_DIR, ...EXT) => {
   if (!SRC_DIR || !DEST_DIR) {
     throw Error('No root or output paths were passed');
   }
-  if (SRC_DIR[0] !== '/') SRC_DIR = path.join(process.cwd(), SRC_DIR);
-  if (DEST_DIR[0] !== '/') DEST_DIR = path.join(process.cwd(), DEST_DIR);
+  if (!path.isAbsolute(SRC_DIR)) SRC_DIR = path.join(process.cwd(), SRC_DIR);
+  if (!path.isAbsolute(DEST_DIR)) DEST_DIR = path.join(process.cwd(), DEST_DIR);
 
   console.log('From: ', SRC_DIR);
   console.log('To: ', DEST_DIR);

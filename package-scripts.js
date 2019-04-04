@@ -20,7 +20,7 @@ module.exports = nps({
   build: {
     default: 'nps validate build.force',
     force: 'cross-env NODE_ENV=production nps build.pack build.types',
-    pack: [`pack build`].concat(
+    pack: ['jake run:zero["shx mkdir pkg"]', 'pack build'].concat(
       project.get('nodeOnly') && [
         `jake pkg:forbid[esnext,main,module]`,
         `babel src --out-dir ./pkg/dist-lib --extensions ${DOT_EXT} --source-maps inline`,
