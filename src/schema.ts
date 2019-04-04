@@ -21,14 +21,25 @@ export const config = {
             exec: {
               describe:
                 'Execute before cmd on primary. Only valid for services linked to primary.',
-              type: 'array',
-              items: {
-                type: 'object',
-                additionalProperties: false,
-                patternProperties: {
-                  '^.*$': { type: 'array', items: { type: 'string' } }
+              oneOf: [
+                {
+                  type: 'object',
+                  additionalProperties: false,
+                  patternProperties: {
+                    '^.*$': { type: 'array', items: { type: 'string' } }
+                  }
+                },
+                {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    additionalProperties: false,
+                    patternProperties: {
+                      '^.*$': { type: 'array', items: { type: 'string' } }
+                    }
+                  }
                 }
-              }
+              ]
             }
           }
         }

@@ -48,5 +48,9 @@ export interface ITask {
   primary?: string;
   services?: string[];
   cmd?: string[];
-  exec?: Array<{ [key: string]: string[] }>;
+  exec?: IOfType<string[]> | Array<IOfType<string[]>>;
+}
+
+export interface IOfType<T> {
+  [key: string]: T;
 }

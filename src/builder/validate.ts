@@ -2,7 +2,7 @@ import Ajv from 'ajv';
 import { config as schema } from '~/schema';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
-import { IConfig } from '~/types';
+import { IConfig, IOfType } from '~/types';
 
 const ajv = new Ajv();
 
@@ -71,7 +71,12 @@ export default function validate(config: IConfig): void {
         config.compose.services.hasOwnProperty(task.primary) &&
         config.compose.services[task.primary].depends_on) ||
       [];
-    (task.exec || []).forEach((obj) => {
+
+    // Exec safety checks
+    const exec = Array.isArray(task.exec)
+      ? task.exec
+      : ([task.exec].filter(Boolean) as Array<IOfType<string[]>>);
+    exec.forEach((obj) => {
       Object.keys(obj).forEach((containerName) => {
         if (containerName === task.primary) {
           throw Error(

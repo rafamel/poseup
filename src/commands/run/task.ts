@@ -1,4 +1,4 @@
-import { ITask, IConfig } from '~/types';
+import { ITask, IConfig, IOfType } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import { wait } from 'promist';
@@ -49,25 +49,24 @@ export default async function runTask(
   }
 
   // Run before hooks
-  if (task.exec && task.exec.length) {
-    for (const obj of task.exec) {
-      const services = Object.keys(obj);
-      for (const service of services) {
-        const execCmd = obj[service];
-        logger.info(
-          '  ' +
-            chalk.bold('+') +
-            ' Running exec on ' +
-            chalk.bold(
-              service + ': ' + chalk.bold(`['${execCmd.join("', '")}']`)
-            )
-        );
-        const signal = await spawn(
-          cmd,
-          args.concat(['exec', service]).concat(execCmd)
-        );
-        if (signal) throw Error(`Process finished early ${signal}`);
-      }
+  const exec = Array.isArray(task.exec)
+    ? task.exec
+    : ([task.exec].filter(Boolean) as Array<IOfType<string[]>>);
+  for (const obj of exec) {
+    const services = Object.keys(obj);
+    for (const service of services) {
+      const execCmd = obj[service];
+      logger.info(
+        '  ' +
+          chalk.bold('+') +
+          ' Running exec on ' +
+          chalk.bold(service + ': ' + chalk.bold(`['${execCmd.join("', '")}']`))
+      );
+      const signal = await spawn(
+        cmd,
+        args.concat(['exec', service]).concat(execCmd)
+      );
+      if (signal) throw Error(`Process finished early ${signal}`);
     }
   }
 
