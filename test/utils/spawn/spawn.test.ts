@@ -10,6 +10,8 @@ const exitsState: any = _exitsState;
 const spawnResponse = { promise: Promise.resolve() };
 exitsSpawn.mockImplementation(() => spawnResponse);
 exitsState.mockImplementation(() => ({ triggered: {} }));
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const noenv = (args?: string[]) => spawn('foo', args, { env: {} });
 
 describe(`spawn`, () => {
   test(`doesn't throw`, () => {
@@ -18,67 +20,77 @@ describe(`spawn`, () => {
   test(`returns spawn promise`, () => {
     expect(spawn('foo')).toBe(spawnResponse.promise);
   });
-  test(`passes defaults w/ state triggered`, () => {
+  test(`pasess environment variables by default`, () => {
     exitsSpawn.mockClear();
 
-    expect(spawn('foo')).toBe(spawnResponse.promise);
-    expect(exitsSpawn).toHaveBeenCalledTimes(1);
-    expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
-      stdio: 'ignore'
-    });
-  });
-  test(`passes defaults wo/ state triggered`, () => {
-    exitsSpawn.mockClear();
-    exitsState.mockImplementationOnce(() => ({ triggered: null }));
-
-    expect(spawn('foo')).toBe(spawnResponse.promise);
-    expect(exitsSpawn).toHaveBeenCalledTimes(1);
-    expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
-      stdio: DEFAULT_STDIO
-    });
-  });
-  test(`passes stdio if in opts`, () => {
-    exitsSpawn.mockClear();
-    exitsState.mockImplementationOnce(() => ({ triggered: null }));
     expect(spawn('foo', undefined, { stdio: 'baz' } as any)).toBe(
       spawnResponse.promise
     );
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
     expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
-      stdio: 'baz'
+      stdio: 'baz',
+      env: process.env
+    });
+  });
+  test(`passes default stdio w/ state triggered`, () => {
+    exitsSpawn.mockClear();
+
+    expect(noenv()).toBe(spawnResponse.promise);
+    expect(exitsSpawn).toHaveBeenCalledTimes(1);
+    expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
+      stdio: 'ignore',
+      env: {}
+    });
+  });
+  test(`passes default stdio wo/ state triggered`, () => {
+    exitsSpawn.mockClear();
+    exitsState.mockImplementationOnce(() => ({ triggered: null }));
+
+    expect(noenv()).toBe(spawnResponse.promise);
+    expect(exitsSpawn).toHaveBeenCalledTimes(1);
+    expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
+      stdio: DEFAULT_STDIO,
+      env: {}
     });
   });
   test(`passes opts`, () => {
     exitsSpawn.mockClear();
 
-    expect(spawn('foo', undefined, { bar: 'baz' } as any)).toBe(
-      spawnResponse.promise
-    );
+    expect(
+      spawn('foo', undefined, { bar: 'baz', env: { foo: 'bar' } } as any)
+    ).toBe(spawnResponse.promise);
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
     expect(exitsSpawn).toHaveBeenCalledWith('foo', undefined, {
       stdio: 'ignore',
+      env: { foo: 'bar' },
       bar: 'baz'
     });
   });
   test(`passes args`, () => {
     exitsSpawn.mockClear();
 
-    expect(spawn('foo', ['a', 'b', 'c'])).toBe(spawnResponse.promise);
+    expect(noenv(['a', 'b', 'c'])).toBe(spawnResponse.promise);
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
     expect(exitsSpawn).toHaveBeenCalledWith('foo', ['a', 'b', 'c'], {
-      stdio: 'ignore'
+      stdio: 'ignore',
+      env: {}
     });
   });
   test(`passes all`, () => {
     exitsSpawn.mockClear();
 
     expect(
-      spawn('foo', ['a', 'b', 'c'], { bar: 'baz', stdio: 'barbaz' } as any)
+      spawn('foo', ['a', 'b', 'c'], {
+        bar: 'baz',
+        stdio: 'barbaz',
+        env: { foo: 'bar' }
+      } as any)
     ).toBe(spawnResponse.promise);
     expect(exitsSpawn).toHaveBeenCalledTimes(1);
     expect(exitsSpawn).toHaveBeenCalledWith('foo', ['a', 'b', 'c'], {
       bar: 'baz',
-      stdio: 'barbaz'
+      stdio: 'barbaz',
+      env: { foo: 'bar' }
     });
   });
 });
