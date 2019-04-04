@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import path from 'path';
 import program from 'commander';
 import { compose } from '~/commands';
 import args from './cmd-args';
@@ -25,16 +24,8 @@ program
 compose({
   file: program.file,
   environment: program.env,
-  directory: program.dir
-    ? path.isAbsolute(program.dir)
-      ? program.dir
-      : path.join(process.cwd(), program.dir)
-    : undefined,
-  write: program.write
-    ? path.isAbsolute(program.write)
-      ? program.write
-      : path.join(process.cwd(), program.write)
-    : undefined,
+  directory: program.dir,
+  write: program.write,
   log: program.log,
   args: composeArgs,
   dry: !!program.dry,

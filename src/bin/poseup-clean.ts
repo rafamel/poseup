@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import path from 'path';
 import program from 'commander';
 import args from './cmd-args';
 import { clean } from '~/commands';
@@ -26,11 +25,7 @@ program
 clean({
   file: program.file,
   environment: program.env,
-  directory: program.dir
-    ? path.isAbsolute(program.dir)
-      ? program.dir
-      : path.join(process.cwd(), program.dir)
-    : undefined,
+  directory: program.dir,
   log: program.log,
   volumes: !!program.volumes
 })

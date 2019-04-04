@@ -16,25 +16,32 @@ export interface IBuild {
 }
 
 export default async function builder(opts: IOptions = {}): Promise<IBuild> {
-  if (opts.directory && !path.isAbsolute(opts.directory)) {
-    throw Error(`directory must be an absolute path`);
-  }
+  let directory = opts.directory
+    ? path.isAbsolute(opts.directory)
+      ? opts.directory
+      : path.join(process.cwd(), opts.directory)
+    : process.cwd();
 
   // Get poseup file path
   const configPath = await getFile({
-    file: opts.file,
-    directory: opts.directory
+    file:
+      opts.file && !path.isAbsolute(opts.file)
+        ? path.join(process.cwd(), opts.file)
+        : opts.file,
+    directory
   });
 
   // Read poseup file
   const config: IConfig = await readFile(configPath);
+  if (!opts.directory) directory = path.parse(configPath).dir;
+
+  // Validate config
   validate(config);
 
   // Set logging level as per config file
   // if it hasn't been previously set by args
   if (!opts.log && config.log) setLevel(config.log);
 
-  const directory = opts.directory || path.parse(configPath).dir;
   return {
     config,
     directory,

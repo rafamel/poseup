@@ -6,6 +6,7 @@ import { getCmd as _getCleanCmd } from '~/commands/clean';
 import _add from '~/utils/add';
 import _spawn from '~/utils/spawn';
 import { STOP_WAIT_TIME } from '~/constants';
+import path from 'path';
 
 const initialize: any = _initialize;
 const builder: any = _builder;
@@ -61,7 +62,7 @@ describe(`write call`, () => {
     });
     expect(write).toHaveBeenNthCalledWith(2, {
       data: { services: { foo: {}, bar: {} } },
-      path: 'foo/bar/baz'
+      path: path.join(process.cwd(), 'baz')
     });
   });
   test(`succeeds for absolute path`, async () => {

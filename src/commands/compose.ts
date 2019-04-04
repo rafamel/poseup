@@ -14,7 +14,7 @@ export default async function compose(
   options: IComposeOptions = {}
 ): Promise<void> {
   await initialize(options);
-  const { config, directory, getCmd } = await builder(options);
+  const { config, getCmd } = await builder(options);
 
   if (options.dry) {
     if (options.clean) throw Error('Compose cannot be dry run with clean');
@@ -29,7 +29,7 @@ export default async function compose(
     path: options.write
       ? path.isAbsolute(options.write)
         ? options.write
-        : path.join(directory, options.write)
+        : path.join(process.cwd(), options.write)
       : undefined
   });
   const { cmd, args } = getCmd({ file });

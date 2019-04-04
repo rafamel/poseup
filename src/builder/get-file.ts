@@ -3,25 +3,20 @@ import fs from 'fs';
 import path from 'path';
 import ensure from '~/utils/ensure';
 
-export interface IGetFile {
-  file?: string;
-  directory?: string;
+export type IGetFile =
+  | { file?: string; directory: string }
+  | { file: string; directory?: string };
+
+export default async function getFile(opts: IGetFile): Promise<string> {
+  return opts.file
+    ? getExplicitFile(opts.file)
+    : getDefaultFile(opts.directory as string);
 }
 
-export default async function getFile(opts: IGetFile = {}): Promise<string> {
-  const dir = opts.directory || process.cwd();
-  return opts.file ? getExplicitFile(opts.file, dir) : getDefaultFile(dir);
-}
-
-export function getExplicitFile(
-  file: string,
-  directory: string
-): Promise<string> {
+export function getExplicitFile(file: string): Promise<string> {
   const { ext } = path.parse(file);
   const validExt = ['.js', '.json', '.yml', '.yaml'].includes(ext);
   if (!validExt) return Promise.reject(Error(`Extension ${ext} is not valid`));
-
-  if (!path.isAbsolute(file)) file = path.join(directory, file);
 
   return ensure.rejection(() => {
     return new Promise((resolve, reject) => {

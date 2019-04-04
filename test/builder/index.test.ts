@@ -3,6 +3,7 @@ import _readFile from '~/builder/read-file';
 import _validate from '~/builder/validate';
 import _cmdBuilder from '~/builder/cmd-builder';
 import builder from '~/builder';
+import path from 'path';
 
 const getFile: any = _getFile;
 const readFile: any = _readFile;
@@ -18,20 +19,26 @@ describe(`args`, () => {
     await expect(builder()).resolves.not.toBeUndefined();
     await expect(builder({})).resolves.not.toBeUndefined();
   });
-  test(`fails for non absolute path`, async () => {
-    await expect(builder({ directory: 'foo/bar' })).rejects.toBeInstanceOf(
-      Error
-    );
-  });
 });
 describe(`getFile()`, () => {
   test(`succeeds`, async () => {
     getFile.mockClear();
-    const opts = { file: 'foo.js', directory: '/bar/baz' };
 
-    await expect(builder(opts)).resolves.not.toBeUndefined();
-    expect(getFile).toHaveBeenCalledTimes(1);
-    expect(getFile).toHaveBeenCalledWith(opts);
+    await expect(builder({ directory: '/bar/baz' }));
+    await expect(builder({ file: '/foo.js', directory: '/bar/baz' }));
+    await expect(
+      builder({ file: 'foo.js', directory: '/bar/baz' })
+    ).resolves.not.toBeUndefined();
+    expect(getFile).toHaveBeenCalledTimes(3);
+    expect(getFile).toHaveBeenNthCalledWith(1, { directory: '/bar/baz' });
+    expect(getFile).toHaveBeenNthCalledWith(2, {
+      file: '/foo.js',
+      directory: '/bar/baz'
+    });
+    expect(getFile).toHaveBeenNthCalledWith(3, {
+      file: path.join(process.cwd(), 'foo.js'),
+      directory: '/bar/baz'
+    });
   });
   test(`fails`, async () => {
     getFile.mockClear();
@@ -91,6 +98,10 @@ describe(`response`, () => {
     await expect(builder({ directory: '/some/bar' })).resolves.toHaveProperty(
       'directory',
       '/some/bar'
+    );
+    await expect(builder({ directory: 'some/bar' })).resolves.toHaveProperty(
+      'directory',
+      path.join(process.cwd(), 'some/bar')
     );
   });
   test(`getCmd with no dir, no args`, async () => {

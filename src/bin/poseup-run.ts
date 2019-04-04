@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import path from 'path';
 import program from 'commander';
 import args from './cmd-args';
 import { run } from '~/commands';
@@ -33,11 +32,7 @@ run({
   wait: program.wait,
   file: program.file,
   environment: program.env,
-  directory: program.dir
-    ? path.isAbsolute(program.dir)
-      ? program.dir
-      : path.join(process.cwd(), program.dir)
-    : undefined,
+  directory: program.dir,
   log: program.log
 })
   // Avoids unhandled rejection warning on console
