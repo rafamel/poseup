@@ -10,8 +10,8 @@ const [argv] = args.get();
 program
   .name('poseup purge')
   .usage('[options]')
-  .description('Purges dangling containers, networks, and volumes from system.')
-  .option('-f, --force', 'Skips confirmation')
+  .description('Purges dangling containers, networks, and volumes system-wide')
+  .option('-f, --force', 'Skip confirmation')
   .option('--log <level>', 'Logging level')
   .parse(argv);
 

@@ -9,19 +9,18 @@ const pkg = JSON.parse(
   fs.readFileSync(path.join(__dirname, '../../package.json')).toString()
 );
 
-// Init
 program
   .version(pkg.version)
-  .description('Flexible containerized development workflow & deployment')
+  .description('Containerized development workflow for the masses')
   .command('compose', 'Runs docker-compose')
-  .command('run', 'Runs task')
+  .command('run', 'Runs tasks')
   .command(
     'clean',
-    'Cleans not persisted containers and networks. Optionally, also volumes.'
+    'Cleans not persisted containers and networks -optionally, also volumes'
   )
   .command(
     'purge',
-    'Purges dangling containers, networks, and volumes from system.'
+    'Purges dangling containers, networks, and volumes system-wide'
   )
   .parse(args.set());
 

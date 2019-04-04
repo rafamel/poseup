@@ -10,15 +10,15 @@ program
   .name('poseup clean')
   .usage('[options]')
   .description(
-    'Cleans not persisted containers and networks. Optionally, also volumes.'
+    'Cleans not persisted containers and networks -optionally, also volumes'
   )
   .option(
     '-v, --volumes',
-    'Cleans volumes not associated with persisted containers'
+    'Clean volumes not associated with persisted containers'
   )
-  .option('-e, --env <env>', 'Environment for config file to be run on')
-  .option('-d, --dir <dir>', 'Project directory [cwd by default]')
-  .option('-f, --file <path>', 'Path for config file [js,json,yml]')
+  .option('-e, --env <env>', 'Node environment')
+  .option('-d, --dir <dir>', 'Project directory')
+  .option('-f, --file <path>', 'Path for config file [js,json,yml,yaml]')
   .option('--log <level>', 'Logging level')
   .parse(argv);
 

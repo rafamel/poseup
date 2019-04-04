@@ -11,13 +11,16 @@ program
   .name('poseup compose')
   .usage('[options] -- [dockerArgs]')
   .description('Runs docker-compose')
-  .option('-w, --write <path>', 'Path to write a resulting docker compose file')
+  .option(
+    '-w, --write <path>',
+    'Produce a docker compose file and save it to path'
+  )
   .option('-s, --stop', 'Stop all services on exit')
   .option('-c, --clean', 'Run clean on exit')
-  .option('--dry', "Don't run docker compose - write only docker compose file")
-  .option('-e, --env <env>', 'Environment for config file to be run on')
-  .option('-d, --dir <dir>', 'Project directory [cwd by default]')
-  .option('-f, --file <path>', 'Path for config file [js,json,yml]')
+  .option('--dry', 'Dry run -write docker compose file only')
+  .option('-e, --env <env>', 'Node environment')
+  .option('-d, --dir <dir>', 'Project directory')
+  .option('-f, --file <path>', 'Path for config file [js,json,yml,yaml]')
   .option('--log <level>', 'Logging level')
   .parse(argv);
 
