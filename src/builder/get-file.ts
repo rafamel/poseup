@@ -1,6 +1,6 @@
-import Liftoff from 'liftoff';
 import fs from 'fs';
 import path from 'path';
+import findUp from 'find-up';
 import ensure from '~/utils/ensure';
 
 export type IGetFile =
@@ -29,24 +29,13 @@ export function getExplicitFile(file: string): Promise<string> {
   });
 }
 
-export function getDefaultFile(directory: string): Promise<string> {
-  const poseup = new Liftoff({
-    name: 'poseup',
-    processTitle: 'poseup',
-    configName: 'poseup.config',
-    extensions: {
-      '.js': null,
-      '.json': null,
-      '.yml': null,
-      '.yaml': null
-    }
-  });
-
-  return new Promise((resolve, reject) => {
-    poseup.launch({ cwd: directory }, (env) => {
-      return env.configPath
-        ? resolve(env.configPath)
-        : reject(Error(`poseup.config.{js,json,yml,yaml} could't be found`));
-    });
-  });
+export async function getDefaultFile(directory: string): Promise<string> {
+  const configPath = await findUp(
+    ['.js', '.json', '.yml', '.yaml'].map((ext) => 'poseup.config' + ext),
+    { cwd: directory }
+  );
+  if (!configPath) {
+    throw Error(`poseup.config.{js,json,yml,yaml} could't be found`);
+  }
+  return configPath;
 }
