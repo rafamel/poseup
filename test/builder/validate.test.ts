@@ -103,7 +103,7 @@ describe(`task primary/cmd`, () => {
       })
     ).not.toThrowError();
   });
-  test(`fails if no primary/cmd exists`, () => {
+  test(`suceeds if no primary/cmd exists`, () => {
     expect(() =>
       validate({
         project: 'foo',
@@ -116,7 +116,7 @@ describe(`task primary/cmd`, () => {
           }
         }
       })
-    ).toThrowError();
+    ).not.toThrowError();
   });
   test(`fails if task primary doesn't exist`, () => {
     expect(() =>

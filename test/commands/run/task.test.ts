@@ -36,6 +36,15 @@ describe(`empty`, () => {
       runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
   });
+  test(`doesn't call runPrimary or runCmd`, async () => {
+    runPrimary.mockClear();
+    runCmd.mockClear();
+    await expect(
+      runTask({}, CONFIG, 'foo', [], CLEAN, 0)
+    ).resolves.toBeUndefined();
+    expect(runPrimary).not.toHaveBeenCalled();
+    expect(runCmd).not.toHaveBeenCalled();
+  });
 });
 describe(`linked services`, () => {
   test(`succeeds for task.services`, async () => {
@@ -327,13 +336,16 @@ describe(`task.exec`, () => {
 });
 describe(`runPrimary call`, () => {
   test(`suceeds`, async () => {
+    runCmd.mockClear();
     runPrimary.mockClear();
 
+    const task = { ...TASK, cmd: ['a', 'b'] };
     await expect(
-      runTask(TASK, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
+      runTask(task, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
     ).resolves.toBeUndefined();
+    expect(runCmd).not.toHaveBeenCalled();
     expect(runPrimary).toHaveBeenCalledTimes(1);
-    expect(runPrimary).toHaveBeenCalledWith(TASK, CONFIG, 'foo', ['a', 'b']);
+    expect(runPrimary).toHaveBeenCalledWith(task, CONFIG, 'foo', ['a', 'b']);
   });
   test(`fails`, async () => {
     runPrimary.mockImplementationOnce(() => Promise.reject(Error()));
@@ -375,11 +387,13 @@ describe(`runPrimary call`, () => {
 });
 describe(`runCmd call`, () => {
   test(`suceeds`, async () => {
+    runPrimary.mockClear();
     runCmd.mockClear();
 
     await expect(
       runTask({ cmd: ['c', 'd'] }, CONFIG, 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
+    expect(runPrimary).not.toHaveBeenCalled();
     expect(runCmd).toHaveBeenCalledTimes(1);
     expect(runCmd).toHaveBeenCalledWith({ cmd: ['c', 'd'] });
   });

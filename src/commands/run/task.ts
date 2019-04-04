@@ -72,7 +72,8 @@ export default async function runTask(
   }
 
   // Run cmd
-  await (task.primary ? runPrimary(task, config, cmd, args) : runCmd(task));
+  if (task.primary) await runPrimary(task, config, cmd, args);
+  else if (task.cmd) await runCmd(task);
 
   logger.info('  ' + chalk.bold('+') + ' Cleaning environment');
   const signal = await clean();

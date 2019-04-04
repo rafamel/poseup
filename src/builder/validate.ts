@@ -48,11 +48,6 @@ export default function validate(config: IConfig): void {
   }
 
   Object.entries(config.tasks || {}).forEach(([taskName, task]) => {
-    if (!task.primary && (!task.cmd || !task.cmd.length)) {
-      throw Error(
-        `There must be a "cmd" to run locally if no "primary" exists for task "${taskName}"`
-      );
-    }
     // Check all primaries for tasks exist
     if (task.primary && !config.compose.services.hasOwnProperty(task.primary)) {
       throw Error(
