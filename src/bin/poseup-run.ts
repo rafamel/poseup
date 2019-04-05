@@ -12,6 +12,7 @@ program
   .name('poseup run')
   .usage('[options] [tasks]')
   .description('Runs tasks')
+  .option('-l, --list', 'List tasks')
   .option(
     '-w, --wait <seconds>',
     `Waiting time after starting services before running commands [${RUN_DEFAULT_WAIT_BEFORE_EXEC} by default]`
@@ -27,6 +28,7 @@ program
   .parse(argv);
 
 run({
+  list: !!program.list,
   tasks: program.args,
   sandbox: !!program.sandbox,
   wait: program.wait,

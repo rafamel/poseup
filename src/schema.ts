@@ -15,6 +15,7 @@ export const config = {
         '^.*$': {
           type: 'object',
           properties: {
+            description: { type: 'string' },
             primary: { type: 'string' },
             services: { type: 'array', items: { type: 'string' } },
             cmd: { type: 'array', items: { type: 'string' } },

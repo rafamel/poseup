@@ -10,6 +10,7 @@ export interface IOptions {
 }
 
 export interface IRunOptions extends IOptions {
+  list?: boolean;
   tasks?: string[];
   wait?: number | string;
   sandbox?: boolean;
@@ -45,6 +46,7 @@ export interface IConfig {
 }
 
 export interface ITask {
+  description?: string;
   primary?: string;
   services?: string[];
   cmd?: string[];

@@ -1,4 +1,4 @@
-import builder from '~/builder';
+import builder, { IBuild } from '~/builder';
 import { IRunOptions } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
@@ -11,14 +11,18 @@ import initialize from '~/utils/initialize';
 import add, { ADD_TYPES } from '~/utils/add';
 import { control } from 'exits';
 import runTask from './task';
+import list from './list';
 
 export default async function run(options: IRunOptions = {}): Promise<void> {
   await initialize(options);
-  await control(trunk)(options);
+  const build = await builder(options);
+
+  if (options.list) list(options, build.config);
+  else await control(trunk)(options, build);
 }
 
-function* trunk(opts: IRunOptions = {}): IterableIterator<any> {
-  const { config, getCmd } = yield builder(opts);
+function* trunk(opts: IRunOptions, build: IBuild): IterableIterator<any> {
+  const { config, getCmd } = build;
 
   if (!opts.tasks || !opts.tasks.length) throw Error('No tasks to run');
   if (!config.tasks) throw Error('There are no tasks defined');
