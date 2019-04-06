@@ -1,18 +1,18 @@
-const TAG = '__cmdArg__:';
-const SPACE = ':__SPACE__:';
-
+const TAG = '__cmdArg__';
 const rgxTag = new RegExp('^' + TAG);
-const rgxSpace = new RegExp(SPACE, 'g');
+
 export default {
   set(argv = process.argv): string[] {
     const separator = argv.indexOf('--');
     if (separator === -1) return argv;
 
-    return argv
-      .slice(0, separator)
-      .concat(
-        TAG + JSON.stringify(argv.slice(separator + 1)).replace(/ /g, SPACE)
-      );
+    return argv.slice(0, separator).concat(
+      TAG +
+        JSON.stringify(argv.slice(separator + 1))
+          .split('')
+          .map((char) => String(char.charCodeAt(0)))
+          .join('_')
+    );
   },
   get(argv = process.argv): string[][] {
     let index = -1;
@@ -26,7 +26,13 @@ export default {
       ? [argv, []]
       : [
           argv.slice(0, index).concat(argv.slice(index + 1)),
-          JSON.parse(argv[index].replace(rgxTag, '').replace(rgxSpace, ' '))
+          JSON.parse(
+            argv[index]
+              .replace(rgxTag, '')
+              .split('_')
+              .map((code) => String.fromCharCode(Number(code)))
+              .join('')
+          )
         ];
   }
 };
