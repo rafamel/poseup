@@ -1,5 +1,7 @@
 import list, { printer, tail } from '~/commands/run/list';
+import chalk from 'chalk';
 
+chalk.level = 0;
 // eslint-disable-next-line
 const log: any = (console.log = jest.fn());
 
@@ -21,14 +23,14 @@ describe(`list`, () => {
 describe(`printer`, () => {
   test(`no tasks`, () => {
     expect(printer({ project: 'Foo', compose: {} })).toMatchInlineSnapshot(`
-                        "Tasks for [32m[1mFoo[22m[39m
-                        "
-              `);
+      "Tasks for Foo
+      "
+    `);
     expect(printer({ project: 'Foo', tasks: {}, compose: {} }))
       .toMatchInlineSnapshot(`
-                        "Tasks for [32m[1mFoo[22m[39m
-                        "
-              `);
+      "Tasks for Foo
+      "
+    `);
   });
   test(`no descriptions`, () => {
     expect(
@@ -38,12 +40,12 @@ describe(`printer`, () => {
         tasks: { foo: {}, bar: {}, baz: {} }
       })
     ).toMatchInlineSnapshot(`
-                    "Tasks for [32m[1mFoo[22m[39m
-                    
-                    poseup run [1mfoo[22m
-                    poseup run [1mbar[22m
-                    poseup run [1mbaz[22m"
-            `);
+      "Tasks for Foo
+      
+      poseup run foo
+      poseup run bar
+      poseup run baz"
+    `);
   });
   test(`descriptions`, () => {
     expect(
@@ -57,12 +59,12 @@ describe(`printer`, () => {
         }
       })
     ).toMatchInlineSnapshot(`
-                "Tasks for [32m[1mFoo[22m[39m
-                
-                poseup run [1mfoo[22m       Lorem ipsum
-                poseup run [1mbar[22m
-                poseup run [1mbaz[22m       Lorem ipsum lorem ipsum"
-          `);
+      "Tasks for Foo
+      
+      poseup run foo       Lorem ipsum
+      poseup run bar
+      poseup run baz       Lorem ipsum lorem ipsum"
+    `);
   });
   test(`name length divergence`, () => {
     expect(
@@ -76,12 +78,12 @@ describe(`printer`, () => {
         }
       })
     ).toMatchInlineSnapshot(`
-            "Tasks for [32m[1mFoo[22m[39m
-            
-            poseup run [1mfoofoo[22m          Lorem ipsum
-            poseup run [1mbar[22m             Lorem ipsum lorem ipsum
-            poseup run [1mbazbazbaz[22m"
-        `);
+      "Tasks for Foo
+      
+      poseup run foofoo          Lorem ipsum
+      poseup run bar             Lorem ipsum lorem ipsum
+      poseup run bazbazbaz"
+    `);
   });
 });
 describe(`tail`, () => {
