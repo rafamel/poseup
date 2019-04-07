@@ -206,8 +206,9 @@ describe(`options.stop & options.clean`, () => {
     await expect(args[2]()).resolves.toBe(null);
     expect(getCleanCmd).toHaveBeenCalled();
     expect(getCleanCmd.mock.calls[0][0]).toHaveProperty('config', {
-      compose: { services: { bar: {}, foo: {} } },
-      project: 'foo'
+      project: 'foo',
+      tasks: { bar: {}, foo: {} },
+      compose: { services: { bar: {}, foo: {} } }
     });
     expect(getCleanCmd.mock.calls[0][0]).toHaveProperty('getCmd');
     expect(getCleanCmd.mock.calls[0][0].getCmd()).toEqual({
