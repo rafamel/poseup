@@ -2,6 +2,7 @@ import { IRunOptions, IConfig } from '~/types';
 import chalk from 'chalk';
 
 export default function list(opts: IRunOptions, config: IConfig): void {
+  // eslint-disable-next-line
   console.log(printer(config));
 
   if (opts.tasks && opts.tasks.length) {

@@ -1,5 +1,6 @@
 import list, { printer, tail } from '~/commands/run/list';
 
+// eslint-disable-next-line
 const log: any = (console.log = jest.fn());
 
 describe(`list`, () => {

@@ -52,7 +52,9 @@ export function onDone(getState: () => IState): void {
       case 'exception':
       case 'rejection':
         logger.error(
-          '\n' + chalk.red('Error: ') + (triggered.arg as Error).message
+          '\n' +
+            chalk.bold.red('Error: ') +
+            chalk.bold((triggered.arg as Error).message)
         );
         logger.debug(triggered.arg);
         break;
