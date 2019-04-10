@@ -1,4 +1,24 @@
-# 0.1.0 (2019-04-07)
+# [0.2.0](https://github.com/rafamel/poseup/compare/v0.1.0...v0.2.0) (2019-04-10)
+
+
+### Features
+
+* **bin/run:** implements new run api for bin ([ab7cf7c](https://github.com/rafamel/poseup/commit/ab7cf7c))
+* **commands/run:** auto detects services initialization ([464c5e9](https://github.com/rafamel/poseup/commit/464c5e9))
+* **commands/run:** implements waitDetect ([4791955](https://github.com/rafamel/poseup/commit/4791955))
+* **utils:** adds stdout ([231e981](https://github.com/rafamel/poseup/commit/231e981))
+
+
+### BREAKING CHANGES
+
+* **bin/run:** `poseup run` no longer takes a `--wait` option, taking `--timeout` and
+`--no-detect` instead, as service initialization is now auto detected. For the same behavior as
+`--wait seconds`, pass `--timeout seconds --no-detect`.
+* **commands/run:** run no longer takes `wait` as waiting time, taking a `timeout` instead
+
+
+
+# [0.1.0](https://github.com/rafamel/poseup/compare/e240d58...v0.1.0) (2019-04-07)
 
 
 ### Bug Fixes
