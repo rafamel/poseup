@@ -3,8 +3,8 @@
 import program from 'commander';
 import args from './cmd-args';
 import { run } from '~/commands';
-import { RUN_DEFAULT_WAIT_BEFORE_EXEC } from '~/constants';
 import { terminate } from 'exits';
+import { RUN_WAIT_TIMEOUT } from '~/constants';
 
 const [argv] = args.get();
 
@@ -14,12 +14,16 @@ program
   .description('Runs tasks')
   .option('-l, --list', 'List tasks')
   .option(
-    '-w, --wait <seconds>',
-    `Waiting time after starting services before running commands [${RUN_DEFAULT_WAIT_BEFORE_EXEC} by default]`
-  )
-  .option(
     '-s, --sandbox',
     'Create new containers for all services, remove all on exit'
+  )
+  .option(
+    '-t, --timeout <seconds>',
+    `Timeout for waiting time after starting services before running commands [${RUN_WAIT_TIMEOUT} by default]`
+  )
+  .option(
+    '--no-detect',
+    'Prevent service initialization auto detection and wait until timeout instead'
   )
   .option('-e, --env <env>', 'Node environment')
   .option('-d, --dir <dir>', 'Project directory')
@@ -31,7 +35,8 @@ run({
   list: !!program.list,
   tasks: program.args,
   sandbox: !!program.sandbox,
-  wait: program.wait,
+  timeout: program.timeout !== undefined ? Number(program.timeout) : undefined,
+  detect: program.detect,
   file: program.file,
   environment: program.env,
   directory: program.dir,
