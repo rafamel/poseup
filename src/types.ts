@@ -12,8 +12,9 @@ export interface IOptions {
 export interface IRunOptions extends IOptions {
   list?: boolean;
   tasks?: string[];
-  wait?: number | string;
   sandbox?: boolean;
+  detect?: boolean;
+  timeout?: number;
 }
 
 export interface IComposeOptions extends IOptions {

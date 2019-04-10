@@ -14,4 +14,5 @@ export const EXIT_LOG_LEVEL_STDIO = levels.DEBUG;
 // Wait time to pass to docker-compose stop
 export const STOP_WAIT_TIME = 5;
 // Wait time after docker-compose up before running docker-compose run
-export const RUN_DEFAULT_WAIT_BEFORE_EXEC = 5;
+export const RUN_WAIT_TIMEOUT = 60;
+export const RUN_WAIT_DETECT_INTERVAL = 6;

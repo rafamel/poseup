@@ -2,10 +2,11 @@ import { ITask, IConfig, IOfType } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
 import { wait } from 'promist';
-import { RUN_DEFAULT_WAIT_BEFORE_EXEC } from '~/constants';
 import runPrimary from './primary';
 import runCmd from './cmd';
 import spawn, { silent } from '~/utils/spawn';
+import waitDetect from './wait-detect';
+import { RUN_WAIT_TIMEOUT } from '~/constants';
 
 export default async function runTask(
   task: ITask,
@@ -13,7 +14,8 @@ export default async function runTask(
   cmd: string,
   args: string[],
   clean: () => Promise<any>,
-  swait?: number | string
+  timeout?: number,
+  detect?: boolean
 ): Promise<void> {
   // Bring up linked
   const linked = (
@@ -39,13 +41,24 @@ export default async function runTask(
     if (signal) throw Error(`Process finished early ${signal}`);
 
     // eslint-disable-next-line eqeqeq
-    if (swait != undefined && Number(swait) < 0) {
+    if (timeout == undefined) timeout = RUN_WAIT_TIMEOUT;
+    if (timeout < 0) {
       throw Error(`Waiting time must be greater than or equal to 0`);
+    } else if (timeout === 0) {
+      logger.debug('Not waiting for services initialization: timeout was 0');
+    } else {
+      if (detect) {
+        logger.info(
+          '  ' +
+            chalk.bold('+') +
+            ' Waiting for services to complete initialization'
+        );
+        await waitDetect(linked, timeout, cmd, args);
+      } else {
+        logger.info('  ' + chalk.bold('+') + ` Waiting for ${timeout} seconds`);
+        await wait(timeout * 1000);
+      }
     }
-    await wait(
-      // eslint-disable-next-line eqeqeq
-      (swait == undefined ? RUN_DEFAULT_WAIT_BEFORE_EXEC : Number(swait)) * 1000
-    );
   }
 
   // Run before hooks
