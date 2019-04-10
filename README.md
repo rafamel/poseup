@@ -105,14 +105,15 @@ Usage: poseup run [options] [tasks]
 Runs tasks
 
 Options:
-  -l, --list            List tasks
-  -w, --wait <seconds>  Waiting time after starting services before running commands [5 by default]
-  -s, --sandbox         Create new containers for all services, remove all on exit
-  -e, --env <env>       Node environment
-  -d, --dir <dir>       Project directory
-  -f, --file <path>     Path for config file [js,json,yml,yaml]
-  --log <level>         Logging level
-  -h, --help            output usage information
+  -l, --list               List tasks
+  -s, --sandbox            Create new containers for all services, remove all on exit
+  -t, --timeout <seconds>  Timeout for waiting time after starting services before running commands [60 by default]
+  --no-detect              Prevent service initialization auto detection and wait until timeout instead
+  -e, --env <env>          Node environment
+  -d, --dir <dir>          Project directory
+  -f, --file <path>        Path for config file [js,json,yml,yaml]
+  --log <level>            Logging level
+  -h, --help               output usage information
 ```
 <!-- markdownlint-enable MD040 MD031 -->
 
