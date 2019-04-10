@@ -1,37 +1,33 @@
 import path from 'path';
-import { spawn as _spawn } from 'child_process';
+import fs from 'fs';
 import containerLs from '~/utils/container-ls';
-import uuid from 'uuid/v4';
 import out from '../fixtures/container-ls/out';
+import _stdout from '~/utils/stdout';
 
 const at = (str?: string): string => {
   return path.join(__dirname, '../fixtures/container-ls', str || '');
 };
-jest.mock('child_process');
+jest.mock('~/utils/stdout');
+const stdout: any = _stdout;
 
-const spawn: any = _spawn;
-spawn.mockImplementation(() => {
-  jest.unmock('child_process');
-  return require('child_process').spawn('shx', ['cat', at('in.txt')]);
-});
-
-test(`Calls spawn`, async () => {
+test(`Calls stdout`, async () => {
+  stdout.mockClear();
   await containerLs();
 
-  expect(spawn).toHaveBeenCalledTimes(1);
-  expect(spawn).toHaveBeenCalledWith('docker', [
+  expect(stdout).toHaveBeenCalledTimes(1);
+  expect(stdout).toHaveBeenCalledWith('docker', [
     'container',
     'ls',
     '--format',
     '"{{json .}}"'
   ]);
 });
-test(`Calls spawn w/ all`, async () => {
-  spawn.mockClear();
+test(`Calls stdout w/ all`, async () => {
+  stdout.mockClear();
   await containerLs({ all: true });
 
-  expect(spawn).toHaveBeenCalledTimes(1);
-  expect(spawn).toHaveBeenCalledWith('docker', [
+  expect(stdout).toHaveBeenCalledTimes(1);
+  expect(stdout).toHaveBeenCalledWith('docker', [
     'container',
     'ls',
     '--all',
@@ -39,22 +35,10 @@ test(`Calls spawn w/ all`, async () => {
     '"{{json .}}"'
   ]);
 });
-test(`Fails on spawn process error`, async () => {
-  spawn.mockClear();
-  spawn.mockImplementationOnce(() => {
-    return require('child_process').spawn('shx', ['error']);
-  });
-
-  await expect(containerLs()).rejects.toBeInstanceOf(Error);
-});
-test(`Fails on non existent binary`, async () => {
-  spawn.mockClear();
-  spawn.mockImplementationOnce(() => {
-    return require('child_process').spawn(uuid().replace(/-/g, ''));
-  });
-
-  await expect(containerLs()).rejects.toBeInstanceOf(Error);
-});
 test(`Succeeds: expected response`, async () => {
+  stdout.mockClear();
+  stdout.mockImplementationOnce(() =>
+    Promise.resolve(fs.readFileSync(at('in.txt')).toString())
+  );
   await expect(containerLs()).resolves.toEqual(out);
 });
