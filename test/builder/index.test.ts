@@ -3,7 +3,6 @@ import _readFile from '~/builder/read-file';
 import _validate from '~/builder/validate';
 import _cmdBuilder from '~/builder/cmd-builder';
 import builder from '~/builder';
-import path from 'path';
 
 const getFile: any = _getFile;
 const readFile: any = _readFile;
@@ -24,20 +23,20 @@ describe(`getFile()`, () => {
   test(`succeeds`, async () => {
     getFile.mockClear();
 
-    await expect(builder({ directory: '/bar/baz' }));
-    await expect(builder({ file: '/foo.js', directory: '/bar/baz' }));
+    await expect(builder({ directory: 'bar/baz' }));
+    await expect(builder({ file: 'foo.js', directory: 'bar/baz' }));
     await expect(
-      builder({ file: 'foo.js', directory: '/bar/baz' })
+      builder({ file: 'foo.js', directory: 'bar/baz' })
     ).resolves.not.toBeUndefined();
     expect(getFile).toHaveBeenCalledTimes(3);
-    expect(getFile).toHaveBeenNthCalledWith(1, { directory: '/bar/baz' });
+    expect(getFile).toHaveBeenNthCalledWith(1, { directory: 'bar/baz' });
     expect(getFile).toHaveBeenNthCalledWith(2, {
-      file: '/foo.js',
-      directory: '/bar/baz'
+      file: 'foo.js',
+      directory: 'bar/baz'
     });
     expect(getFile).toHaveBeenNthCalledWith(3, {
-      file: path.join(process.cwd(), 'foo.js'),
-      directory: '/bar/baz'
+      file: 'foo.js',
+      directory: 'bar/baz'
     });
   });
   test(`fails`, async () => {
@@ -95,14 +94,6 @@ describe(`response`, () => {
   });
   test(`directory`, async () => {
     await expect(builder()).resolves.toHaveProperty('directory', 'foo/bar');
-    await expect(builder({ directory: '/some/bar' })).resolves.toHaveProperty(
-      'directory',
-      '/some/bar'
-    );
-    await expect(builder({ directory: 'some/bar' })).resolves.toHaveProperty(
-      'directory',
-      path.join(process.cwd(), 'some/bar')
-    );
   });
   test(`getCmd with no dir, no args`, async () => {
     cmdBuilder.mockClear();
@@ -126,7 +117,7 @@ describe(`response`, () => {
   test(`getCmd with no args`, async () => {
     cmdBuilder.mockClear();
 
-    const res = await builder({ directory: '/foobar' });
+    const res = await builder();
     expect(typeof res.getCmd).toBe('function');
 
     const getCmd = res.getCmd;
@@ -139,7 +130,7 @@ describe(`response`, () => {
       project: 'foo',
       args: undefined,
       file: 'some/file.js',
-      directory: '/foobar'
+      directory: 'foo/bar'
     });
   });
   test(`getCmd with no dir`, async () => {
