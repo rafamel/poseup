@@ -1,3 +1,6 @@
 export default jest.fn().mockImplementation(async () => {
-  return 'foo/bar/baz.js';
+  return {
+    file: 'foo/bar/baz.js',
+    directory: 'foo/bar'
+  };
 });

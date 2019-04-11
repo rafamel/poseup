@@ -1,4 +1,3 @@
-import path from 'path';
 import getFile from './get-file';
 import readFile from './read-file';
 import validate from './validate';
@@ -16,24 +15,14 @@ export interface IBuild {
 }
 
 export default async function builder(opts: IOptions = {}): Promise<IBuild> {
-  let directory = opts.directory
-    ? path.isAbsolute(opts.directory)
-      ? opts.directory
-      : path.join(process.cwd(), opts.directory)
-    : process.cwd();
-
   // Get poseup file path
-  const configPath = await getFile({
-    file:
-      opts.file && !path.isAbsolute(opts.file)
-        ? path.join(process.cwd(), opts.file)
-        : opts.file,
-    directory
+  const { file, directory } = await getFile({
+    file: opts.file,
+    directory: opts.directory
   });
 
   // Read poseup file
-  const config: IConfig = await readFile(configPath);
-  if (!opts.directory) directory = path.parse(configPath).dir;
+  const config: IConfig = await readFile(file);
 
   // Validate config
   validate(config);
