@@ -2,6 +2,8 @@ import os from 'os';
 import path from 'path';
 import { levels } from 'loglevel';
 
+// Default configuration file name
+export const FILE_NAME = 'poseup.config';
 // Temp directory for docker-compose yml files
 export const TMP_DIR = path.join(os.tmpdir(), 'poseup');
 // Default logging level
