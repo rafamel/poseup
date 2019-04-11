@@ -6,6 +6,7 @@ const at = (str?: string): string => {
 };
 
 process.cwd = jest.fn().mockImplementation(() => at('nested'));
+const cwd: any = process.cwd;
 
 describe(`explicit file`, () => {
   describe(`absolute`, () => {
@@ -53,23 +54,40 @@ describe(`explicit file`, () => {
     });
   });
   describe(`relative`, () => {
-    test(`to dir`, async () => {
-      const opts = {
-        file: 'js/poseup.config.js',
-        directory: at()
-      };
-      await expect(getFile(opts)).resolves.toEqual({
-        ...opts,
-        file: at(opts.file)
+    describe(`directory`, () => {
+      test(`succeeds`, async () => {
+        const opts = {
+          file: 'js/poseup.config.js',
+          directory: at()
+        };
+        await expect(getFile(opts)).resolves.toEqual({
+          ...opts,
+          file: at(opts.file)
+        });
+      });
+      test(`fails`, async () => {
+        const opts = {
+          file: 'js/foo.config.js',
+          directory: at()
+        };
+        await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
       });
     });
-    test(`to cwd`, async () => {
-      const opts = {
-        file: 'poseup.config.js'
-      };
-      await expect(getFile(opts)).resolves.toEqual({
-        file: at('nested/poseup.config.js'),
-        directory: at('nested')
+    describe(`cwd`, () => {
+      test(`succeeds`, async () => {
+        const opts = {
+          file: 'poseup.config.js'
+        };
+        await expect(getFile(opts)).resolves.toEqual({
+          file: at('nested/poseup.config.js'),
+          directory: at('nested')
+        });
+      });
+      test(`fails`, async () => {
+        const opts = {
+          file: 'foo.config.js'
+        };
+        await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
       });
     });
   });
@@ -117,17 +135,30 @@ describe(`default file`, () => {
     });
   });
   describe(`relative`, () => {
-    test(`w/ directory`, async () => {
-      const opts = { directory: 'inner' };
-      await expect(getFile(opts)).resolves.toEqual({
-        file: at('nested/poseup.config.js'),
-        directory: at('nested/inner')
+    describe(`directory`, () => {
+      test(`succeeds`, async () => {
+        const opts = { directory: 'inner' };
+        await expect(getFile(opts)).resolves.toEqual({
+          file: at('nested/poseup.config.js'),
+          directory: at('nested/inner')
+        });
+      });
+      test(`fails`, async () => {
+        cwd.mockImplementationOnce(() => at('foo'));
+        const opts = { directory: 'inner' };
+        await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
       });
     });
-    test(`wo/ directory`, async () => {
-      await expect(getFile({})).resolves.toEqual({
-        file: at('nested/poseup.config.js'),
-        directory: at('nested')
+    describe(`cwd`, () => {
+      test(`succeeds`, async () => {
+        await expect(getFile({})).resolves.toEqual({
+          file: at('nested/poseup.config.js'),
+          directory: at('nested')
+        });
+      });
+      test(`fails`, async () => {
+        cwd.mockImplementationOnce(() => at('foo'));
+        await expect(getFile({})).rejects.toBeInstanceOf(Error);
       });
     });
   });
