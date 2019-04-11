@@ -10,7 +10,7 @@ export default async function stdout(
     const ps = spawn(cmd, args);
     ps.stdout.on('data', (buffer: Buffer) => (acc += buffer.toString()));
     ps.on('close', (code: number) => {
-      return code ? reject(Error('docker failed')) : resolve(acc);
+      return code ? reject(Error(`${cmd} process failed`)) : resolve(acc);
     });
     ps.on('error', (err: any) => {
       return reject(ensure.error(err));
