@@ -13,6 +13,8 @@ export const DEFAULT_STDIO = 'inherit';
 export const EXIT_LOG_LEVEL_STDIO = levels.DEBUG;
 // Wait time to pass to docker-compose stop
 export const STOP_WAIT_TIME = 5;
-// Wait time after docker-compose up before running docker-compose run
+// Timeout for wait time after docker-compose is up
+// before running docker-compose run
 export const RUN_WAIT_TIMEOUT = 60;
+// Interval for checking log changes on service initialization auto detect
 export const RUN_WAIT_DETECT_INTERVAL = 6;
