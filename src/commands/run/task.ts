@@ -28,9 +28,7 @@ export default async function runTask(
 
   if (linked.length) {
     logger.info(
-      '  ' +
-        chalk.bold('+') +
-        ' Bringing up services: ' +
+      `  ${chalk.bold('+')} Bringing up services: ` +
         chalk.bold(linked.join(', '))
     );
     const signal = await spawn(
@@ -49,9 +47,7 @@ export default async function runTask(
     } else {
       if (detect) {
         logger.info(
-          '  ' +
-            chalk.bold('+') +
-            ' Waiting for services to complete initialization'
+          `  ${chalk.bold('+')} Waiting for services to complete initialization`
         );
         await waitDetect(linked, timeout, cmd, args);
       } else {
@@ -70,10 +66,8 @@ export default async function runTask(
     for (const service of services) {
       const execCmd = obj[service];
       logger.info(
-        '  ' +
-          chalk.bold('+') +
-          ' Running exec on ' +
-          chalk.bold(service + ': ' + chalk.bold(`['${execCmd.join("', '")}']`))
+        `  ${chalk.bold('+')} Running exec on ` +
+          chalk.bold(service + ': ' + `['${execCmd.join("', '")}']`)
       );
       const signal = await spawn(
         cmd,

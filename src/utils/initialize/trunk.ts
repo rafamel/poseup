@@ -52,8 +52,7 @@ export function onDone(getState: () => IState): void {
       case 'exception':
       case 'rejection':
         logger.error(
-          '\n' +
-            chalk.bold.red('Error: ') +
+          chalk.bold.red('\nError: ') +
             chalk.bold((triggered.arg as Error).message)
         );
         logger.debug(triggered.arg);
@@ -61,9 +60,8 @@ export function onDone(getState: () => IState): void {
       case 'exit':
         if (triggered.arg !== 0) {
           logger.error(
-            '\n' +
-              chalk.red('Error: ') +
-              `Spawned process exited with code ${triggered.arg}`
+            chalk.bold.red('\nError: ') +
+              chalk.bold(`Spawned process exited with code ${triggered.arg}`)
           );
         }
         break;

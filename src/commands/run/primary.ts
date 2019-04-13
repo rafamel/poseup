@@ -13,9 +13,7 @@ export default async function runPrimary(
   if (!task.primary) throw Error('Task has no primary container');
 
   logger.info(
-    '  ' +
-      chalk.bold('+') +
-      ' Running primary service' +
+    `  ${chalk.bold('+')} Running primary service` +
       (task.cmd && task.cmd.length
         ? chalk.bold(` ${task.primary}: ['${task.cmd.join("', '")}']`)
         : ': ' + chalk.bold(task.primary))

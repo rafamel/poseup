@@ -37,10 +37,8 @@ export default async function compose(
   if (options.dry) {
     return logger.debug(
       chalk.yellow('Resulting command: ') +
-        [cmd]
-          .concat(args)
-          .concat(options.args || [])
-          .join(' ')
+        // prettier-ignore
+        [cmd].concat(args).concat(options.args || []).join(' ')
     );
   }
 
