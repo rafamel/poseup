@@ -15,7 +15,7 @@
     "ci"
   ],
   "bin": {
-    "poseup": "dist-lib/bin/poseup.js"
+    "poseup": "dist-node/bin/poseup.js"
   },
   "scripts": {
     "prepublishOnly": "exit 1",
@@ -62,13 +62,14 @@
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-typescript": "^7.1.0",
     "@pika/pack": "^0.3.6",
-    "@types/base-x": "^3.0.0",
+    "@types/common-tags": "^1.8.0",
     "@types/find-up": "^2.1.1",
     "@types/jest": "^24.0.9",
     "@types/js-yaml": "^3.12.1",
     "@types/lodash.clone": "^4.5.6",
     "@types/lodash.isequal": "^4.5.5",
     "@types/pify": "^3.0.2",
+    "@types/read-pkg-up": "^3.0.1",
     "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
@@ -114,6 +115,7 @@
     "ajv": "^6.10.0",
     "base-x": "^3.0.5",
     "chalk": "^2.4.2",
+    "cli-belt": "^0.1.0",
     "commander": "^2.20.0",
     "exits": "^0.4.0",
     "find-up": "^3.0.0",

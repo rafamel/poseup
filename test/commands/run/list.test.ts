@@ -1,4 +1,4 @@
-import list, { printer, tail } from '~/commands/run/list';
+import list, { printer } from '~/commands/run/list';
 import chalk from 'chalk';
 
 chalk.level = 0;
@@ -42,9 +42,9 @@ describe(`printer`, () => {
     ).toMatchInlineSnapshot(`
       "Tasks for Foo
       
-      poseup run foo
-      poseup run bar
-      poseup run baz"
+      poseup run foo       
+      poseup run bar       
+      poseup run baz       "
     `);
   });
   test(`descriptions`, () => {
@@ -62,7 +62,7 @@ describe(`printer`, () => {
       "Tasks for Foo
       
       poseup run foo       Lorem ipsum
-      poseup run bar
+      poseup run bar       
       poseup run baz       Lorem ipsum lorem ipsum"
     `);
   });
@@ -82,17 +82,7 @@ describe(`printer`, () => {
       
       poseup run foofoo          Lorem ipsum
       poseup run bar             Lorem ipsum lorem ipsum
-      poseup run bazbazbaz"
+      poseup run bazbazbaz       "
     `);
-  });
-});
-describe(`tail`, () => {
-  test(`w/ longest`, () => {
-    expect(tail('foo', 'foobarbaz')).toMatchInlineSnapshot(`"             "`);
-    expect(tail('foobar', 'foobarbaz')).toMatchInlineSnapshot(`"          "`);
-  });
-  test(`wo/ longest`, () => {
-    expect(tail('foo')).toMatchInlineSnapshot(`"       "`);
-    expect(tail('foobar')).toMatchInlineSnapshot(`"       "`);
   });
 });

@@ -3,6 +3,7 @@ import { options, attach, add, resolver, on, IState } from 'exits';
 import { ADD_TYPES } from '../add';
 import chalk from 'chalk';
 import logger from '~/utils/logger';
+import { error } from 'cli-belt';
 
 export default async function trunk(): Promise<void> {
   // Attachment must go first (other potential errors must be catched)
@@ -51,18 +52,13 @@ export function onDone(getState: () => IState): void {
     switch (triggered.type) {
       case 'exception':
       case 'rejection':
-        logger.error(
-          chalk.bold.red('\nError: ') +
-            chalk.bold((triggered.arg as Error).message)
-        );
-        logger.debug(triggered.arg);
+        error(triggered.arg as Error, { logger, debug: true });
         break;
       case 'exit':
         if (triggered.arg !== 0) {
-          logger.error(
-            chalk.bold.red('\nError: ') +
-              chalk.bold(`Spawned process exited with code ${triggered.arg}`)
-          );
+          error(Error(`Spawned process exited with code ${triggered.arg}`), {
+            logger
+          });
         }
         break;
       default:
