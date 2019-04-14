@@ -1,0 +1,61 @@
+/* eslint-disable no-console */
+import up from 'read-pkg-up';
+import { stripIndent as indent } from 'common-tags';
+import chalk from 'chalk';
+import arg from 'arg';
+import { flags, safePairs, log } from 'cli-belt';
+import run from './run';
+import purge from './purge';
+import clean from './clean';
+import compose from './compose';
+
+export default async function main(argv: string[]): Promise<void> {
+  const { pkg } = await up();
+  if (pkg.name) process.title = pkg.name;
+
+  const help = indent`
+    ${pkg.description ? chalk.bold.green(pkg.description) : ''}
+
+    Usage:
+      $ poseup [option]
+      $ poseup [command] [options]
+
+    Options:
+      -h, --help     Show help
+      -v, --version  Show version number
+
+    Commands:
+      compose        Runs docker-compose
+      run            Runs tasks
+      clean          Cleans not persisted containers and networks -optionally, also volumes
+      purge          Purges dangling containers, networks, and volumes system-wide
+  `;
+
+  const types = {
+    '--help': Boolean,
+    '--version': Boolean
+  };
+
+  const { options, aliases } = flags(help);
+  safePairs(types, options, { fail: true, bidirectional: true });
+  Object.assign(types, aliases);
+  const cmd = arg(types, { argv, permissive: false, stopAtPositional: true });
+
+  if (cmd['--help']) return log(help);
+  if (cmd['--version']) return log(pkg.version);
+  if (!cmd._.length) return log(help, { exit: 1 });
+
+  const args = cmd._.slice(1);
+  switch (cmd._[0]) {
+    case 'compose':
+      return compose(args);
+    case 'run':
+      return run(args);
+    case 'clean':
+      return clean(args);
+    case 'purge':
+      return purge(args);
+    default:
+      throw Error('Unknown command: ' + cmd._[0]);
+  }
+}
