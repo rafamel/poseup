@@ -38,7 +38,7 @@ export async function trunk(args: IWriteYaml): Promise<string> {
     // Only remove if it's a temp file
     add(
       ADD_TYPES.REMOVE_TEMP_FILES,
-      'Remove temporary file: ' + writePath.split('/').slice(-1)[0],
+      'Remove temporary file: ' + path.parse(writePath).name,
       () => ensure.rejection(() => pify(fs.unlink)(writePath))
     );
   }
