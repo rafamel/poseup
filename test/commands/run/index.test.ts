@@ -5,7 +5,7 @@ import _list from '~/commands/run/list';
 import { getCmd as _getCleanCmd } from '~/commands/clean';
 import _spawn from '~/utils/spawn';
 import _write from '~/utils/write-yaml';
-import _add from '~/utils/add';
+import { add as _add } from '~/utils/teardown';
 import _runTask from '~/commands/run/task';
 import { setLevel } from '~/utils/logger';
 import { wait } from 'promist';
@@ -26,7 +26,7 @@ jest.mock('~/commands/run/list');
 jest.mock('~/commands/clean');
 jest.mock('~/utils/spawn');
 jest.mock('~/utils/write-yaml');
-jest.mock('~/utils/add');
+jest.mock('~/utils/teardown');
 jest.mock('~/commands/run/task');
 
 const opts = { tasks: ['foo', 'bar'] };

@@ -3,7 +3,7 @@ import _initialize from '~/utils/initialize';
 import _builder from '~/builder';
 import _write from '~/utils/write-yaml';
 import { getCmd as _getCleanCmd } from '~/commands/clean';
-import _add from '~/utils/add';
+import { add as _add } from '~/utils/teardown';
 import _spawn from '~/utils/spawn';
 import { STOP_WAIT_TIME } from '~/constants';
 import path from 'path';
@@ -19,7 +19,7 @@ jest.mock('~/utils/initialize');
 jest.mock('~/builder');
 jest.mock('~/utils/write-yaml');
 jest.mock('~/commands/clean');
-jest.mock('~/utils/add');
+jest.mock('~/utils/teardown');
 jest.mock('~/utils/spawn');
 
 describe(`initialize call`, () => {
