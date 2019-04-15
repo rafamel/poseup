@@ -9,7 +9,9 @@ import pify from 'pify';
 import { IOfType } from '~/types';
 
 jest.mock('~/utils/teardown');
-const mocks: IOfType<jest.Mock<any, any>> = { add } as any;
+const mocks: IOfType<jest.Mock<any, any>> = {
+  add
+} as any;
 beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 
 const file = path.join(TMP_DIR, 'foo.yml');

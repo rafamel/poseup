@@ -1,10 +1,15 @@
 import runCmd from '~/commands/run/cmd';
-import _spawn from '~/utils/spawn';
+import spawn from '~/utils/spawn';
 import { setLevel } from '~/utils/logger';
+import { IOfType } from '~/types';
 
 setLevel('silent');
 jest.mock('~/utils/spawn');
-const spawn: any = _spawn;
+
+const mocks: IOfType<jest.Mock<any, any>> = {
+  spawn
+} as any;
+beforeEach(() => Object.values(mocks).forEach((mocks) => mocks.mockClear()));
 
 describe(`task.command`, () => {
   test(`succeeds`, async () => {
@@ -17,18 +22,16 @@ describe(`task.command`, () => {
 });
 describe(`spawn call`, () => {
   test(`succeeds`, async () => {
-    spawn.mockClear();
-
     await expect(runCmd({ cmd: ['foo'] })).resolves.toBeUndefined();
     await expect(
       runCmd({ cmd: ['foo', 'bar', 'baz'] })
     ).resolves.toBeUndefined();
-    expect(spawn).toHaveBeenCalledTimes(2);
-    expect(spawn).toHaveBeenNthCalledWith(1, 'foo', []);
-    expect(spawn).toHaveBeenNthCalledWith(2, 'foo', ['bar', 'baz']);
+    expect(mocks.spawn).toHaveBeenCalledTimes(2);
+    expect(mocks.spawn).toHaveBeenNthCalledWith(1, 'foo', []);
+    expect(mocks.spawn).toHaveBeenNthCalledWith(2, 'foo', ['bar', 'baz']);
   });
   test(`fails`, async () => {
-    spawn.mockImplementationOnce(() => Promise.reject(Error()));
+    mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
     await expect(runCmd({ cmd: ['foo'] })).rejects.toBeInstanceOf(Error);
   });
 });

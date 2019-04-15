@@ -2,20 +2,24 @@ import path from 'path';
 import fs from 'fs';
 import containerLs from '~/utils/container-ls';
 import out from '../fixtures/container-ls/out';
-import _stdout from '~/utils/stdout';
+import stdout from '~/utils/stdout';
+import { IOfType } from '~/types';
 
 const at = (str?: string): string => {
   return path.join(__dirname, '../fixtures/container-ls', str || '');
 };
 jest.mock('~/utils/stdout');
-const stdout: any = _stdout;
+
+const mocks: IOfType<jest.Mock<any, any>> = {
+  stdout
+} as any;
+beforeEach(() => Object.values(mocks).forEach((mocks) => mocks.mockClear()));
 
 test(`Calls stdout`, async () => {
-  stdout.mockClear();
   await containerLs();
 
-  expect(stdout).toHaveBeenCalledTimes(1);
-  expect(stdout).toHaveBeenCalledWith('docker', [
+  expect(mocks.stdout).toHaveBeenCalledTimes(1);
+  expect(mocks.stdout).toHaveBeenCalledWith('docker', [
     'container',
     'ls',
     '--format',
@@ -23,11 +27,10 @@ test(`Calls stdout`, async () => {
   ]);
 });
 test(`Calls stdout w/ all`, async () => {
-  stdout.mockClear();
   await containerLs({ all: true });
 
-  expect(stdout).toHaveBeenCalledTimes(1);
-  expect(stdout).toHaveBeenCalledWith('docker', [
+  expect(mocks.stdout).toHaveBeenCalledTimes(1);
+  expect(mocks.stdout).toHaveBeenCalledWith('docker', [
     'container',
     'ls',
     '--all',
@@ -36,8 +39,7 @@ test(`Calls stdout w/ all`, async () => {
   ]);
 });
 test(`Succeeds: expected response`, async () => {
-  stdout.mockClear();
-  stdout.mockImplementationOnce(() =>
+  mocks.stdout.mockImplementationOnce(() =>
     Promise.resolve(fs.readFileSync(at('in.txt')).toString())
   );
   await expect(containerLs()).resolves.toEqual(out);

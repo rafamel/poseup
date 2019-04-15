@@ -1,12 +1,17 @@
 import getCmd from '~/commands/clean/get-cmd';
-import _strip from '~/commands/clean/strip-services';
-import _write from '~/utils/write-yaml';
+import strip from '~/commands/clean/strip-services';
+import write from '~/utils/write-yaml';
 import { IBuild } from '~/builder';
+import { IOfType } from '~/types';
 
-const strip: any = _strip;
-const write: any = _write;
 jest.mock('~/commands/clean/strip-services');
 jest.mock('~/utils/write-yaml');
+
+const mocks: IOfType<jest.Mock<any, any>> = {
+  strip,
+  write
+} as any;
+beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 
 let args: any[] | null = null;
 const build: IBuild = {
@@ -19,14 +24,12 @@ const build: IBuild = {
 
 describe(`strip call`, () => {
   test(`succeeds`, async () => {
-    strip.mockClear();
-
     await expect(getCmd(build)).resolves.toBe('response');
-    expect(strip).toHaveBeenCalledTimes(1);
-    expect(strip).toHaveBeenCalledWith(['foo', 'bar'], { baz: 'foobar' });
+    expect(mocks.strip).toHaveBeenCalledTimes(1);
+    expect(mocks.strip).toHaveBeenCalledWith(['foo', 'bar'], { baz: 'foobar' });
   });
   test(`fails`, async () => {
-    strip.mockImplementationOnce(() => {
+    mocks.strip.mockImplementationOnce(() => {
       throw Error();
     });
     await expect(getCmd(build)).rejects.toBeInstanceOf(Error);
@@ -34,14 +37,12 @@ describe(`strip call`, () => {
 });
 describe(`write call`, () => {
   test(`succeeds`, async () => {
-    write.mockClear();
-
     await expect(getCmd(build)).resolves.toBe('response');
-    expect(write).toHaveBeenCalledTimes(1);
-    expect(write).toHaveBeenCalledWith({ data: { baz: 'foobar' } });
+    expect(mocks.write).toHaveBeenCalledTimes(1);
+    expect(mocks.write).toHaveBeenCalledWith({ data: { baz: 'foobar' } });
   });
   test(`fails`, async () => {
-    write.mockImplementationOnce(() => Promise.reject(Error()));
+    mocks.write.mockImplementationOnce(() => Promise.reject(Error()));
     await expect(getCmd(build)).rejects.toBeInstanceOf(Error);
   });
 });
