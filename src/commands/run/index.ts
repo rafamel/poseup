@@ -8,7 +8,7 @@ import uuid from 'uuid/v4';
 import { STOP_WAIT_TIME } from '~/constants';
 import spawn, { silent } from '~/utils/spawn';
 import initialize from '~/utils/initialize';
-import add, { ADD_TYPES } from '~/utils/add';
+import { add, ADD_TYPES } from '~/utils/teardown';
 import { control } from 'exits';
 import runTask from './task';
 import list from './list';

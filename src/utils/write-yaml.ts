@@ -3,7 +3,7 @@ import fs from 'fs';
 import pify from 'pify';
 import yaml from 'js-yaml';
 import uuid from 'uuid/v4';
-import add, { ADD_TYPES } from '~/utils/add';
+import { add, ADD_TYPES } from '~/utils/teardown';
 import { TMP_DIR } from '~/constants';
 import ensure from './ensure';
 

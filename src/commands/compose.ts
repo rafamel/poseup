@@ -8,7 +8,7 @@ import write from '~/utils/write-yaml';
 import { getCmd as getCleanCmd } from './clean';
 import { STOP_WAIT_TIME } from '~/constants';
 import spawn from '~/utils/spawn';
-import add, { ADD_TYPES } from '~/utils/add';
+import { add, ADD_TYPES } from '~/utils/teardown';
 
 export default async function compose(
   options: IComposeOptions = {}
