@@ -1,13 +1,18 @@
-import has from '~/utils/has';
-import { options, attach, add, resolver, on, IState } from 'exits';
-import { ADD_TYPES } from '../add';
+import { options, attach as _attach, add, resolver, on, IState } from 'exits';
+import { ADD_TYPES, toTeardown } from './teardown';
 import chalk from 'chalk';
 import logger from '~/utils/logger';
 import { error } from 'cli-belt';
 
-export default async function trunk(): Promise<void> {
+let attached = false;
+
+/**
+ * Should be called on bin entry point.
+ * Attaches on-exit hook runner to current node process -executes if terminated.
+ */
+export default async function attach(): Promise<void> {
   // Attachment must go first (other potential errors must be catched)
-  attach();
+  _attach();
   options({
     spawned: {
       signals: 'none',
@@ -22,31 +27,30 @@ export default async function trunk(): Promise<void> {
     }
   });
 
-  // Check binaries are available: docker docker-compose
-  const bins = await has.all('docker', 'docker-compose');
-  if (!bins.all) {
-    const name = bins.docker ? 'docker-compose' : 'docker';
-    logger.info(
-      `${name} binary is not available in path.\n` +
-        'Install docker at https://www.docker.com/get-started ' +
-        'and run this afterwards.'
-    );
-    throw Error(`${name} not available`);
-  }
-
   // Add hooks
-  on('triggered', () =>
-    logger.info('\n' + chalk.yellow.bold('-') + ' Waiting on termination')
+  on(
+    'triggered',
+    () =>
+      toTeardown() &&
+      logger.info('\n' + chalk.yellow.bold('-') + ' Waiting on termination')
   );
   add(
-    () => logger.info(chalk.yellow.bold('-') + ' Preparing exit'),
+    () =>
+      toTeardown() && logger.info(chalk.yellow.bold('-') + ' Preparing exit'),
     ADD_TYPES.START_LOG
   );
   on('done', onDone);
+
+  attached = true;
+}
+
+export function isAttached(): boolean {
+  return attached;
 }
 
 export function onDone(getState: () => IState): void {
-  logger.info(chalk.green.bold('✓') + ' Done');
+  if (toTeardown()) logger.info(chalk.green.bold('✓') + ' Done');
+
   const { triggered } = getState();
   if (triggered) {
     switch (triggered.type) {
