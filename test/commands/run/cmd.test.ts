@@ -16,8 +16,10 @@ describe(`task.command`, () => {
     await expect(runCmd({ cmd: ['foo'] })).resolves.toBeUndefined();
   });
   test(`fails`, async () => {
-    await expect(runCmd({})).rejects.toBeInstanceOf(Error);
-    await expect(runCmd({ cmd: [] })).rejects.toBeInstanceOf(Error);
+    await expect(runCmd({})).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Task has no cmd"`
+    );
+    await expect(runCmd({ cmd: [] })).rejects.toThrowError();
   });
 });
 describe(`spawn call`, () => {
@@ -32,6 +34,6 @@ describe(`spawn call`, () => {
   });
   test(`fails`, async () => {
     mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(runCmd({ cmd: ['foo'] })).rejects.toBeInstanceOf(Error);
+    await expect(runCmd({ cmd: ['foo'] })).rejects.toThrowError();
   });
 });

@@ -58,7 +58,7 @@ describe(`initialize call`, () => {
   test(`fails`, async () => {
     mocks.initialize.mockImplementationOnce(() => Promise.reject(Error()));
 
-    await expect(run(opts)).rejects.toBeInstanceOf(Error);
+    await expect(run(opts)).rejects.toThrowError();
     await expect(mocks.builder).not.toHaveBeenCalled();
   });
 });
@@ -72,9 +72,9 @@ describe(`builder call`, () => {
   });
   test(`fails`, async () => {
     mocks.builder.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(run(opts)).rejects.toBeInstanceOf(Error);
+    await expect(run(opts)).rejects.toThrowError();
     mocks.builder.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(run({ list: true })).rejects.toBeInstanceOf(Error);
+    await expect(run({ list: true })).rejects.toThrowError();
 
     expect(mocks.getCleanCmd).not.toHaveBeenCalled();
     expect(mocks.spawn).not.toHaveBeenCalled();
@@ -108,16 +108,16 @@ describe(`list call`, () => {
       throw Error();
     });
 
-    await expect(run({ list: true })).rejects.toBeInstanceOf(Error);
+    await expect(run({ list: true })).rejects.toThrowError();
   });
 });
 describe(`control/trunk call`, () => {
   describe(`safety checks`, () => {
     test(`fails when opts wo/ tasks`, async () => {
-      await expect(run({ list: false })).rejects.toBeInstanceOf(Error);
-      await expect(run({ list: false, tasks: [] })).rejects.toBeInstanceOf(
-        Error
-      );
+      await expect(
+        run({ list: false })
+      ).rejects.toThrowErrorMatchingInlineSnapshot(`"No tasks to run"`);
+      await expect(run({ list: false, tasks: [] })).rejects.toThrowError();
     });
     test(`fails when config wo/ tasks`, async () => {
       mocks.builder.mockImplementationOnce(async () => {
@@ -127,12 +127,14 @@ describe(`control/trunk call`, () => {
           config: { ...ans.config, tasks: undefined }
         };
       });
-      await expect(run(opts)).rejects.toBeInstanceOf(Error);
+      await expect(run(opts)).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"There are no tasks defined"`
+      );
     });
     test(`fails when task in opts doesn't exist in config`, async () => {
-      await expect(run({ tasks: ['foo', 'baz'] })).rejects.toBeInstanceOf(
-        Error
-      );
+      await expect(
+        run({ tasks: ['foo', 'baz'] })
+      ).rejects.toThrowErrorMatchingInlineSnapshot(`"Task baz is not defined"`);
     });
   });
   describe(`sandbox`, () => {
@@ -166,7 +168,7 @@ describe(`control/trunk call`, () => {
     test(`fails`, async () => {
       mocks.getCleanCmd.mockImplementationOnce(() => Promise.reject(Error()));
 
-      await expect(run(opts)).rejects.toBeInstanceOf(Error);
+      await expect(run(opts)).rejects.toThrowError();
       expect(mocks.runTask).not.toHaveBeenCalled();
     });
   });
@@ -181,7 +183,7 @@ describe(`control/trunk call`, () => {
     test(`fails`, async () => {
       mocks.write.mockImplementationOnce(() => Promise.reject(Error()));
 
-      await expect(run(opts)).rejects.toBeInstanceOf(Error);
+      await expect(run(opts)).rejects.toThrowError();
       expect(mocks.runTask).not.toHaveBeenCalled();
     });
   });
@@ -201,7 +203,7 @@ describe(`control/trunk call`, () => {
       });
       mocks.builder.mockImplementationOnce(async () => ({ ...build, getCmd }));
 
-      await expect(run(opts)).rejects.toBeInstanceOf(Error);
+      await expect(run(opts)).rejects.toThrowError();
       await expect(mocks.runTask).not.toHaveBeenCalled();
     });
   });
@@ -287,7 +289,7 @@ describe(`control/trunk call`, () => {
     });
     test(`fails`, async () => {
       mocks.runTask.mockImplementationOnce(() => Promise.reject(Error()));
-      await expect(run(opts)).rejects.toBeInstanceOf(Error);
+      await expect(run(opts)).rejects.toThrowError();
       expect(mocks.runTask).toHaveBeenCalledTimes(1);
     });
   });

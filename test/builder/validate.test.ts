@@ -14,7 +14,11 @@ describe(`schema`, () => {
     ).not.toThrow();
   });
   test(`fails`, () => {
-    expect(() => validate({ project: 'foo', compose: {} })).toThrowError();
+    expect(() =>
+      validate({ project: 'foo', compose: {} })
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Poseup configuration is not valid: .compose should have required property '.services'"`
+    );
   });
 });
 describe(`services definition`, () => {
@@ -31,12 +35,18 @@ describe(`services definition`, () => {
     ).not.toThrowError();
   });
   test(`fails when not defined`, () => {
-    expect(() => validate({ project: 'foo', compose: {} })).toThrowError();
+    expect(() =>
+      validate({ project: 'foo', compose: {} })
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Poseup configuration is not valid: .compose should have required property '.services'"`
+    );
   });
   test(`fails when no services exist`, () => {
     expect(() =>
       validate({ project: 'foo', compose: { services: {} } })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"There are no services defined within the \\"compose\\" key of your configuration file"`
+    );
   });
 });
 describe(`persist services existence`, () => {
@@ -65,7 +75,9 @@ describe(`persist services existence`, () => {
           }
         }
       })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Persisted service \\"baz\\" is not defined."`
+    );
   });
 });
 describe(`task primary/cmd`, () => {
@@ -133,7 +145,9 @@ describe(`task primary/cmd`, () => {
           }
         }
       })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Primary service \\"baz\\" for task \\"foobar\\" is not defined"`
+    );
   });
 });
 describe(`task services`, () => {
@@ -174,7 +188,9 @@ describe(`task services`, () => {
           }
         }
       })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Service \\"barbaz\\" for task \\"foobar\\" is not defined"`
+    );
   });
 });
 describe(`task exec`, () => {
@@ -264,7 +280,9 @@ describe(`task exec`, () => {
           }
         }
       })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"No exec command can be defined for the primary container on task \\"foobar\\""`
+    );
   });
   test(`fails on exec for non services`, () => {
     expect(() =>
@@ -285,6 +303,8 @@ describe(`task exec`, () => {
           }
         }
       })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Service \\"barbaz\\" for task foobar exec is not for a defined/dependent container"`
+    );
   });
 });

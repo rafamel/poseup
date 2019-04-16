@@ -32,7 +32,7 @@ describe(`strip call`, () => {
     mocks.strip.mockImplementationOnce(() => {
       throw Error();
     });
-    await expect(getCmd(build)).rejects.toBeInstanceOf(Error);
+    await expect(getCmd(build)).rejects.toThrowError();
   });
 });
 describe(`write call`, () => {
@@ -43,7 +43,7 @@ describe(`write call`, () => {
   });
   test(`fails`, async () => {
     mocks.write.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(getCmd(build)).rejects.toBeInstanceOf(Error);
+    await expect(getCmd(build)).rejects.toThrowError();
   });
 });
 describe(`builder().getCmd call`, () => {

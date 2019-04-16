@@ -26,7 +26,7 @@ test(`fails on non existent binary`, async () => {
     return require('child_process').spawn(uuid().replace(/-/g, ''));
   });
 
-  await expect(stdout('foo', ['bar', 'baz'])).rejects.toBeInstanceOf(Error);
+  await expect(stdout('foo', ['bar', 'baz'])).rejects.toThrowError();
 });
 test(`Fails on spawn process error`, async () => {
   mocks.spawn.mockImplementation(() => {

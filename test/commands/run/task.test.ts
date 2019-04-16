@@ -112,7 +112,7 @@ describe(`linked services`, () => {
         CLEAN,
         0
       )
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowError();
 
     mocks.spawn.mockImplementation(() => Promise.resolve(null));
   });
@@ -131,7 +131,9 @@ describe(`linked services`, () => {
         CLEAN,
         0
       )
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Process finished early (SIGINT)"`
+    );
 
     mocks.spawn.mockImplementation(() => Promise.resolve(null));
   });
@@ -143,7 +145,9 @@ describe(`linked services`, () => {
 
     await expect(
       runTask(TASK, CONFIG, 'foo', ['d', 'e'], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Process finished early (SIGINT)"`
+    );
 
     mocks.spawn.mockImplementation(() => Promise.resolve(null));
   });
@@ -196,10 +200,12 @@ describe(`wait after bringing up services`, () => {
   test(`fails on < 0`, async () => {
     await expect(
       runTask(TASK, CONFIG, 'foo', [], CLEAN, -1)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Waiting time must be greater than or equal to 0"`
+    );
     await expect(
       runTask(TASK, CONFIG, 'foo', [], CLEAN, -1, true)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowError();
   });
   test(`waits only when bringing up services`, async () => {
     await expect(
@@ -317,7 +323,7 @@ describe(`task.exec`, () => {
 
     await expect(
       runTask({ ...TASK, exec: [{ bar: ['a'] }] }, CONFIG, 'foo', [], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowError();
 
     mocks.spawn.mockImplementation(() => Promise.resolve(null));
   });
@@ -329,7 +335,9 @@ describe(`task.exec`, () => {
 
     await expect(
       runTask({ ...TASK, exec: [{ bar: ['a'] }] }, CONFIG, 'foo', [], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Process finished early (SIGINT)"`
+    );
 
     mocks.spawn.mockImplementation(() => Promise.resolve(null));
   });
@@ -352,7 +360,7 @@ describe(`runPrimary call`, () => {
 
     await expect(
       runTask(TASK, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowError();
   });
   test(`calls after exec`, async () => {
     mocks.spawn.mockImplementation(async (...args: any[]) => {
@@ -396,7 +404,7 @@ describe(`runCmd call`, () => {
 
     await expect(
       runTask({ cmd: ['c', 'd'] }, CONFIG, 'foo', [], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowError();
   });
   test(`calls after exec`, async () => {
     mocks.spawn.mockImplementation(async (...args: any[]) => {
@@ -438,13 +446,15 @@ describe(`clean call`, () => {
     CLEAN.mockImplementationOnce(() => Promise.reject(Error()));
     await expect(
       runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowError();
   });
   test(`fails on signal`, async () => {
     CLEAN.mockImplementationOnce(async () => 'SIGINT');
     await expect(
       runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Process finished early (SIGINT)"`
+    );
   });
   test(`executes after all`, async () => {
     CLEAN.mockClear();

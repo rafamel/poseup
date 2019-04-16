@@ -43,14 +43,16 @@ describe(`explicit file`, () => {
         file: at('fail/poseup.config.ts'),
         directory: at()
       };
-      await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
+      await expect(getFile(opts)).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"Extension .ts is not valid"`
+      );
     });
     test(`fails if it doesn't exist`, async () => {
       const opts = {
         file: at('fail/poseup.config.js'),
         directory: at()
       };
-      await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
+      await expect(getFile(opts)).rejects.toThrowError();
     });
   });
   describe(`relative`, () => {
@@ -70,7 +72,7 @@ describe(`explicit file`, () => {
           file: 'js/foo.config.js',
           directory: at()
         };
-        await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
+        await expect(getFile(opts)).rejects.toThrowError();
       });
     });
     describe(`cwd`, () => {
@@ -87,7 +89,7 @@ describe(`explicit file`, () => {
         const opts = {
           file: 'foo.config.js'
         };
-        await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
+        await expect(getFile(opts)).rejects.toThrowError();
       });
     });
   });
@@ -131,7 +133,7 @@ describe(`default file`, () => {
     });
     test(`fails`, async () => {
       const opts = { directory: at('fail') };
-      await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
+      await expect(getFile(opts)).rejects.toThrowError();
     });
   });
   describe(`relative`, () => {
@@ -146,7 +148,7 @@ describe(`default file`, () => {
       test(`fails`, async () => {
         cwd.mockImplementationOnce(() => at('foo'));
         const opts = { directory: 'inner' };
-        await expect(getFile(opts)).rejects.toBeInstanceOf(Error);
+        await expect(getFile(opts)).rejects.toThrowError();
       });
     });
     describe(`cwd`, () => {
@@ -158,7 +160,7 @@ describe(`default file`, () => {
       });
       test(`fails`, async () => {
         cwd.mockImplementationOnce(() => at('foo'));
-        await expect(getFile({})).rejects.toBeInstanceOf(Error);
+        await expect(getFile({})).rejects.toThrowError();
       });
     });
   });
@@ -172,6 +174,6 @@ describe(`exists`, () => {
     await expect(exists(at('js'))).resolves.toBeUndefined();
   });
   test(`fails`, async () => {
-    await expect(exists(at('foo'))).rejects.toBeInstanceOf(Error);
+    await expect(exists(at('foo'))).rejects.toThrowError();
   });
 });

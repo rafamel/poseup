@@ -20,14 +20,20 @@ test(`shows help`, async () => {
   expect(mocks.clean).not.toHaveBeenCalled();
 });
 test(`fails on positional`, async () => {
-  await expect(clean(argv('pos'))).rejects.toBeInstanceOf(Error);
-  await expect(clean(argv('-e dev pos'))).rejects.toBeInstanceOf(Error);
-  await expect(clean(argv('pos -e dev'))).rejects.toBeInstanceOf(Error);
+  await expect(clean(argv('pos'))).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown command: pos"`
+  );
+  await expect(clean(argv('-e dev pos'))).rejects.toThrowError();
+  await expect(clean(argv('pos -e dev'))).rejects.toThrowError();
 
   expect(mocks.clean).not.toHaveBeenCalled();
 });
 test(`fails on unknown arg`, async () => {
-  await expect(clean(argv('-e dev -p'))).rejects.toBeInstanceOf(Error);
+  await expect(
+    clean(argv('-e dev -p'))
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown or unexpected option: -p"`
+  );
 
   expect(mocks.clean).not.toHaveBeenCalled();
 });

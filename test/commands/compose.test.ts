@@ -37,7 +37,7 @@ describe(`initialize call`, () => {
   });
   test(`fails`, async () => {
     mocks.initialize.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(compose()).rejects.toBeInstanceOf(Error);
+    await expect(compose()).rejects.toThrowError();
   });
 });
 describe(`builder call`, () => {
@@ -48,7 +48,7 @@ describe(`builder call`, () => {
   });
   test(`fails`, async () => {
     mocks.builder.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(compose()).rejects.toBeInstanceOf(Error);
+    await expect(compose()).rejects.toThrowError();
   });
 });
 describe(`write call`, () => {
@@ -74,7 +74,7 @@ describe(`write call`, () => {
   });
   test(`fails`, async () => {
     mocks.write.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(compose()).rejects.toBeInstanceOf(Error);
+    await expect(compose()).rejects.toThrowError();
   });
 });
 describe(`builder.getCmd call`, () => {
@@ -104,7 +104,7 @@ describe(`builder.getCmd call`, () => {
         }
       };
     });
-    await expect(compose()).rejects.toBeInstanceOf(Error);
+    await expect(compose()).rejects.toThrowError();
   });
 });
 describe(`options.dry`, () => {
@@ -114,22 +114,32 @@ describe(`options.dry`, () => {
     ).resolves.toBeUndefined();
   });
   test(`fails if dry + !write`, async () => {
-    await expect(compose({ dry: true })).rejects.toBeInstanceOf(Error);
+    await expect(
+      compose({ dry: true })
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Compose cannot be dry run without a write path"`
+    );
   });
   test(`fails if dry + clean`, async () => {
     await expect(
       compose({ dry: true, clean: true, write: 'foo/bar' })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Compose cannot be dry run with clean"`
+    );
   });
   test(`fails if dry + stop`, async () => {
     await expect(
       compose({ dry: true, stop: true, write: 'foo/bar' })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Compose cannot be dry run with stop"`
+    );
   });
   test(`fails if dry + stop + clean`, async () => {
     await expect(
       compose({ dry: true, stop: true, clean: true, write: 'foo/bar' })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Compose cannot be dry run with clean"`
+    );
   });
   test(`calls initialize, builder, write, on dry & !dry`, async () => {
     await expect(compose()).resolves.toBeUndefined();
@@ -220,10 +230,12 @@ describe(`spawn call`, () => {
   });
   test(`fails`, async () => {
     mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(compose()).rejects.toBeInstanceOf(Error);
+    await expect(compose()).rejects.toThrowError();
   });
   test(`fails on signal`, async () => {
     mocks.spawn.mockImplementationOnce(async () => 'SIGINT');
-    await expect(compose()).rejects.toBeInstanceOf(Error);
+    await expect(compose()).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Process finished early (SIGINT)"`
+    );
   });
 });

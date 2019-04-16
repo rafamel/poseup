@@ -20,14 +20,18 @@ test(`shows help`, async () => {
   expect(mocks.purge).not.toHaveBeenCalled();
 });
 test(`fails on positional`, async () => {
-  await expect(purge(argv('pos'))).rejects.toBeInstanceOf(Error);
-  await expect(purge(argv('-f pos'))).rejects.toBeInstanceOf(Error);
-  await expect(purge(argv('pos -f'))).rejects.toBeInstanceOf(Error);
+  await expect(purge(argv('pos'))).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown command: pos"`
+  );
+  await expect(purge(argv('-f pos'))).rejects.toThrowError();
+  await expect(purge(argv('pos -f'))).rejects.toThrowError();
 
   expect(mocks.purge).not.toHaveBeenCalled();
 });
 test(`fails on unknown arg`, async () => {
-  await expect(purge(argv('-f -p'))).rejects.toBeInstanceOf(Error);
+  await expect(purge(argv('-f -p'))).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown or unexpected option: -p"`
+  );
 
   expect(mocks.purge).not.toHaveBeenCalled();
 });

@@ -17,20 +17,22 @@ describe(`list`, () => {
   test(`fails if tasks are passed in options`, () => {
     expect(() =>
       list({ tasks: [''] }, { project: 'Foo', compose: {} })
-    ).toThrowError();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"poseup cannot run tasks when listing them"`
+    );
   });
 });
 describe(`printer`, () => {
   test(`no tasks`, () => {
     expect(printer({ project: 'Foo', compose: {} })).toMatchInlineSnapshot(`
-      "Tasks for Foo
-      "
-    `);
+            "Tasks for Foo
+            "
+        `);
     expect(printer({ project: 'Foo', tasks: {}, compose: {} }))
       .toMatchInlineSnapshot(`
-      "Tasks for Foo
-      "
-    `);
+            "Tasks for Foo
+            "
+        `);
   });
   test(`no descriptions`, () => {
     expect(
@@ -40,12 +42,12 @@ describe(`printer`, () => {
         tasks: { foo: {}, bar: {}, baz: {} }
       })
     ).toMatchInlineSnapshot(`
-      "Tasks for Foo
-      
-      poseup run foo       
-      poseup run bar       
-      poseup run baz       "
-    `);
+            "Tasks for Foo
+            
+            poseup run foo       
+            poseup run bar       
+            poseup run baz       "
+        `);
   });
   test(`descriptions`, () => {
     expect(
@@ -59,12 +61,12 @@ describe(`printer`, () => {
         }
       })
     ).toMatchInlineSnapshot(`
-      "Tasks for Foo
-      
-      poseup run foo       Lorem ipsum
-      poseup run bar       
-      poseup run baz       Lorem ipsum lorem ipsum"
-    `);
+            "Tasks for Foo
+            
+            poseup run foo       Lorem ipsum
+            poseup run bar       
+            poseup run baz       Lorem ipsum lorem ipsum"
+        `);
   });
   test(`name length divergence`, () => {
     expect(
@@ -78,11 +80,11 @@ describe(`printer`, () => {
         }
       })
     ).toMatchInlineSnapshot(`
-      "Tasks for Foo
-      
-      poseup run foofoo          Lorem ipsum
-      poseup run bar             Lorem ipsum lorem ipsum
-      poseup run bazbazbaz       "
-    `);
+            "Tasks for Foo
+            
+            poseup run foofoo          Lorem ipsum
+            poseup run bar             Lorem ipsum lorem ipsum
+            poseup run bazbazbaz       "
+        `);
   });
 });

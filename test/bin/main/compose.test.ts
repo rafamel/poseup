@@ -20,14 +20,20 @@ test(`shows help`, async () => {
   expect(mocks.compose).not.toHaveBeenCalled();
 });
 test(`fails on positional`, async () => {
-  await expect(compose(argv('pos'))).rejects.toBeInstanceOf(Error);
-  await expect(compose(argv('-e dev pos'))).rejects.toBeInstanceOf(Error);
-  await expect(compose(argv('pos -e dev'))).rejects.toBeInstanceOf(Error);
+  await expect(compose(argv('pos'))).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown command: pos"`
+  );
+  await expect(compose(argv('-e dev pos'))).rejects.toThrowError();
+  await expect(compose(argv('pos -e dev'))).rejects.toThrowError();
 
   expect(mocks.compose).not.toHaveBeenCalled();
 });
 test(`fails on unknown arg`, async () => {
-  await expect(compose(argv('-e dev -p'))).rejects.toBeInstanceOf(Error);
+  await expect(
+    compose(argv('-e dev -p'))
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown or unexpected option: -p"`
+  );
 
   expect(mocks.compose).not.toHaveBeenCalled();
 });

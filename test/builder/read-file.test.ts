@@ -24,7 +24,7 @@ test(`reads yaml`, async () => {
 });
 
 test(`fails for invalid ext`, async () => {
-  await expect(readFile(at('fail/poseup.config.ts'))).rejects.toBeInstanceOf(
-    Error
-  );
+  await expect(
+    readFile(at('fail/poseup.config.ts'))
+  ).rejects.toThrowErrorMatchingInlineSnapshot(`"Extension not valid"`);
 });

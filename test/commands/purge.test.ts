@@ -90,15 +90,15 @@ test(`calls containerLs after docker prunes`, async () => {
 test(`fails if initialize fails`, async () => {
   mocks.initialize.mockImplementationOnce(() => Promise.reject(Error()));
 
-  await expect(purge()).rejects.toBeInstanceOf(Error);
+  await expect(purge()).rejects.toThrowError();
 });
 test(`fails if docker prune fails`, async () => {
   mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
 
-  await expect(purge()).rejects.toBeInstanceOf(Error);
+  await expect(purge()).rejects.toThrowError();
 });
 test(`fails if containerLs fails`, async () => {
   mocks.containerLs.mockImplementationOnce(() => Promise.reject(Error()));
 
-  await expect(purge()).rejects.toBeInstanceOf(Error);
+  await expect(purge()).rejects.toThrowError();
 });

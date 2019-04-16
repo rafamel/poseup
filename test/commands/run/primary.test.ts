@@ -29,7 +29,9 @@ describe(`task.primary`, () => {
     await expect(run()).resolves.toBeUndefined();
   });
   test(`fails`, async () => {
-    await expect(run({})).rejects.toBeInstanceOf(Error);
+    await expect(run({})).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Task has no primary container"`
+    );
   });
 });
 describe(`spawn call`, () => {
@@ -65,6 +67,6 @@ describe(`spawn call`, () => {
   });
   test(`fails`, async () => {
     mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(run()).rejects.toBeInstanceOf(Error);
+    await expect(run()).rejects.toThrowError();
   });
 });

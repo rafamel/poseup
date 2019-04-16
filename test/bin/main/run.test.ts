@@ -27,7 +27,11 @@ test(`doesn't fail on positional`, async () => {
   expect(mocks.run).toHaveBeenCalledTimes(3);
 });
 test(`fails on unknown arg`, async () => {
-  await expect(run(argv('-e dev -p'))).rejects.toBeInstanceOf(Error);
+  await expect(
+    run(argv('-e dev -p'))
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown or unexpected option: -p"`
+  );
 
   expect(mocks.run).not.toHaveBeenCalled();
 });

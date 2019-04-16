@@ -40,9 +40,11 @@ test(`doesn't throw`, () => {
   expect(() => strip(['app'], noVolumes)).not.toThrow();
 });
 test(`throws if stripArr has keys not contained in services`, () => {
-  expect(() => strip(['foo'])).toThrow();
-  expect(() => strip(['foo'], compose)).toThrow();
-  expect(() => strip(['foo'], compose, { removeDeps: false })).toThrow();
+  expect(() => strip(['foo'])).toThrowErrorMatchingInlineSnapshot(
+    `"Compose has no service named foo"`
+  );
+  expect(() => strip(['foo'], compose)).toThrowError();
+  expect(() => strip(['foo'], compose, { removeDeps: false })).toThrowError();
 });
 test(`returns compose if no stripArr and removeDeps = false`, () => {
   expect(strip(undefined, compose, { removeDeps: false })).toEqual(compose);

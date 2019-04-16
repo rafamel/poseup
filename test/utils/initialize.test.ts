@@ -52,11 +52,15 @@ describe(`docker & docker-compose binaries`, () => {
     mocks.all.mockImplementationOnce(() =>
       Promise.resolve({ all: false, docker: true, 'docker-compose': false })
     );
-    await expect(initialize({})).rejects.toBeInstanceOf(Error);
+    await expect(initialize({})).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"docker-compose not available"`
+    );
 
     mocks.all.mockImplementationOnce(() =>
       Promise.resolve({ all: false, docker: false, 'docker-compose': true })
     );
-    await expect(initialize({})).rejects.toBeInstanceOf(Error);
+    await expect(initialize({})).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"docker not available"`
+    );
   });
 });

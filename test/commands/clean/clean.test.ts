@@ -39,7 +39,7 @@ describe(`initialize call`, () => {
   });
   test(`fails`, async () => {
     mocks.initialize.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(clean()).rejects.toBeInstanceOf(Error);
+    await expect(clean()).rejects.toThrowError();
   });
 });
 describe(`builder call`, () => {
@@ -51,7 +51,7 @@ describe(`builder call`, () => {
   });
   test(`fails`, async () => {
     mocks.builder.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(clean()).rejects.toBeInstanceOf(Error);
+    await expect(clean()).rejects.toThrowError();
   });
 });
 describe(`getCmd call`, () => {
@@ -64,7 +64,7 @@ describe(`getCmd call`, () => {
   });
   test(`fails`, async () => {
     mocks.getCmd.mockImplementationOnce(() => Promise.reject(Error()));
-    await expect(clean()).rejects.toBeInstanceOf(Error);
+    await expect(clean()).rejects.toThrowError();
   });
 });
 describe(`spawn call`, () => {
@@ -76,6 +76,6 @@ describe(`spawn call`, () => {
   test(`fails`, async () => {
     mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
 
-    await expect(clean()).rejects.toBeInstanceOf(Error);
+    await expect(clean()).rejects.toThrowError();
   });
 });

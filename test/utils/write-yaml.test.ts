@@ -76,7 +76,7 @@ describe(`random path`, () => {
 
     await expect(read(file)).resolves.toBe('foo');
     expect(mocks.add).toHaveBeenCalledTimes(1);
-    await expect(rm()).resolves.not.toBeInstanceOf(Error);
-    await expect(read(file)).rejects.toBeInstanceOf(Error);
+    await expect(rm()).resolves.not.toThrowError();
+    await expect(read(file)).rejects.toThrowError();
   });
 });

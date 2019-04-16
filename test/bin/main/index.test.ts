@@ -36,18 +36,24 @@ test(`shows version`, async () => {
   mv.slice(1).forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`fails on unknown command`, async () => {
-  await expect(main(argv('pos'))).rejects.toBeInstanceOf(Error);
+  await expect(main(argv('pos'))).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown command: pos"`
+  );
 
   mv.forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`shows help and fails on no command`, async () => {
-  await expect(main([])).rejects.toBeInstanceOf(Error);
+  await expect(main([])).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Poseup requires a command"`
+  );
 
   expect(mocks.console).toHaveBeenCalledTimes(1);
   mv.slice(1).forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`fails on unknown arg`, async () => {
-  await expect(main(argv('-e dev'))).rejects.toBeInstanceOf(Error);
+  await expect(main(argv('-e dev'))).rejects.toThrowErrorMatchingInlineSnapshot(
+    `"Unknown or unexpected option: -e"`
+  );
 
   mv.forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
