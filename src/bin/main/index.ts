@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
-import up from 'read-pkg-up';
+import up from 'find-up';
+import fs from 'fs-extra';
+import rejects from '~/utils/rejects';
 import { stripIndent as indent } from 'common-tags';
 import chalk from 'chalk';
 import arg from 'arg';
@@ -10,7 +12,10 @@ import clean from './clean';
 import purge from './purge';
 
 export default async function main(argv: string[]): Promise<void> {
-  const { pkg } = await up();
+  const pkg = await up('package.json', { cwd: __dirname })
+    .then((pkg) => fs.readJSON(pkg || ''))
+    .catch(rejects);
+
   if (pkg.name) process.title = pkg.name;
 
   const help = indent`
