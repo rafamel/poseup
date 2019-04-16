@@ -21,6 +21,8 @@
   <br />
 </div>
 
+If you come to find it useful, consider [starring the project](https://github.com/rafamel/poseup) and following [its author](https://github.com/rafamel) to show your ❤️
+
 ## Install
 
 Requires [`docker` to be installed on your system.](https://docs.docker.com/install/)
@@ -60,6 +62,7 @@ In contrast with other solutions, *poseup* integrates seamlessly with `docker-co
   - [Structure:](#structure) what you should put where in the configuration file.
   - [Environments:](#environments) how to define different configurations for several environments.
   - [Example:](#example) a complete example configuration.
+- [Programmatic usage:](#programmatic-usage) how to use poseup programmatically.
 
 ### CLI
 
@@ -295,7 +298,7 @@ module.exports = {
 };
 ```
 
-Solutions like [`slimconf`](https://www.npmjs.com/package/slimconf) might assist you in organizing your environment-dependent configuration.
+Solutions like [`slimconf`](https://github.com/rafamel/slimconf) might assist you in organizing your environment-dependent configuration.
 
 As an example:
 
@@ -338,7 +341,7 @@ module.exports = slim(
 
 #### Example
 
-This example uses [`slimconf`](https://www.npmjs.com/package/slimconf) to manage environment-dependent configuration.
+This example uses [`slimconf`](https://github.com/rafamel/slimconf) to manage environment-dependent configuration.
 
 `poseup.config.js`:
 
@@ -432,3 +435,14 @@ module.exports = slim(
   })
 );
 ```
+
+### Programmatic Usage
+
+[See docs.](https://rafamel.github.io/poseup/globals.html)
+
+*poseup* exports [`compose`](https://rafamel.github.io/poseup/globals.html#compose), [`run`](https://rafamel.github.io/poseup/globals.html#run), [`clean`](https://rafamel.github.io/poseup/globals.html#clean), and [`purge`](https://rafamel.github.io/poseup/globals.html#purge), which are the ones called by the equally names CLI commands.
+
+However, when running *poseup* on the CLI, it will also listen to termination events though [`exits`](https://github.com/rafamel/exits) and run cleanup tasks either on end of execution, or termination. In order to handle these cleanup tasks, you have two options:
+
+- Call [`attach`](https://rafamel.github.io/poseup/globals.html#attach) before any of the command functions. This will produce identical behavior to that of the CLI.
+- Call [`teardown`](https://rafamel.github.io/poseup/globals.html#teardown) after running any of the command functions to manually initialize the run of cleanup tasks and handle errors.
