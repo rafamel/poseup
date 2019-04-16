@@ -1,9 +1,8 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
-import pify from 'pify';
 import yaml from 'js-yaml';
+import rejects from '~/utils/rejects';
 import { IConfig } from '~/types';
-import ensure from '~/utils/ensure';
 
 export default async function readFile(file: string): Promise<IConfig> {
   const { ext } = path.parse(file);
@@ -12,11 +11,14 @@ export default async function readFile(file: string): Promise<IConfig> {
     case '.js':
       return require(file);
     case '.json':
-      return JSON.parse(await ensure.rejection(() => pify(fs.readFile)(file)));
+      return fs.readJSON(file).catch(rejects);
     case '.yml':
     case '.yaml':
       return yaml.safeLoad(
-        await ensure.rejection(() => pify(fs.readFile)(file))
+        await fs
+          .readFile(file)
+          .then(String)
+          .catch(rejects)
       );
     default:
       throw Error(`Extension not valid`);

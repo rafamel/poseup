@@ -1,7 +1,7 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import findUp from 'find-up';
-import ensure from '~/utils/ensure';
+import rejects from '~/utils/rejects';
 import { FILE_NAME } from '~/constants';
 
 export interface IGetFile {
@@ -58,11 +58,8 @@ export async function getDefaultFile(directory: string): Promise<IGetFile> {
 }
 
 export async function exists(file: string): Promise<void> {
-  await ensure.rejection(() => {
-    return new Promise((resolve, reject) => {
-      fs.access(file, fs.constants.F_OK, (err) => {
-        return err ? reject(Error(`${file} doesn't exist`)) : resolve();
-      });
-    });
-  });
+  await fs
+    .pathExists(file)
+    .catch(rejects)
+    .then((exists) => rejects(`${file} doesn't exist`, !exists));
 }

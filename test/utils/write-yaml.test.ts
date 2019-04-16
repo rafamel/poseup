@@ -1,11 +1,10 @@
 import { add } from '~/utils/teardown';
 import writeYaml from '~/utils/write-yaml';
-import ensure from '~/utils/ensure';
 import { TMP_DIR } from '~/constants';
 import fs from 'fs-extra';
+import rejects from '~/utils/rejects';
 import path from 'path';
 import uuid from 'uuid/v4';
-import pify from 'pify';
 import { IOfType } from '~/types';
 
 jest.mock('~/utils/teardown');
@@ -20,16 +19,17 @@ const files = [file];
 afterAll(async () => {
   for (let file of files) {
     try {
-      await pify(fs.unlink)(file);
+      await fs.unlink(file);
     } catch (e) {}
   }
-  await pify(fs.remove)(path.parse(nested).dir);
+  await fs.remove(path.parse(nested).dir);
 });
 
 const read = (file: string): Promise<string> => {
-  return ensure.rejection(() =>
-    pify(fs.readFile)(file).then((x) => String(x).trim())
-  );
+  return fs
+    .readFile(file)
+    .then((x) => String(x).trim())
+    .catch(rejects);
 };
 
 describe(`explicit path`, () => {

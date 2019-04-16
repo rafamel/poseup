@@ -22,15 +22,19 @@ test(`succeeds`, async () => {
 });
 test(`fails on non existent binary`, async () => {
   mocks.spawn.mockImplementationOnce(() => {
+    jest.unmock('child_process');
     return require('child_process').spawn(uuid().replace(/-/g, ''));
   });
 
   await expect(stdout('foo', ['bar', 'baz'])).rejects.toBeInstanceOf(Error);
 });
 test(`Fails on spawn process error`, async () => {
-  mocks.spawn.mockImplementationOnce(() => {
+  mocks.spawn.mockImplementation(() => {
+    jest.unmock('child_process');
     return require('child_process').spawn('shx', ['error']);
   });
 
-  await expect(stdout('foo', ['bar', 'baz'])).rejects.toBeInstanceOf(Error);
+  await expect(
+    stdout('foo', ['bar', 'baz'])
+  ).rejects.toThrowErrorMatchingInlineSnapshot(`"foo process failed"`);
 });
