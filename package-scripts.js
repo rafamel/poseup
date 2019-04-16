@@ -23,8 +23,8 @@ module.exports = nps({
     pack: ['jake run:zero["shx mkdir pkg"]', 'pack build'].concat(
       project.get('nodeOnly') && [
         `jake pkg:forbid[esnext,main,module]`,
-        `babel src --out-dir ./pkg/dist-lib --extensions ${DOT_EXT} --source-maps inline`,
-        `jake pkg:add[main,dist-lib/index.js]`
+        `babel src --out-dir ./pkg/dist-node --extensions ${DOT_EXT} --source-maps inline`,
+        `jake pkg:add[main,dist-node/index.js]`
       ]
     ),
     types: TS && [

@@ -14,9 +14,14 @@
     "container",
     "ci"
   ],
+  "engines": {
+    "node": ">=8"
+  },
   "bin": {
     "poseup": "dist-node/bin/poseup.js"
   },
+  "main": "pkg/dist-node/index.js",
+  "types": "pkg/dist-types/index.d.ts",
   "scripts": {
     "prepublishOnly": "exit 1",
     "preversion": "nps private.preversion",
