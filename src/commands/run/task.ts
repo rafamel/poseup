@@ -36,7 +36,7 @@ export default async function runTask(
       args.concat(['up', '--detach']).concat(linked),
       { stdio: silent() }
     );
-    if (signal) throw Error(`Process finished early ${signal}`);
+    if (signal) throw Error(`Process finished early (${signal})`);
 
     // eslint-disable-next-line eqeqeq
     if (timeout == undefined) timeout = RUN_WAIT_TIMEOUT;
@@ -73,7 +73,7 @@ export default async function runTask(
         cmd,
         args.concat(['exec', service]).concat(execCmd)
       );
-      if (signal) throw Error(`Process finished early ${signal}`);
+      if (signal) throw Error(`Process finished early (${signal})`);
     }
   }
 
@@ -83,5 +83,5 @@ export default async function runTask(
 
   logger.info('  ' + chalk.bold('+') + ' Cleaning environment');
   const signal = await clean();
-  if (signal) throw Error(`Process finished early ${signal}`);
+  if (signal) throw Error(`Process finished early (${signal})`);
 }
