@@ -4,10 +4,10 @@ import { stripIndent as indent } from 'common-tags';
 import chalk from 'chalk';
 import arg from 'arg';
 import { flags, safePairs, log } from 'cli-belt';
-import run from './run';
-import purge from './purge';
-import clean from './clean';
 import compose from './compose';
+import run from './run';
+import clean from './clean';
+import purge from './purge';
 
 export default async function main(argv: string[]): Promise<void> {
   const { pkg } = await up();
@@ -43,7 +43,10 @@ export default async function main(argv: string[]): Promise<void> {
 
   if (cmd['--help']) return log(help);
   if (cmd['--version']) return log(pkg.version);
-  if (!cmd._.length) return log(help, { exit: 1 });
+  if (!cmd._.length) {
+    log(help + '\n');
+    throw Error(`Poseup requires a command`);
+  }
 
   const args = cmd._.slice(1);
   switch (cmd._[0]) {
