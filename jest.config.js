@@ -12,8 +12,8 @@ module.exports = {
   modulePathIgnorePatterns: [
     '<rootDir>/pkg',
     '<rootDir>/src/@types',
-    '<rootDir>/src/bin',
-    '<rootDir>/src/.*/__mocks__'
+    '<rootDir>/src/.*/__mocks__',
+    '<rootDir>/src/bin/poseup.ts'
   ],
   moduleFileExtensions: EXT_ARR.concat(['json']),
   testPathIgnorePatterns: ['/node_modules/']
