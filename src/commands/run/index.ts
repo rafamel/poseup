@@ -21,6 +21,7 @@ export default async function run(options: IRunOptions = {}): Promise<void> {
   else await control(trunk)(options, build);
 }
 
+/** @hidden */
 function* trunk(opts: IRunOptions, build: IBuild): IterableIterator<any> {
   const { config, getCmd } = build;
 

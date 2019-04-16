@@ -4,12 +4,9 @@ import chalk from 'chalk';
 import logger from '~/utils/logger';
 import { error } from 'cli-belt';
 
+/** @hidden */
 let attached = false;
 
-/**
- * Should be called on bin entry point.
- * Attaches on-exit hook runner to current node process -executes if terminated.
- */
 export default async function attach(): Promise<void> {
   // Attachment must go first (other potential errors must be catched)
   _attach();
@@ -44,10 +41,12 @@ export default async function attach(): Promise<void> {
   attached = true;
 }
 
+/** @hidden */
 export function isAttached(): boolean {
   return attached;
 }
 
+/** @hidden */
 export function onDone(getState: () => IState): void {
   if (toTeardown()) logger.info(chalk.green.bold('✓') + ' Done');
 

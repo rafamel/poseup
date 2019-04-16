@@ -1,0 +1,552 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>poseup 0.2.0</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">poseup 0.2.0</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> poseup 0.2.0</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="poseup">Poseup</h1>
+				<p><a href="https://www.npmjs.com/package/poseup"><img src="https://img.shields.io/npm/v/poseup.svg" alt="Version"></a>
+					<a href="https://travis-ci.org/rafamel/poseup"><img src="https://img.shields.io/travis/rafamel/poseup.svg" alt="Build Status"></a>
+					<a href="https://coveralls.io/github/rafamel/poseup"><img src="https://img.shields.io/coveralls/rafamel/poseup.svg" alt="Coverage"></a>
+					<a href="https://david-dm.org/rafamel/poseup"><img src="https://img.shields.io/david/rafamel/poseup.svg" alt="Dependencies"></a>
+					<a href="https://snyk.io/test/npm/poseup"><img src="https://img.shields.io/snyk/vulnerabilities/npm/poseup.svg" alt="Vulnerabilities"></a>
+					<a href="https://github.com/rafamel/poseup/blob/master/LICENSE"><img src="https://img.shields.io/github/license/rafamel/poseup.svg" alt="License"></a>
+				<a href="https://www.npmjs.com/package/poseup"><img src="https://img.shields.io/npm/types/poseup.svg" alt="Types"></a></p>
+				<div align="center">
+					<br />
+					<br />
+					<a href="https://www.npmjs.com/package/poseup" target="_blank">
+						<img alt="poseup" width="350" src="https://raw.githubusercontent.com/rafamel/poseup/master/scripts/assets/logo.png" />
+					</a>
+					<br />
+					<br />
+					<strong>Containerized development workflow for the masses</strong>
+					<br />
+					<br />
+				</div>
+				<p>If you come to find it useful, consider <a href="https://github.com/rafamel/poseup">starring the project</a> and following <a href="https://github.com/rafamel">its author</a> to show your ❤️</p>
+				<h2 id="install">Install</h2>
+				<p>Requires <a href="https://docs.docker.com/install/"><code>docker</code> to be installed on your system.</a></p>
+				<p>To install <em>poseup</em> globally, run: <a href="https://www.npmjs.com/package/poseup"><code>npm install -g poseup</code></a></p>
+				<h2 id="motivation">Motivation</h2>
+				<p><em>Poseup</em> leverages <code>docker-compose</code> with the goal of making having a containerized development and test workflow trivial. It is governed by a <a href="#configuration"><code>poseup.config</code> file</a> that can be used as a single source of truth, as <em>poseup</em> is also able to generate traditional <code>docker-compose</code> files from it.</p>
+				<p>Ultimately, it is an effort to <strong>fix the most common issues with similar solutions,</strong> which tend to be:</p>
+				<ul>
+					<li>Unable to properly clean up ephemeral services when errors occur or the process is terminated by the user.</li>
+					<li>Lacking in compatibility with <code>docker-compose</code>, making it difficult to have a single source of truth.</li>
+					<li>Lacking in configuration and CLI options, as well as clarity as to what goes on under the hood.</li>
+				</ul>
+				<p>In contrast with other solutions, <em>poseup</em> integrates seamlessly with <code>docker-compose</code> and its configuration format. Mostly as a product of it, <strong><em>poseup</em> is able to:</strong></p>
+				<ul>
+					<li><strong>Properly clean up ephemeral services</strong> in all events but a forced kill to the process.</li>
+					<li><strong>Run tasks</strong> either with a set of persisted services or in completely ephemeral sandboxes -<a href="#poseup-run">see <code>poseup run</code>.</a></li>
+					<li>Run <strong>automated setup commands for services before tasks</strong> are run -<a href="#structure">see <code>exec</code>.</a></li>
+					<li>Seek setups for different environments in a <strong>single source of truth</strong> -<a href="#environments">see <code>environments</code>.</a></li>
+					<li><strong>Produce <code>docker-compose</code> configuration files</strong> from its own <code>poseup.config</code> -<a href="#poseup-compose">see <code>poseup compose</code>.</a></li>
+					<li><strong>Inherit all <code>docker-compose</code> commands,</strong> hence allowing for a high degree of flexibility -<a href="#poseup-compose">see <code>poseup compose</code>.</a></li>
+				</ul>
+				<h2 id="usage">Usage</h2>
+				<ul>
+					<li><a href="#cli">CLI</a><ul>
+							<li><a href="#poseup-compose"><code>poseup compose</code></a> runs <code>docker-compose</code> as per your <a href="#configuration"><code>poseup.config</code></a> file.</li>
+							<li><a href="#poseup-run"><code>poseup run</code></a> is a task runner for docker.</li>
+							<li><a href="#poseup-clean"><code>poseup clean</code></a> cleans all non persisted containers.</li>
+							<li><a href="#poseup-purge"><code>poseup purge</code></a> purges volumes, networks, and images from your system.</li>
+							<li><a href="#common-options">Common options:</a> a description of common options taken by CLI commands.</li>
+						</ul>
+					</li>
+					<li><a href="#configuration">Configuration:</a> how to get the most out of <em>poseup</em> through your <code>poseup.config</code> file.<ul>
+							<li><a href="#extensions">Extensions:</a> the allowed file extensions for a config file.</li>
+							<li><a href="#path">Path:</a> how <em>poseup</em> resolves the path for your config file by default.</li>
+							<li><a href="#structure">Structure:</a> what you should put where in the configuration file.</li>
+							<li><a href="#environments">Environments:</a> how to define different configurations for several environments.</li>
+							<li><a href="#example">Example:</a> a complete example configuration.</li>
+						</ul>
+					</li>
+					<li><a href="#programmatic-usage">Programmatic usage:</a> how to use poseup programmatically.</li>
+				</ul>
+				<h3 id="cli">CLI</h3>
+				<h4 id="poseup-compose"><code>poseup compose</code></h4>
+				<p>Runs <code>docker-compose</code> as per the services defined in your <a href="#configuration"><code>poseup.config</code></a> or, alternatively, produces a docker compose file from the <code>compose</code> object of your poseup configuration.</p>
+				<p>Example: <code>poseup compose -- up</code></p>
+				<!-- markdownlint-disable MD040 MD031 -->
+				<pre><code><span class="hljs-attribute">Usage</span>: poseup compose [options] -- [dockerArgs]
+
+<span class="routeros">Runs docker-compose
+
+Options:
+  -w, --write &lt;path&gt;  Produce a docker compose file <span class="hljs-keyword">and</span> save it <span class="hljs-keyword">to</span> path
+  -s, --stop          Stop all services on exit
+  -c, --clean         <span class="hljs-builtin-name">Run</span> clean on exit
+  --dry               Dry <span class="hljs-builtin-name">run</span> -write docker compose file only
+  -e, --env &lt;env&gt;     Node environment
+  -d, --dir &lt;dir&gt;     Project directory
+  -f, --file &lt;path&gt;   Path <span class="hljs-keyword">for</span><span class="hljs-built_in"> config </span>file [js,json,yml,yaml]
+  --log &lt;level&gt;      <span class="hljs-built_in"> Logging </span>level
+  -h, --help          output usage information</span></code></pre><!-- markdownlint-enable MD040 MD031 -->
+				<h5 id="generating-a-docker-compose-file">Generating a <code>docker-compose</code> file</h5>
+				<p>To generate a <code>docker-compose</code> compatible file, you can just run: <code>poseup compose --dry --write docker-compose.yml</code>.</p>
+				<p><a href="#environments">If your <code>poseup.config</code> configuration depends on <code>NODE_ENV</code>,</a> you could just run <code>poseup compose -e development --dry --write docker-compose.development.yml</code> to get the <code>docker-compose</code> configuration for the <code>development</code> environment.</p>
+				<h4 id="poseup-run"><code>poseup run</code></h4>
+				<p>A task runner. Runs a task or a series of tasks -defined in your <a href="#configuration"><code>poseup.config</code></a>- in a one off primary container while starting its dependent services, or in a single use sandbox -which creates new containers for the task runner and all its services, and removes them after the task has finished execution.</p>
+				<!-- markdownlint-disable MD040 MD031 -->
+				<pre><code><span class="hljs-attribute">Usage</span>: poseup run [options] [tasks]
+
+<span class="routeros">Runs tasks
+
+Options:
+  -l, --list               List tasks
+  -s, --sandbox            Create new containers <span class="hljs-keyword">for</span> all services, <span class="hljs-builtin-name">remove</span> all on exit
+  -t, --timeout &lt;seconds&gt;  Timeout <span class="hljs-keyword">for</span> waiting time after starting services before running commands [60 by default]
+  --no-detect              Prevent<span class="hljs-built_in"> service </span>initialization auto detection <span class="hljs-keyword">and</span> wait until timeout instead
+  -e, --env &lt;env&gt;          Node environment
+  -d, --dir &lt;dir&gt;          Project directory
+  -f, --file &lt;path&gt;        Path <span class="hljs-keyword">for</span><span class="hljs-built_in"> config </span>file [js,json,yml,yaml]
+  --log &lt;level&gt;           <span class="hljs-built_in"> Logging </span>level
+  -h, --help               output usage information</span></code></pre><!-- markdownlint-enable MD040 MD031 -->
+				<h4 id="poseup-clean"><code>poseup clean</code></h4>
+				<p>Cleans all services absent from the <code>persist</code> array of your <a href="#configuration"><code>poseup.config</code></a> file.</p>
+				<!-- markdownlint-disable MD040 MD031 -->
+				<pre><code><span class="hljs-attribute">Usage</span>: poseup clean [options]
+
+<span class="routeros">Cleans <span class="hljs-keyword">not</span> persisted containers <span class="hljs-keyword">and</span> networks -optionally, also volumes
+
+Options:
+  -v, --volumes      Clean volumes <span class="hljs-keyword">not</span> associated with persisted containers
+  -e, --env &lt;env&gt;    Node environment
+  -d, --dir &lt;dir&gt;    Project directory
+  -f, --file &lt;path&gt;  Path <span class="hljs-keyword">for</span><span class="hljs-built_in"> config </span>file [js,json,yml,yaml]
+  --log &lt;level&gt;     <span class="hljs-built_in"> Logging </span>level
+  -h, --help         output usage information</span></code></pre><!-- markdownlint-enable MD040 MD031 -->
+				<h4 id="poseup-purge"><code>poseup purge</code></h4>
+				<p>Shorthand for a serial run of <code>docker volume prune</code>, <code>docker network prune</code>, <code>docker image prune --all</code>, and <code>docker container ls --all</code>.</p>
+				<!-- markdownlint-disable MD040 MD031 -->
+				<pre><code><span class="hljs-attribute">Usage</span>: poseup purge [options]
+
+<span class="routeros">Purges dangling containers, networks, <span class="hljs-keyword">and</span> volumes system-wide
+
+Options:
+  -f, --force    Skip confirmation
+  --log &lt;level&gt; <span class="hljs-built_in"> Logging </span>level
+  -h, --help     output usage information</span></code></pre><!-- markdownlint-enable MD040 MD031 -->
+				<h4 id="common-options">Common options</h4>
+				<h5 id="log"><code>log</code></h5>
+				<p><em>Taken by: <a href="#poseup-compose"><code>compose</code>,</a> <a href="#poseup-run"><code>run</code>,</a> <a href="#poseup-clean"><code>clean</code>,</a> <a href="#poseup-purge"><code>purge</code>.</a></em></p>
+				<p>Sets logging level. Can be one of <code>silent</code>, <code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>.</p>
+				<p>Example: <code>poseup clean --log debug</code></p>
+				<h5 id="file"><code>file</code></h5>
+				<p><em>Taken by: <a href="#poseup-compose"><code>compose</code>,</a> <a href="#poseup-run"><code>run</code>,</a> <a href="#poseup-clean"><code>clean</code>.</a></em></p>
+				<p>Sets the <em>poseup</em> configuration file as an absolute or relative path to <em>cwd.</em> By default, <em>poseup</em> will attempt to find it in the project directory -if passed- or <em>cwd</em>, and up.</p>
+				<p>Example: <code>poseup compose --file ../poseup.development.js -- up</code></p>
+				<h5 id="dir"><code>dir</code></h5>
+				<p><em>Taken by: <a href="#poseup-compose"><code>compose</code>,</a> <a href="#poseup-run"><code>run</code>,</a> <a href="#poseup-clean"><code>clean</code>.</a></em></p>
+				<p>Sets the project directory for <em>docker</em> as an absolute or relative path to <em>cwd.</em> By default, it is the directory where the poseup configuration file is found.</p>
+				<p>Example: <code>poseup compose --dir ../ -- dowm</code></p>
+				<h5 id="env"><code>env</code></h5>
+				<p><em>Taken by: <a href="#poseup-compose"><code>compose</code>,</a> <a href="#poseup-run"><code>run</code>,</a> <a href="#poseup-clean"><code>clean</code>.</a></em></p>
+				<p>Assigns an arbitrary value to <code>process.env.NODE_ENV</code>.</p>
+				<p>Example: <code>poseup compose --env development -- up</code></p>
+				<p>The above would be equivalent to <code>NODE_ENV=development poseup compose -- up</code></p>
+				<h3 id="configuration">Configuration</h3>
+				<p>A <em>poseup</em> configuration file is the single <strong>most important thing</strong> for you to make your <em>poseup</em> usage worthwhile. It contains the project name, the persisted containers, any number of tasks, and a <code>docker-compose</code> configuration object containing services, volumes, and networks definition. Before you jump in, you can check out an example <a href="#example">here.</a></p>
+				<h4 id="extensions">Extensions</h4>
+				<p>Valid configuration files are <code>.js</code>, <code>.json</code>, or <code>.yml</code> files, though you&#39;ll have to use a <code>.js</code> file in order to be able to define different configurations depending on environment on the same file. See <a href="#environments">environments.</a></p>
+				<h4 id="path">Path</h4>
+				<p>All <em>poseup</em> commands but <a href="#poseup-purge"><code>poseup purge</code></a> (since it&#39;s system-wide) will need a <code>poseup.config</code> file. You can pass the file path via the <code>--file</code> flag, but otherwise, <em>poseup</em> will look for a <code>poseup.config.{js,json,yml}</code> in the current working directory and up. Remember you can also specify a different working directory for <em>poseup</em> than the current on console with the <code>--dir</code> flag.</p>
+				<h4 id="structure">Structure</h4>
+				<p>Root properties are:</p>
+				<ul>
+					<li><code>log</code>: <em>string, optional,</em> logging level. One of: <code>&#39;silent&#39;</code>, <code>&#39;trace&#39;</code>, <code>&#39;debug&#39;</code>, <code>&#39;info&#39;</code>, <code>&#39;warn&#39;</code>, <code>&#39;error&#39;</code>.</li>
+					<li><code>project</code>: <em>string, required,</em> the name of the project. Note that you should <strong>never have different environment-dependent configurations for a same project name</strong> (see <a href="#environments">environments</a>).</li>
+					<li><code>persist</code>: <em>strings array, optional,</em> the name of the services to <strong>not</strong> clean when running <a href="#poseup-clean"><code>poseup clean</code></a> and <a href="#poseup-run"><code>poseup run</code></a>. This is useful if you have services you don&#39;t want to be ephemeral, like a database, which data you&#39;d like to keep between runs.</li>
+					<li><code>compose</code>: <em>object, required,</em> should have the same structure as a traditional <a href="https://docs.docker.com/compose/compose-file/"><code>docker-compose</code> file.</a> Here is where you define your services and their configuration. Having your <code>docker-compose</code> configuration inside the <em>poseup</em> config will allow you, if desired, to have all environmental differences in a single file, while you can always generate an actual <code>docker-compose</code> yaml file for any environment from it by dry running <a href="#poseup-compose"><code>poseup compose</code>.</a></li>
+					<li><code>tasks</code>: <em>object, optional,</em> any number of tasks to be executed via <a href="#poseup-run"><code>poseup run</code>.</a> The keys of the <code>task</code> object will be the names of your task, and each have an <em>object</em> as value with <em>optional</em> keys:<ul>
+							<li><code>description</code>: <em>string,</em> a description for the task -it&#39;ll be used when running <code>poseup run --list</code>.</li>
+							<li><code>primary</code>: <em>string,</em> the name of the service for which a new ephemeral container will be created in order to run <code>cmd</code>. If no <code>primary</code> is specified, <code>cmd</code> will be run in your local environment -your system.</li>
+							<li><code>services</code>: <em>strings array,</em> the names of the associated services required to run this task. If not present and a <code>primary</code> service has been specified, <em>poseup</em> will use the services defined on the <code>depends_on</code> key of the service in the <code>compose</code> definition by default. If it exists, it will not merge with <code>depends_on</code>, this way you can restrict or extend the required services for this task with no regard for the <code>compose</code> definition. If not present and no <code>primary</code> has been defined, no services will be started for the task, though that would mean you&#39;d essentially be just running a local command, which would make little sense.</li>
+							<li><code>cmd</code>: <em>strings array,</em> the command to execute on <code>primary</code> or locally that represents the task itself. Example: <code>[&#39;npm&#39;, &#39;install&#39;]</code>.</li>
+							<li><code>exec</code>: <em>array | object</em> any number of commands to execute on any of the services that are required to start when running the task -either via <code>services</code> or the <code>compose</code> <code>depends_on</code>- before <code>cmd</code> is run. Each item of the array must be an <em>object.</em> The keys of the object will signal the service to run the command on, meanwhile their value should be a <em>strings array</em> for the command. All the commands in each item of the <code>exec</code> array will be executed with no guaranteed execution order, while each array item will be guaranteed to run serially:</li>
+						</ul>
+					</li>
+				</ul>
+				<pre><code class="language-javascript"><span class="hljs-comment">// Unordered execution example</span>
+({
+  <span class="hljs-attr">tasks</span>: {
+    <span class="hljs-attr">myTask</span>: {
+      <span class="hljs-attr">primary</span>: <span class="hljs-string">'myPrimaryService'</span>,
+      <span class="hljs-attr">cmd</span>: [<span class="hljs-string">'echo'</span>, <span class="hljs-string">'foo'</span>],
+      <span class="hljs-attr">exec</span>: [
+        {
+          <span class="hljs-comment">// These will execute in parallel</span>
+          myDbService: [<span class="hljs-string">'psql'</span>, <span class="hljs-string">'-U'</span>, <span class="hljs-string">'postgres'</span>, <span class="hljs-string">'-c'</span>, <span class="hljs-string">'CREATE DATABASE testdb;'</span>],
+          <span class="hljs-attr">myNodeService</span>: [<span class="hljs-string">'npm'</span>, <span class="hljs-string">'install'</span>]
+        }
+      ]
+    }
+  }
+});
+
+<span class="hljs-comment">// Unordered execution example (equivalent to the previous)</span>
+({
+  <span class="hljs-attr">tasks</span>: {
+    <span class="hljs-attr">myTask</span>: {
+      <span class="hljs-attr">primary</span>: <span class="hljs-string">'myPrimaryService'</span>,
+      <span class="hljs-attr">cmd</span>: [<span class="hljs-string">'echo'</span>, <span class="hljs-string">'foo'</span>],
+      <span class="hljs-attr">exec</span>: {
+        <span class="hljs-comment">// These will execute in parallel</span>
+        myDbService: [<span class="hljs-string">'psql'</span>, <span class="hljs-string">'-U'</span>, <span class="hljs-string">'postgres'</span>, <span class="hljs-string">'-c'</span>, <span class="hljs-string">'CREATE DATABASE testdb;'</span>],
+        <span class="hljs-attr">myNodeService</span>: [<span class="hljs-string">'npm'</span>, <span class="hljs-string">'install'</span>]
+      }
+    }
+  }
+});
+
+<span class="hljs-comment">// Series example: guaranteed execution order</span>
+({
+  <span class="hljs-attr">tasks</span>: {
+    <span class="hljs-attr">myTask</span>: {
+      <span class="hljs-attr">primary</span>: <span class="hljs-string">'myPrimaryService'</span>,
+      <span class="hljs-attr">cmd</span>: [<span class="hljs-string">'echo'</span>, <span class="hljs-string">'foo'</span>],
+      <span class="hljs-attr">exec</span>: [
+        <span class="hljs-comment">// These will execute in series</span>
+        { <span class="hljs-attr">myDbService</span>: [<span class="hljs-string">'psql'</span>, <span class="hljs-string">'-U'</span>, <span class="hljs-string">'postgres'</span>, <span class="hljs-string">'-c'</span>, <span class="hljs-string">'CREATE DATABASE testdb;'</span>] },
+        { <span class="hljs-attr">myNodeService</span>: [<span class="hljs-string">'npm'</span>, <span class="hljs-string">'install'</span>] }
+      ]
+    }
+  }
+});</code></pre>
+				<h4 id="environments">Environments</h4>
+				<p>There are two strategies you can follow in order to define different configurations for several environments.</p>
+				<p>It&#39;s important to keep in mind, regardless of the strategy you use, <em>poseup</em> will treat any configuration with the same project name as if they were the same. What that means is you need to <strong>make sure that, for different configuration values, the project name in your <code>poseup.config</code> file is distinct,</strong> otherwise things could get quite messy. That being said:</p>
+				<ul>
+					<li>you can have several <code>poseup.config</code> files and pass them to <em>poseup</em> depending on the one you desire to apply via the <code>--file</code> flag,</li>
+					<li>or you can use a JavaScript file for your <code>poseup.config</code> that defines a different configuration as per any arbitrary number of environment variables.</li>
+				</ul>
+				<p>Focusing on the single JavaScript file strategy, a simple solution would be to do something like:</p>
+				<p><code>poseup.config.js</code>:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> isProduction = process.env.NODE_ENV === <span class="hljs-string">'production'</span>;
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">project</span>: <span class="hljs-string">'my-project-name'</span> + (isProduction ? <span class="hljs-string">'production'</span> : <span class="hljs-string">'development'</span>),
+  <span class="hljs-attr">persist</span>: [ <span class="hljs-comment">/* ...my persisted services */</span> ],
+  <span class="hljs-attr">tasks</span>: isProduction
+    ? { <span class="hljs-comment">/* ...my production tasks */</span> }
+    : { <span class="hljs-comment">/* ...my development tasks */</span> },
+  <span class="hljs-attr">compose</span>: {
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'3.4'</span>,
+    <span class="hljs-attr">services</span>: { <span class="hljs-comment">/* ...my services */</span> }
+  }
+};</code></pre>
+				<p>Solutions like <a href="https://github.com/rafamel/slimconf"><code>slimconf</code></a> might assist you in organizing your environment-dependent configuration.</p>
+				<p>As an example:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { <span class="hljs-attr">default</span>: slim, fallback } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'slimconf'</span>);
+
+<span class="hljs-built_in">module</span>.exports = slim(
+  { <span class="hljs-attr">env</span>: [process.env.NODE_ENV, fallback(<span class="hljs-string">'development'</span>, [<span class="hljs-string">'test'</span>]) },
+  (on, { env }) =&gt; ({
+    <span class="hljs-attr">project</span>: <span class="hljs-string">`my-project-<span class="hljs-subst">${env}</span>`</span>,
+    <span class="hljs-attr">persist</span>: on.env({
+      <span class="hljs-attr">default</span>: [
+        <span class="hljs-comment">// ...my default persisted services</span>
+      ],
+      <span class="hljs-attr">development</span>: [
+        <span class="hljs-comment">// ...my persisted services in development</span>
+      ],
+      <span class="hljs-attr">test</span>: [] <span class="hljs-comment">// all services will be ephemeral on test</span>
+    }),
+    <span class="hljs-attr">tasks</span>: on.env({
+      <span class="hljs-attr">default</span>: {
+        <span class="hljs-comment">// ...my default tasks</span>
+      },
+      <span class="hljs-attr">development</span>: {
+        <span class="hljs-comment">// ...my development tasks</span>
+      },
+      <span class="hljs-attr">test</span>: {
+        <span class="hljs-comment">// ...my test tasks</span>
+      }
+    }),
+    <span class="hljs-attr">compose</span>: {
+      <span class="hljs-attr">version</span>: <span class="hljs-string">'3.4'</span>,
+      <span class="hljs-attr">services</span>: {
+        <span class="hljs-comment">// ...my services</span>
+      }
+    }
+  })
+);</code></pre>
+				<h4 id="example">Example</h4>
+				<p>This example uses <a href="https://github.com/rafamel/slimconf"><code>slimconf</code></a> to manage environment-dependent configuration.</p>
+				<p><code>poseup.config.js</code>:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { <span class="hljs-attr">default</span>: slim, fallback, merge } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'slimconf'</span>);
+
+<span class="hljs-built_in">module</span>.exports = slim(
+  { <span class="hljs-attr">env</span>: [process.env.NODE_ENV, fallback(<span class="hljs-string">'development'</span>, [<span class="hljs-string">'test'</span>]) },
+  <span class="hljs-comment">// We're merging the defaults with the environment-dependent configuration</span>
+  (on, { env }) =&gt; on.env(merge, {
+    <span class="hljs-comment">/* Defaults */</span>
+    defaults: {
+      <span class="hljs-attr">log</span>: <span class="hljs-string">'info'</span>,
+      <span class="hljs-attr">project</span>: <span class="hljs-string">`my-project-<span class="hljs-subst">${env}</span>`</span>,
+      <span class="hljs-attr">compose</span>: {
+        <span class="hljs-attr">version</span>: <span class="hljs-string">'3.4'</span>,
+        <span class="hljs-attr">services</span>: {
+          <span class="hljs-attr">app</span>: {
+            <span class="hljs-attr">image</span>: <span class="hljs-string">'node:8-alpine'</span>,
+            <span class="hljs-attr">depends_on</span>: [<span class="hljs-string">'db'</span>],
+            <span class="hljs-attr">networks</span>: [<span class="hljs-string">'backend'</span>],
+            <span class="hljs-attr">environment</span>: {
+              <span class="hljs-attr">NODE_ENV</span>: env,
+              <span class="hljs-attr">DB_URL</span>: <span class="hljs-string">`postgres://postgres:pass@db:5432/testdb`</span>
+            },
+            <span class="hljs-attr">volumes</span>: [{ <span class="hljs-attr">type</span>: <span class="hljs-string">'bind'</span>, <span class="hljs-attr">source</span>: <span class="hljs-string">'./'</span>, <span class="hljs-attr">target</span>: <span class="hljs-string">'/usr/src/app'</span> }]
+          },
+          <span class="hljs-attr">db</span>: {
+            <span class="hljs-attr">image</span>: <span class="hljs-string">'postgres:11-alpine'</span>,
+            <span class="hljs-attr">networks</span>: [<span class="hljs-string">'backend'</span>],
+            <span class="hljs-attr">environment</span>: { <span class="hljs-attr">POSTGRES_PASSWORD</span>: <span class="hljs-string">'pass'</span> }
+          }
+        },
+        <span class="hljs-attr">networks</span>: { <span class="hljs-attr">backend</span>: {} },
+        <span class="hljs-attr">volumes</span>: {}
+      }
+    },
+    <span class="hljs-comment">/* Development environment */</span>
+    development: {
+      <span class="hljs-comment">// We'll persist the database on development (won't be removed on poseup clean)</span>
+      persist: [<span class="hljs-string">'db'</span>],
+      <span class="hljs-attr">tasks</span>: {
+        <span class="hljs-comment">// This will run "node index.js" locally after "db" is up.</span>
+        <span class="hljs-comment">// We'd run it with: poseup run local</span>
+        local: {
+          <span class="hljs-attr">services</span>: [<span class="hljs-string">'db'</span>],
+          <span class="hljs-attr">cmd</span>: [<span class="hljs-string">'/bin/sh'</span>, <span class="hljs-string">'-c'</span>].concat(<span class="hljs-string">'cd /usr/src/app &amp;&amp; node index.js'</span>)
+        },
+        <span class="hljs-comment">// This will run "node index.js" in a docker container ("app").</span>
+        <span class="hljs-comment">// Since app already depends on "db", we don't need to define it.</span>
+        <span class="hljs-comment">// We'd run it with: poseup run docker</span>
+        docker: {
+          <span class="hljs-attr">primary</span>: <span class="hljs-string">'app'</span>,
+          <span class="hljs-attr">cmd</span>: [<span class="hljs-string">'/bin/sh'</span>, <span class="hljs-string">'-c'</span>].concat(<span class="hljs-string">'cd /usr/src/app &amp;&amp; node index.js'</span>)
+        },
+        <span class="hljs-comment">// This will just setup the database for usage on development.</span>
+        <span class="hljs-comment">// As we are persisting the container, it's a one-off task.</span>
+        bootstrap: {
+          <span class="hljs-attr">services</span>: [<span class="hljs-string">'db'</span>],
+          <span class="hljs-attr">exec</span>: {
+            <span class="hljs-attr">db</span>: <span class="hljs-string">'psql -U postgres -c'</span>
+              .split(<span class="hljs-string">' '</span>)
+              .concat(<span class="hljs-string">'CREATE DATABASE testdb;'</span>)
+          }
+        }
+      },
+      <span class="hljs-attr">compose</span>: {
+        <span class="hljs-comment">// We'll also expose ports</span>
+        services: {
+          <span class="hljs-attr">app</span>: { <span class="hljs-attr">ports</span>: [<span class="hljs-string">'3000:3000'</span>] },
+          <span class="hljs-attr">db</span>: { <span class="hljs-attr">ports</span>: [<span class="hljs-string">'5432:5432'</span>] }
+        }
+      }
+    },
+    <span class="hljs-comment">/* Test environment */</span>
+    test: {
+      <span class="hljs-attr">tasks</span>: {
+        <span class="hljs-comment">// We'd run it with: poseup run -e test jest</span>
+        jest: {
+          <span class="hljs-attr">primary</span>: <span class="hljs-string">'app'</span>,
+          <span class="hljs-attr">cmd</span>: [<span class="hljs-string">'/bin/sh'</span>, <span class="hljs-string">'-c'</span>].concat(<span class="hljs-string">'cd /usr/src/app &amp;&amp; npx jest'</span>),
+          <span class="hljs-comment">// Create database before running tests</span>
+          exec: {
+            <span class="hljs-attr">db</span>: <span class="hljs-string">'psql -U postgres -c'</span>
+              .split(<span class="hljs-string">' '</span>)
+              .concat(<span class="hljs-string">'CREATE DATABASE testdb;'</span>)
+          }
+        }
+      }
+    }
+  })
+);</code></pre>
+				<h3 id="programmatic-usage">Programmatic Usage</h3>
+				<p><a href="https://rafamel.github.io/poseup/globals.html">See docs.</a></p>
+				<p><em>poseup</em> exports <a href="https://rafamel.github.io/poseup/globals.html#compose"><code>compose</code></a>, <a href="https://rafamel.github.io/poseup/globals.html#run"><code>run</code></a>, <a href="https://rafamel.github.io/poseup/globals.html#clean"><code>clean</code></a>, and <a href="https://rafamel.github.io/poseup/globals.html#purge"><code>purge</code></a>, which are the ones called by the equally names CLI commands.</p>
+				<p>However, when running <em>poseup</em> on the CLI, it will also listen to termination events though <a href="https://github.com/rafamel/exits"><code>exits</code></a> and run cleanup tasks either on end of execution, or termination. In order to handle these cleanup tasks, you have two options:</p>
+				<ul>
+					<li>Call <a href="https://rafamel.github.io/poseup/globals.html#attach"><code>attach</code></a> before any of the command functions. This will produce identical behavior to that of the CLI.</li>
+					<li>Call <a href="https://rafamel.github.io/poseup/globals.html#teardown"><code>teardown</code></a> after running any of the command functions to manually initialize the run of cleanup tasks and handle errors.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icleanoptions.html" class="tsd-kind-icon">IClean<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomposeoptions.html" class="tsd-kind-icon">ICompose<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ioptions.html" class="tsd-kind-icon">IOptions</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ipurgeoptions.html" class="tsd-kind-icon">IPurge<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/irunoptions.html" class="tsd-kind-icon">IRun<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#tlogger" class="tsd-kind-icon">TLogger</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#attach" class="tsd-kind-icon">attach</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#clean" class="tsd-kind-icon">clean</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#compose" class="tsd-kind-icon">compose</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#purge" class="tsd-kind-icon">purge</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#run" class="tsd-kind-icon">run</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#teardown" class="tsd-kind-icon">teardown</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

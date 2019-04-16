@@ -3,7 +3,10 @@ import chalk from 'chalk';
 import { add as _add } from 'exits';
 import { isAttached } from './attach';
 
-// Sets priority (larger runs first)
+/**
+ * @hidden
+ * Sets priority (larger runs first)
+ * */
 export enum ADD_TYPES {
   START_LOG = 10,
   STOP = 3,
@@ -12,8 +15,11 @@ export enum ADD_TYPES {
   REMOVE_TEMP_FILES = 1
 }
 
+/** @hidden */
 let _teardown = false;
+/** @hidden */
 let fns: Array<[() => any | Promise<any>, ADD_TYPES]> = [];
+/** @hidden */
 export function add(
   type: ADD_TYPES,
   message: string,
@@ -28,6 +34,7 @@ export function add(
   isAttached() ? _add(fn, type) : fns.push([fn, type]);
 }
 
+/** @hidden */
 export function toTeardown(): boolean {
   return _teardown;
 }
