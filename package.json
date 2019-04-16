@@ -106,6 +106,7 @@
     "prettier": "^1.16.4",
     "shx": "^0.3.2",
     "slimconf": "^0.8.0",
+    "string-argv": "^0.2.0",
     "ttypescript": "^1.5.6",
     "typedoc": "^0.14.2",
     "typescript": "^3.4.3"
