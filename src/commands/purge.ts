@@ -4,7 +4,7 @@ import logger from '~/utils/logger';
 import { IPurgeOptions } from '~/types';
 import initialize from '~/utils/initialize';
 import spawn from '~/utils/spawn';
-import { tail } from 'cli-belt';
+import table from 'as-table';
 
 export default async function purge(
   options: IPurgeOptions = {}
@@ -21,17 +21,11 @@ export default async function purge(
 
   // Show running container information
   const containers = await containerLs({ all: true });
+  const rows = containers.map((x) => [chalk.bold(x.Names), x.Status]);
+
   logger.info(
     chalk.bold.green('\nDocker containers in system: ') +
       chalk.bold(String(containers.length))
   );
-
-  const ids = tail(containers.map((x) => x.ID || ''), 6);
-  const status = tail(
-    containers.map((x) => (x.Status ? x.Status.split(' ')[0] : '')),
-    6
-  );
-  containers.map(({ ID, Status, Names }) => {
-    logger.info(`${ids(ID)}${status(Status.split(' ')[0])}${Names}`);
-  });
+  logger.info(table.configure({ delimiter: ' '.repeat(6) })(rows));
 }

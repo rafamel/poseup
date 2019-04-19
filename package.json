@@ -118,6 +118,7 @@
     "@types/loglevel": "^1.5.4",
     "ajv": "^6.10.0",
     "arg": "^4.1.0",
+    "as-table": "^1.0.38",
     "chalk": "^2.4.2",
     "cli-belt": "^0.1.0",
     "common-tags": "^1.8.0",

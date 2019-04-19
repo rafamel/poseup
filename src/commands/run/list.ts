@@ -1,5 +1,6 @@
 import { IRunOptions, IConfig } from '~/types';
-import { log, tail } from 'cli-belt';
+import { log } from 'cli-belt';
+import table from 'as-table';
 import chalk from 'chalk';
 
 export default function list(opts: IRunOptions, config: IConfig): void {
@@ -11,15 +12,16 @@ export default function list(opts: IRunOptions, config: IConfig): void {
 }
 
 export function printer(config: IConfig): string {
-  let print = 'Tasks for ' + chalk.green.bold(config.project) + '\n';
-
   const tasks = config.tasks || {};
-  const being = tail(Object.keys(tasks), 7);
+  const rows = Object.entries(tasks).map(([name, task]) => [
+    'poseup run ' + chalk.bold(name),
+    task.description || ''
+  ]);
 
-  Object.entries(tasks).forEach(([name, task]) => {
-    print +=
-      '\nposeup run ' + chalk.bold(being(name)) + (task.description || '');
-  });
-
-  return print;
+  return (
+    `Tasks for ${chalk.green.bold(config.project)}\n\n` +
+    table
+      .configure({ delimiter: ' '.repeat(8) })(rows)
+      .trim()
+  );
 }
