@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import up from 'find-up';
 import fs from 'fs-extra';
 import { rejects } from 'errorish';
@@ -19,7 +18,7 @@ export default async function main(argv: string[]): Promise<void> {
   if (pkg.name) process.title = pkg.name;
 
   const help = indent`
-    ${pkg.description ? chalk.bold.green(pkg.description) : ''}
+    ${pkg.description ? chalk.bold.yellow(pkg.description) : ''}
 
     Usage:
       $ poseup [option]

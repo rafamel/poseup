@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { stripIndent as indent } from 'common-tags';
 import arg from 'arg';
 import { flags, safePairs, log, splitBy } from 'cli-belt';
