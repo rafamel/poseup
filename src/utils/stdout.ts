@@ -5,7 +5,7 @@ export default async function stdout(
   cmd: string,
   args: string[]
 ): Promise<string> {
-  return new Promise((resolve: (str: string) => any, reject) => {
+  return new Promise((resolve: (str: string) => void, reject) => {
     let acc = '';
     const ps = spawn(cmd, args);
     ps.stdout.on('data', (buffer: Buffer) => (acc += buffer.toString()));
