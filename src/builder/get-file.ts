@@ -37,7 +37,7 @@ export async function getExplicitFile(
 ): Promise<IGetFile> {
   const { ext } = path.parse(file);
   const validExt = ['.js', '.json', '.yml', '.yaml'].includes(ext);
-  if (!validExt) return Promise.reject(Error(`Extension ${ext} is not valid`));
+  if (!validExt) throw Error(`Extension ${ext} is not valid`);
 
   await exists(file);
 
