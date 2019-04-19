@@ -4,7 +4,7 @@ import yaml from 'js-yaml';
 import uuid from 'uuid/v4';
 import { add, ADD_TYPES } from '~/utils/teardown';
 import { TMP_DIR } from '~/constants';
-import rejects from '~/utils/rejects';
+import { rejects } from 'errorish';
 
 interface IWriteYaml {
   data: any;

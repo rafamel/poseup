@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import rejects from '~/utils/rejects';
+import { rejects } from 'errorish';
 
 export default async function stdout(
   cmd: string,

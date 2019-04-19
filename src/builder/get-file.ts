@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import findUp from 'find-up';
-import rejects from '~/utils/rejects';
+import { rejects } from 'errorish';
 import { FILE_NAME } from '~/constants';
 
 export interface IGetFile {
@@ -61,5 +61,5 @@ export async function exists(file: string): Promise<void> {
   await fs
     .pathExists(file)
     .catch(rejects)
-    .then((exists) => rejects(`${file} doesn't exist`, !exists));
+    .then((exists) => rejects(`${file} doesn't exist`, { case: !exists }));
 }

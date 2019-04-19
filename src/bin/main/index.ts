@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import up from 'find-up';
 import fs from 'fs-extra';
-import rejects from '~/utils/rejects';
+import { rejects } from 'errorish';
 import { stripIndent as indent } from 'common-tags';
 import chalk from 'chalk';
 import arg from 'arg';

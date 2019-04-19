@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'js-yaml';
-import rejects from '~/utils/rejects';
+import { rejects } from 'errorish';
 import { IConfig } from '~/types';
 
 export default async function readFile(file: string): Promise<IConfig> {

@@ -2,7 +2,7 @@ import { add } from '~/utils/teardown';
 import writeYaml from '~/utils/write-yaml';
 import { TMP_DIR } from '~/constants';
 import fs from 'fs-extra';
-import rejects from '~/utils/rejects';
+import { rejects } from 'errorish';
 import path from 'path';
 import uuid from 'uuid/v4';
 import { IOfType } from '~/types';
