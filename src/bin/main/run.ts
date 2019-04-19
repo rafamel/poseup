@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { stripIndent as indent } from 'common-tags';
 import arg from 'arg';
-import { flags, safePairs, log } from 'cli-belt';
+import { flags, safePairs } from 'cli-belt';
 import { run as command } from '~/commands';
 import { TLogger } from '~/types';
 import { RUN_WAIT_TIMEOUT } from '~/constants';
@@ -41,7 +42,7 @@ export default async function run(argv: string[]): Promise<void> {
   Object.assign(types, aliases);
   const cmd = arg(types, { argv, permissive: false, stopAtPositional: true });
 
-  if (cmd['--help']) return log(help);
+  if (cmd['--help']) return console.log(help);
 
   return command({
     tasks: cmd._,

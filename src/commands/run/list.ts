@@ -1,10 +1,10 @@
 import { IRunOptions, IConfig } from '~/types';
-import { log } from 'cli-belt';
 import table from 'as-table';
 import chalk from 'chalk';
 
 export default function list(opts: IRunOptions, config: IConfig): void {
-  log(printer(config));
+  // eslint-disable-next-line no-console
+  console.log(printer(config));
 
   if (opts.tasks && opts.tasks.length) {
     throw Error(`poseup cannot run tasks when listing them`);

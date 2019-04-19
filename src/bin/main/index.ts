@@ -1,21 +1,15 @@
-import up from 'find-up';
-import fs from 'fs-extra';
-import { rejects } from 'errorish';
+/* eslint-disable no-console */
+import { loadPackage, flags, safePairs } from 'cli-belt';
 import { stripIndent as indent } from 'common-tags';
-import chalk from 'chalk';
 import arg from 'arg';
-import { flags, safePairs, log } from 'cli-belt';
+import chalk from 'chalk';
 import compose from './compose';
 import run from './run';
 import clean from './clean';
 import purge from './purge';
 
 export default async function main(argv: string[]): Promise<void> {
-  const pkg = await up('package.json', { cwd: __dirname })
-    .then((pkg) => fs.readJSON(pkg || ''))
-    .catch(rejects);
-
-  if (pkg.name) process.title = pkg.name;
+  const pkg = await loadPackage(__dirname, { title: true });
 
   const help = indent`
     ${pkg.description ? chalk.bold.yellow(pkg.description) : ''}
@@ -45,10 +39,10 @@ export default async function main(argv: string[]): Promise<void> {
   Object.assign(types, aliases);
   const cmd = arg(types, { argv, permissive: false, stopAtPositional: true });
 
-  if (cmd['--help']) return log(help);
-  if (cmd['--version']) return log(pkg.version);
+  if (cmd['--help']) return console.log(help);
+  if (cmd['--version']) return console.log(pkg.version);
   if (!cmd._.length) {
-    log(help + '\n');
+    console.log(help + '\n');
     throw Error(`Poseup requires a command`);
   }
 

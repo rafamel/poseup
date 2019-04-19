@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { stripIndent as indent } from 'common-tags';
 import arg from 'arg';
-import { flags, safePairs, log, splitBy } from 'cli-belt';
+import { flags, safePairs, splitBy } from 'cli-belt';
 import { compose as command } from '~/commands';
 import { TLogger } from '~/types';
 
@@ -46,7 +47,7 @@ export default async function compose(argv: string[]): Promise<void> {
     stopAtPositional: true
   });
 
-  if (cmd['--help']) return log(help);
+  if (cmd['--help']) return console.log(help);
   if (cmd._.length) throw Error('Unknown command: ' + cmd._[0]);
 
   return command({

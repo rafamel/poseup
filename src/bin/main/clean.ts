@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { stripIndent as indent } from 'common-tags';
 import arg from 'arg';
-import { flags, safePairs, log } from 'cli-belt';
+import { flags, safePairs } from 'cli-belt';
 import { clean as command } from '~/commands';
 import { TLogger } from '~/types';
 
@@ -34,7 +35,7 @@ export default async function clean(argv: string[]): Promise<void> {
   Object.assign(types, aliases);
   const cmd = arg(types, { argv, permissive: false, stopAtPositional: true });
 
-  if (cmd['--help']) return log(help);
+  if (cmd['--help']) return console.log(help);
   if (cmd._.length) throw Error('Unknown command: ' + cmd._[0]);
 
   return command({
