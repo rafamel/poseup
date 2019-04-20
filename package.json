@@ -120,7 +120,7 @@
     "arg": "^4.1.0",
     "as-table": "^1.0.38",
     "chalk": "^2.4.2",
-    "cli-belt": "^0.2.0",
+    "cli-belt": "^0.3.0",
     "common-tags": "^1.8.0",
     "errorish": "^0.1.0",
     "exits": "^0.4.0",
