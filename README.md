@@ -21,7 +21,7 @@
   <br />
 </div>
 
-If you come to find it useful, consider [starring the project](https://github.com/rafamel/poseup) and following [its author](https://github.com/rafamel) to show your ❤️
+If you find it useful, consider [starring the project](https://github.com/rafamel/poseup) 💪 and/or following [its author](https://github.com/rafamel) ❤️ -there's more on the way!
 
 ## Install
 
@@ -440,9 +440,9 @@ module.exports = slim(
 
 [See docs.](https://rafamel.github.io/poseup/globals.html)
 
-*poseup* exports [`compose`](https://rafamel.github.io/poseup/globals.html#compose), [`run`](https://rafamel.github.io/poseup/globals.html#run), [`clean`](https://rafamel.github.io/poseup/globals.html#clean), and [`purge`](https://rafamel.github.io/poseup/globals.html#purge), which are the ones called by the equally names CLI commands.
+*poseup* exports [`compose`](https://rafamel.github.io/poseup/globals.html#compose), [`run`](https://rafamel.github.io/poseup/globals.html#run), [`clean`](https://rafamel.github.io/poseup/globals.html#clean), and [`purge`](https://rafamel.github.io/poseup/globals.html#purge), which are called by the equally named CLI commands.
 
-However, when running *poseup* on the CLI, it will also listen to termination events though [`exits`](https://github.com/rafamel/exits) and run cleanup tasks either on end of execution, or termination. In order to handle these cleanup tasks, you have two options:
+However, when running *poseup* on the CLI, the program will also listen to termination events though [`exits`](https://github.com/rafamel/exits) and run cleanup tasks either at end of execution or termination signals. In order to handle these cleanup tasks, you have two options:
 
 - Call [`attach`](https://rafamel.github.io/poseup/globals.html#attach) before any of the command functions. This will produce identical behavior to that of the CLI.
 - Call [`teardown`](https://rafamel.github.io/poseup/globals.html#teardown) after running any of the command functions to manually initialize the run of cleanup tasks and handle errors.
