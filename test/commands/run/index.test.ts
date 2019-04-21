@@ -273,7 +273,13 @@ describe(`control/trunk call`, () => {
       expect(mocks.runTask).toBeCalledTimes(2);
       [mocks.runTask.mock.calls[0], mocks.runTask.mock.calls[1]].forEach(
         (args) => {
-          expect(args.slice(0, 4)).toEqual([{}, config, 'foo', ['bar', 'baz']]);
+          expect(args.slice(0, 5)).toEqual([
+            {},
+            config,
+            'foo/bar',
+            'foo',
+            ['bar', 'baz']
+          ]);
         }
       );
     });

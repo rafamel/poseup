@@ -11,6 +11,7 @@ import { RUN_WAIT_TIMEOUT } from '~/constants';
 export default async function runTask(
   task: ITask,
   config: IConfig,
+  directory: string,
   cmd: string,
   args: string[],
   clean: () => Promise<any>,
@@ -79,7 +80,7 @@ export default async function runTask(
 
   // Run cmd
   if (task.primary) await runPrimary(task, config, cmd, args);
-  else if (task.cmd) await runCmd(task);
+  else if (task.cmd) await runCmd(task, directory);
 
   logger.info('  ' + chalk.bold('+') + ' Cleaning environment');
   const signal = await clean();

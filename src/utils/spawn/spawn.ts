@@ -1,6 +1,5 @@
 import { spawn as _spawn, state as getState } from 'exits';
 import { SpawnOptions } from 'child_process';
-import clone from 'lodash.clone';
 import { DEFAULT_STDIO } from '~/constants';
 import silent from './silent';
 
@@ -17,6 +16,6 @@ export default function spawn(
     opts.stdio = state.triggered ? silent() : DEFAULT_STDIO;
   }
   // Pass environment vars to spawned processes
-  if (!opts.env) opts.env = clone(process.env);
+  if (!opts.env) opts.env = Object.assign({}, process.env);
   return _spawn(cmd, args, opts).promise;
 }

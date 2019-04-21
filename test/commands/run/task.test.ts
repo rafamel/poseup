@@ -48,12 +48,12 @@ const CLEAN = jest.fn().mockImplementation(() => Promise.resolve());
 describe(`empty`, () => {
   test(`succeeds`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
   });
   test(`doesn't call runPrimary or runCmd`, async () => {
     await expect(
-      runTask({}, CONFIG, 'foo', [], CLEAN, 0)
+      runTask({}, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.runPrimary).not.toHaveBeenCalled();
     expect(mocks.runCmd).not.toHaveBeenCalled();
@@ -65,6 +65,7 @@ describe(`linked services`, () => {
       runTask(
         { ...TASK, services: ['a', 'b', 'c'] },
         CONFIG,
+        'foo/bar',
         'foo',
         ['d', 'e'],
         CLEAN,
@@ -84,7 +85,7 @@ describe(`linked services`, () => {
   });
   test(`succeeds for depends_on`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', ['d', 'e'], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', ['d', 'e'], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.spawn).not.toHaveBeenCalledWith(
       'foo',
@@ -107,6 +108,7 @@ describe(`linked services`, () => {
       runTask(
         { ...TASK, services: ['a', 'b', 'c'] },
         CONFIG,
+        'foo/bar',
         'foo',
         ['d', 'e'],
         CLEAN,
@@ -126,6 +128,7 @@ describe(`linked services`, () => {
       runTask(
         { ...TASK, services: ['a', 'b', 'c'] },
         CONFIG,
+        'foo/bar',
         'foo',
         ['d', 'e'],
         CLEAN,
@@ -144,7 +147,7 @@ describe(`linked services`, () => {
     });
 
     await expect(
-      runTask(TASK, CONFIG, 'foo', ['d', 'e'], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', ['d', 'e'], CLEAN, 0)
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Process finished early (SIGINT)"`
     );
@@ -155,30 +158,30 @@ describe(`linked services`, () => {
 describe(`wait after bringing up services`, () => {
   test(`doesn't wait on timeout = 0`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.wait).not.toHaveBeenCalled();
     expect(mocks.waitDetect).not.toHaveBeenCalled();
   });
   test(`waits wo/ detect`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN)
     ).resolves.toBeUndefined();
     expect(mocks.wait).toHaveBeenCalledWith(RUN_WAIT_TIMEOUT * 1000);
   });
   test(`waits > 0 wo/ detect`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 1)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 1)
     ).resolves.toBeUndefined();
     expect(mocks.wait).toHaveBeenCalledWith(1000);
     expect(mocks.waitDetect).not.toHaveBeenCalled();
   });
   test(`calls waitDetect w/ args`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, undefined, true)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, undefined, true)
     ).resolves.toBeUndefined();
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 1, true)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 1, true)
     ).resolves.toBeUndefined();
 
     expect(mocks.waitDetect).toHaveBeenCalledTimes(2);
@@ -199,20 +202,29 @@ describe(`wait after bringing up services`, () => {
   });
   test(`fails on < 0`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, -1)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, -1)
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Waiting time must be greater than or equal to 0"`
     );
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, -1, true)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, -1, true)
     ).rejects.toThrowError();
   });
   test(`waits only when bringing up services`, async () => {
     await expect(
-      runTask({ primary: 'foo' }, CONFIG, 'foo', [], CLEAN, 1)
+      runTask({ primary: 'foo' }, CONFIG, 'foo/bar', 'foo', [], CLEAN, 1)
     ).resolves.toBeUndefined();
     await expect(
-      runTask({ primary: 'foo' }, CONFIG, 'foo', [], CLEAN, undefined, true)
+      runTask(
+        { primary: 'foo' },
+        CONFIG,
+        'foo/bar',
+        'foo',
+        [],
+        CLEAN,
+        undefined,
+        true
+      )
     ).resolves.toBeUndefined();
     expect(mocks.wait).not.toHaveBeenCalledWith(1000);
     expect(mocks.waitDetect).not.toHaveBeenCalled();
@@ -221,7 +233,7 @@ describe(`wait after bringing up services`, () => {
 describe(`task.exec`, () => {
   test(`doesn't run if no exec`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(getSpawnCalls('exec')).toBe(0);
   });
@@ -236,6 +248,7 @@ describe(`task.exec`, () => {
           ]
         },
         CONFIG,
+        'foo/bar',
         'foo',
         ['d', 'e'],
         CLEAN,
@@ -277,6 +290,7 @@ describe(`task.exec`, () => {
     const p = runTask(
       { ...TASK, exec: [{ bar: ['a'] }] },
       CONFIG,
+      'foo/bar',
       'foo',
       [],
       CLEAN,
@@ -298,6 +312,7 @@ describe(`task.exec`, () => {
     const p = runTask(
       { ...TASK, exec: [{ bar: ['a'] }, { baz: ['b'] }] },
       CONFIG,
+      'foo/bar',
       'foo',
       [],
       CLEAN,
@@ -322,7 +337,15 @@ describe(`task.exec`, () => {
     });
 
     await expect(
-      runTask({ ...TASK, exec: [{ bar: ['a'] }] }, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(
+        { ...TASK, exec: [{ bar: ['a'] }] },
+        CONFIG,
+        'foo/bar',
+        'foo',
+        [],
+        CLEAN,
+        0
+      )
     ).rejects.toThrowError();
 
     mocks.spawn.mockImplementation(() => Promise.resolve(null));
@@ -334,7 +357,15 @@ describe(`task.exec`, () => {
     });
 
     await expect(
-      runTask({ ...TASK, exec: [{ bar: ['a'] }] }, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(
+        { ...TASK, exec: [{ bar: ['a'] }] },
+        CONFIG,
+        'foo/bar',
+        'foo',
+        [],
+        CLEAN,
+        0
+      )
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Process finished early (SIGINT)"`
     );
@@ -346,7 +377,7 @@ describe(`runPrimary call`, () => {
   test(`suceeds`, async () => {
     const task = { ...TASK, cmd: ['a', 'b'] };
     await expect(
-      runTask(task, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
+      runTask(task, CONFIG, 'foo/bar', 'foo', ['a', 'b'], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.runCmd).not.toHaveBeenCalled();
     expect(mocks.runPrimary).toHaveBeenCalledTimes(1);
@@ -359,7 +390,7 @@ describe(`runPrimary call`, () => {
     mocks.runPrimary.mockImplementationOnce(() => Promise.reject(Error()));
 
     await expect(
-      runTask(TASK, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', ['a', 'b'], CLEAN, 0)
     ).rejects.toThrowError();
   });
   test(`calls after exec`, async () => {
@@ -371,6 +402,7 @@ describe(`runPrimary call`, () => {
     const p = runTask(
       { ...TASK, exec: [{ bar: ['a'] }] },
       CONFIG,
+      'foo/bar',
       'foo',
       [],
       CLEAN,
@@ -385,7 +417,7 @@ describe(`runPrimary call`, () => {
   });
   test(`doesn't execute when no primary`, async () => {
     await expect(
-      runTask({ cmd: [] }, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
+      runTask({ cmd: [] }, CONFIG, 'foo/bar', 'foo', ['a', 'b'], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.runPrimary).not.toHaveBeenCalled();
   });
@@ -393,17 +425,17 @@ describe(`runPrimary call`, () => {
 describe(`runCmd call`, () => {
   test(`suceeds`, async () => {
     await expect(
-      runTask({ cmd: ['c', 'd'] }, CONFIG, 'foo', [], CLEAN, 0)
+      runTask({ cmd: ['c', 'd'] }, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.runPrimary).not.toHaveBeenCalled();
     expect(mocks.runCmd).toHaveBeenCalledTimes(1);
-    expect(mocks.runCmd).toHaveBeenCalledWith({ cmd: ['c', 'd'] });
+    expect(mocks.runCmd).toHaveBeenCalledWith({ cmd: ['c', 'd'] }, 'foo/bar');
   });
   test(`fails`, async () => {
     mocks.runCmd.mockImplementationOnce(() => Promise.reject(Error()));
 
     await expect(
-      runTask({ cmd: ['c', 'd'] }, CONFIG, 'foo', [], CLEAN, 0)
+      runTask({ cmd: ['c', 'd'] }, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).rejects.toThrowError();
   });
   test(`calls after exec`, async () => {
@@ -415,6 +447,7 @@ describe(`runCmd call`, () => {
     const p = runTask(
       { cmd: ['c', 'd'], exec: [{ bar: ['a'] }], services: ['bar'] },
       CONFIG,
+      'foo/bar',
       'foo',
       [],
       CLEAN,
@@ -429,7 +462,7 @@ describe(`runCmd call`, () => {
   });
   test(`doesn't execute when primary`, async () => {
     await expect(
-      runTask(TASK, CONFIG, 'foo', ['a', 'b'], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', ['a', 'b'], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(mocks.runCmd).not.toHaveBeenCalled();
   });
@@ -438,20 +471,20 @@ describe(`clean call`, () => {
   test(`succeeds`, async () => {
     CLEAN.mockClear();
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).resolves.toBeUndefined();
     expect(CLEAN).toHaveBeenCalledTimes(1);
   });
   test(`fails`, async () => {
     CLEAN.mockImplementationOnce(() => Promise.reject(Error()));
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).rejects.toThrowError();
   });
   test(`fails on signal`, async () => {
     CLEAN.mockImplementationOnce(async () => 'SIGINT');
     await expect(
-      runTask(TASK, CONFIG, 'foo', [], CLEAN, 0)
+      runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0)
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Process finished early (SIGINT)"`
     );
@@ -460,7 +493,7 @@ describe(`clean call`, () => {
     CLEAN.mockClear();
     mocks.runPrimary.mockImplementationOnce(() => sleep(1000));
 
-    const p = runTask(TASK, CONFIG, 'foo', [], CLEAN, 0);
+    const p = runTask(TASK, CONFIG, 'foo/bar', 'foo', [], CLEAN, 0);
     await sleep(750);
     expect(CLEAN).not.toHaveBeenCalled();
     await expect(p).resolves.toBeUndefined();

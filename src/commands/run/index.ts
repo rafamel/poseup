@@ -56,6 +56,15 @@ function* trunk(opts: IRunOptions, build: IBuild): IterableIterator<any> {
       '\n' + chalk.yellow.bold('-') + ' Running task: ' + chalk.bold(taskName)
     );
     const task = config.tasks[taskName];
-    yield runTask(task, config, cmd, args, clean, opts.timeout, opts.detect);
+    yield runTask(
+      task,
+      config,
+      build.directory,
+      cmd,
+      args,
+      clean,
+      opts.timeout,
+      opts.detect
+    );
   }
 }
