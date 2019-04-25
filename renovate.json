@@ -6,32 +6,30 @@
     ":prHourlyLimitNone",
     ":prConcurrentLimit10",
     ":separateMajorReleases",
-    ":combinePatchMinorReleases",
-    ":semanticCommits"
+    ":combinePatchMinorReleases"
   ],
   "ignoreDeps": ["typescript", "husky"],
   "packageRules": [
     {
       "packagePatterns": ["*"],
-      "semanticCommitType": "chore",
-      "commitMessageSuffix": "(development)",
-      "extends": ["schedule:monthly"],
-      "minor": {
-        "automerge": true,
-        "groupName": "all non-major dependencies",
-        "groupSlug": "all-dev-minor-patch"
-      }
-    },
-    {
-      "depTypeList": ["dependencies"],
+      "rangeStrategy": "replace",
       "semanticCommitType": "fix",
-      "commitMessageSuffix": "",
-      "extends": ["schedule:daily"],
+      "extends": ["schedule:weekly"],
       "minor": {
-        "automerge": true,
         "extends": ["schedule:monthly"],
         "groupName": "all non-major dependencies",
         "groupSlug": "all-minor-patch"
+      }
+    },
+    {
+      "depTypeList": ["devDependencies"],
+      "rangeStrategy": "replace",
+      "semanticCommitType": "chore",
+      "commitMessageSuffix": "(development)",
+      "schedule": "before 3am on the first day of the year",
+      "minor": {
+        "groupName": "all non-major dependencies",
+        "groupSlug": "all-dev-minor-patch"
       }
     }
   ]
