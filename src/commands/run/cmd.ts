@@ -15,7 +15,7 @@ export default async function runCmd(
       chalk.bold(`['${task.cmd.join("', '")}']`)
   );
   const bin = await up('node_modules/.bin', { cwd: directory });
-  const opts = { env: Object.assign({}, process.env) };
+  const opts = { cwd: directory, env: Object.assign({}, process.env) };
   if (bin) {
     const alter = manage(opts.env);
     alter.unshift(bin);
