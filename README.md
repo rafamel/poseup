@@ -12,7 +12,7 @@
   <br />
   <br />
   <a href="https://www.npmjs.com/package/poseup" target="_blank">
-    <img alt="poseup" width="350" src="https://raw.githubusercontent.com/rafamel/poseup/master/scripts/assets/logo.png" />
+    <img alt="poseup" width="350" src="https://raw.githubusercontent.com/rafamel/poseup/master/assets/logo.png" />
   </a>
   <br />
   <br />
@@ -442,7 +442,7 @@ module.exports = slim(
 
 *poseup* exports [`compose`](https://rafamel.github.io/poseup/globals.html#compose), [`run`](https://rafamel.github.io/poseup/globals.html#run), [`clean`](https://rafamel.github.io/poseup/globals.html#clean), and [`purge`](https://rafamel.github.io/poseup/globals.html#purge), which are called by the equally named CLI commands.
 
-However, when running *poseup* on the CLI, the program will also listen to termination events though [`exits`](https://github.com/rafamel/exits) and run cleanup tasks either at end of execution or termination signals. In order to handle these cleanup tasks, you have two options:
+However, when running *poseup* on the CLI, the program will also listen to termination events through [`exits`](https://github.com/rafamel/exits) and run cleanup tasks either at end of execution or termination signals. In order to handle these cleanup tasks, you have two options:
 
 - Call [`attach`](https://rafamel.github.io/poseup/globals.html#attach) before any of the command functions. This will produce identical behavior to that of the CLI.
 - Call [`teardown`](https://rafamel.github.io/poseup/globals.html#teardown) after running any of the command functions to manually initialize the run of cleanup tasks and handle errors.
