@@ -1,3 +1,24 @@
+# [0.3.0](https://github.com/rafamel/poseup/compare/v0.2.0...v0.3.0) (2019-04-30)
+
+
+### Bug Fixes
+
+* **bin/main:** reads package from file dir ([fcfdf1e](https://github.com/rafamel/poseup/commit/fcfdf1e))
+* **deps:** updates cli-belt to 0.3.0 ([9a71b30](https://github.com/rafamel/poseup/commit/9a71b30))
+* **deps:** updates dependencies ([dae365b](https://github.com/rafamel/poseup/commit/dae365b))
+
+
+### Features
+
+* exports attach and teardown from entry point ([0c27fb9](https://github.com/rafamel/poseup/commit/0c27fb9))
+* **bin:** properly uses attach() and isAttached() on binary entry point ([c849354](https://github.com/rafamel/poseup/commit/c849354))
+* **bin/main:** fails by throwing on no command instead of exiting ([f8896b5](https://github.com/rafamel/poseup/commit/f8896b5))
+* **commands/run:** adds local node_modules/.bin to path for local cmd runs ([4578f7d](https://github.com/rafamel/poseup/commit/4578f7d))
+* **commands/run:** uses directory as cwd for local cmd execution ([09691b8](https://github.com/rafamel/poseup/commit/09691b8))
+* **utils/teardown:** moves add to teardown; if not attached, teardown can now run added fns by itse ([322072b](https://github.com/rafamel/poseup/commit/322072b))
+
+
+
 # [0.2.0](https://github.com/rafamel/poseup/compare/v0.1.0...v0.2.0) (2019-04-10)
 
 

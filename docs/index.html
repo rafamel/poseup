@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>poseup 0.2.0</title>
+	<title>poseup 0.3.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">poseup 0.2.0</a>
+					<a href="index.html" class="title">poseup 0.3.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> poseup 0.2.0</h1>
+			<h1> poseup 0.3.0</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,7 @@
 					<br />
 					<br />
 					<a href="https://www.npmjs.com/package/poseup" target="_blank">
-						<img alt="poseup" width="350" src="https://raw.githubusercontent.com/rafamel/poseup/master/scripts/assets/logo.png" />
+						<img alt="poseup" width="350" src="https://raw.githubusercontent.com/rafamel/poseup/master/assets/logo.png" />
 					</a>
 					<br />
 					<br />
@@ -82,7 +82,7 @@
 					<br />
 					<br />
 				</div>
-				<p>If you come to find it useful, consider <a href="https://github.com/rafamel/poseup">starring the project</a> and following <a href="https://github.com/rafamel">its author</a> to show your ❤️</p>
+				<p>If you find it useful, consider <a href="https://github.com/rafamel/poseup">starring the project</a> 💪 and/or following <a href="https://github.com/rafamel">its author</a> ❤️ -there&#39;s more on the way!</p>
 				<h2 id="install">Install</h2>
 				<p>Requires <a href="https://docs.docker.com/install/"><code>docker</code> to be installed on your system.</a></p>
 				<p>To install <em>poseup</em> globally, run: <a href="https://www.npmjs.com/package/poseup"><code>npm install -g poseup</code></a></p>
@@ -424,8 +424,8 @@ Options:
 );</code></pre>
 				<h3 id="programmatic-usage">Programmatic Usage</h3>
 				<p><a href="https://rafamel.github.io/poseup/globals.html">See docs.</a></p>
-				<p><em>poseup</em> exports <a href="https://rafamel.github.io/poseup/globals.html#compose"><code>compose</code></a>, <a href="https://rafamel.github.io/poseup/globals.html#run"><code>run</code></a>, <a href="https://rafamel.github.io/poseup/globals.html#clean"><code>clean</code></a>, and <a href="https://rafamel.github.io/poseup/globals.html#purge"><code>purge</code></a>, which are the ones called by the equally names CLI commands.</p>
-				<p>However, when running <em>poseup</em> on the CLI, it will also listen to termination events though <a href="https://github.com/rafamel/exits"><code>exits</code></a> and run cleanup tasks either on end of execution, or termination. In order to handle these cleanup tasks, you have two options:</p>
+				<p><em>poseup</em> exports <a href="https://rafamel.github.io/poseup/globals.html#compose"><code>compose</code></a>, <a href="https://rafamel.github.io/poseup/globals.html#run"><code>run</code></a>, <a href="https://rafamel.github.io/poseup/globals.html#clean"><code>clean</code></a>, and <a href="https://rafamel.github.io/poseup/globals.html#purge"><code>purge</code></a>, which are called by the equally named CLI commands.</p>
+				<p>However, when running <em>poseup</em> on the CLI, the program will also listen to termination events through <a href="https://github.com/rafamel/exits"><code>exits</code></a> and run cleanup tasks either at end of execution or termination signals. In order to handle these cleanup tasks, you have two options:</p>
 				<ul>
 					<li>Call <a href="https://rafamel.github.io/poseup/globals.html#attach"><code>attach</code></a> before any of the command functions. This will produce identical behavior to that of the CLI.</li>
 					<li>Call <a href="https://rafamel.github.io/poseup/globals.html#teardown"><code>teardown</code></a> after running any of the command functions to manually initialize the run of cleanup tasks and handle errors.</li>
