@@ -123,7 +123,7 @@
     "common-tags": "^1.8.0",
     "errorish": "^0.3.0",
     "exits": "^0.4.0",
-    "find-up": "^3.0.0",
+    "find-up": "^4.0.0",
     "fs-extra": "^7.0.1",
     "hasbin": "^1.2.3",
     "js-yaml": "^3.13.1",
