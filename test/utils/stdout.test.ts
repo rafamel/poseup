@@ -12,7 +12,7 @@ beforeEach(() => Object.values(mocks).forEach((mocks) => mocks.mockClear()));
 
 mocks.spawn.mockImplementation(() => {
   jest.unmock('child_process');
-  return require('child_process').spawn('shx', ['echo', 'foo']);
+  return require('child_process').spawn('node', ['-e', `console.log('foo');`]);
 });
 
 test(`succeeds`, async () => {
@@ -31,7 +31,7 @@ test(`fails on non existent binary`, async () => {
 test(`Fails on spawn process error`, async () => {
   mocks.spawn.mockImplementation(() => {
     jest.unmock('child_process');
-    return require('child_process').spawn('shx', ['error']);
+    return require('child_process').spawn('node', ['-e', 'process.exit(1);']);
   });
 
   await expect(
