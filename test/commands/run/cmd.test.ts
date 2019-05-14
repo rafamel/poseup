@@ -38,10 +38,12 @@ describe(`spawn call`, () => {
     ).resolves.toBeUndefined();
     expect(mocks.up).toHaveBeenCalledTimes(2);
     expect(mocks.up).toHaveBeenNthCalledWith(1, 'node_modules/.bin', {
-      cwd: 'foo/bar'
+      cwd: 'foo/bar',
+      type: 'directory'
     });
     expect(mocks.up).toHaveBeenNthCalledWith(2, 'node_modules/.bin', {
-      cwd: 'foo/bar'
+      cwd: 'foo/bar',
+      type: 'directory'
     });
     expect(mocks.spawn).toHaveBeenCalledTimes(2);
     expect(mocks.spawn.mock.calls[0][0]).toBe('foo');

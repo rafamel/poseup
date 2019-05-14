@@ -23,9 +23,9 @@ describe(`options`, () => {
     expect(process.env.NODE_ENV).toBe(env);
   });
   test(`sets log when passed`, async () => {
-    await expect(initialize({ log: 3 })).resolves.toBeUndefined();
+    await expect(initialize({ log: 'debug' })).resolves.toBeUndefined();
     expect(mocks.setLevel).toHaveBeenCalledTimes(1);
-    expect(mocks.setLevel).toHaveBeenCalledWith(3);
+    expect(mocks.setLevel).toHaveBeenCalledWith('debug');
     expect(process.env.NODE_ENV).toBe(env);
   });
   test(`sets env when passed`, async () => {
@@ -34,10 +34,10 @@ describe(`options`, () => {
   });
   test(`sets log and env`, async () => {
     await expect(
-      initialize({ log: 3, environment: 'foo' })
+      initialize({ log: 'debug', environment: 'foo' })
     ).resolves.toBeUndefined();
     expect(mocks.setLevel).toHaveBeenCalledTimes(1);
-    expect(mocks.setLevel).toHaveBeenCalledWith(3);
+    expect(mocks.setLevel).toHaveBeenCalledWith('debug');
     expect(process.env.NODE_ENV).toBe('foo');
   });
 });

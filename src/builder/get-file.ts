@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import findUp from 'find-up';
+import up from 'find-up';
 import { rejects } from 'errorish';
 import { FILE_NAME } from '~/constants';
 
@@ -48,9 +48,9 @@ export async function getExplicitFile(
 }
 
 export async function getDefaultFile(directory: string): Promise<IGetFile> {
-  const file = await findUp(
+  const file = await up(
     ['.js', '.json', '.yml', '.yaml'].map((ext) => FILE_NAME + ext),
-    { cwd: directory }
+    { cwd: directory, type: 'file' }
   );
   if (!file) throw Error(`${FILE_NAME}.{js,json,yml,yaml} could't be found`);
 

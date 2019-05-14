@@ -14,7 +14,11 @@ export default async function runCmd(
     `  ${chalk.bold('+')} Running cmd: ` +
       chalk.bold(`['${task.cmd.join("', '")}']`)
   );
-  const bin = await up('node_modules/.bin', { cwd: directory });
+  // TODO: refactor
+  const bin = await up('node_modules/.bin', {
+    cwd: directory,
+    type: 'directory'
+  });
   const opts = { cwd: directory, env: Object.assign({}, process.env) };
   if (bin) {
     const alter = manage(opts.env);
