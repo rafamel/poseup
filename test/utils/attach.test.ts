@@ -21,14 +21,14 @@ describe(`attach`, () => {
   test(`isAttached() = false before attachment`, () => {
     expect(isAttached()).toBe(false);
   });
-  test(`succeeds`, async () => {
-    await expect(attach()).resolves.toBeUndefined();
+  test(`succeeds`, () => {
+    expect(attach()).toBeUndefined();
   });
   test(`isAttached() = true after attachment`, () => {
     expect(isAttached()).toBe(true);
   });
-  test(`calls exits attach() and options()`, async () => {
-    await attach();
+  test(`calls exits attach() and options()`, () => {
+    attach();
 
     expect(mocks.attach).toHaveBeenCalledTimes(1);
     expect(mocks.options).toHaveBeenCalledTimes(1);
@@ -36,11 +36,11 @@ describe(`attach`, () => {
 });
 
 describe(`exits callbacks`, () => {
-  test(`resolver returns exit 1 for exceptions and rejections`, async () => {
+  test(`resolver returns exit 1 for exceptions and rejections`, () => {
     let opts: any = {};
     mocks.options.mockImplementationOnce((x: any) => (opts = x));
 
-    await attach();
+    attach();
     expect(opts).toHaveProperty('resolver');
 
     expect(() => opts.resolver('foo', 'bar')).not.toThrow();
@@ -59,8 +59,8 @@ describe(`exits callbacks`, () => {
     expect(() => opts.resolver('rejection', 'foo')).not.toThrow();
     expect(mocks.resolver).toHaveBeenLastCalledWith('exit', 1);
   });
-  test(`calls on('done', onDone)`, async () => {
-    await expect(attach()).resolves.toBeUndefined();
+  test(`calls on('done', onDone)`, () => {
+    expect(attach()).resolves.toBeUndefined();
 
     expect(mocks.on).toHaveBeenCalledTimes(2);
     expect(mocks.on.mock.calls[1][0]).toBe('done');

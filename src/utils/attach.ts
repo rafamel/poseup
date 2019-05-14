@@ -7,7 +7,9 @@ import { error } from 'cli-belt';
 /** @hidden */
 let attached = false;
 
-export default async function attach(): Promise<void> {
+export default function attach(): void {
+  attached = true;
+
   // Attachment must go first (other potential errors must be catched)
   _attach();
   options({
@@ -37,8 +39,6 @@ export default async function attach(): Promise<void> {
     ADD_TYPES.START_LOG
   );
   on('done', onDone);
-
-  attached = true;
 }
 
 /** @hidden */
