@@ -1,8 +1,7 @@
-import { options, attach as _attach, add, resolver, on, IState } from 'exits';
+import { options, attach as _attach, add, resolver, on } from 'exits';
 import { ADD_TYPES, toTeardown } from './teardown';
 import chalk from 'chalk';
 import logger from '~/utils/logger';
-import { error } from 'cli-belt';
 
 /** @hidden */
 let attached = false;
@@ -38,34 +37,13 @@ export default function attach(): void {
       toTeardown() && logger.info(chalk.yellow.bold('-') + ' Preparing exit'),
     ADD_TYPES.START_LOG
   );
-  on('done', onDone);
+  on(
+    'done',
+    () => toTeardown() && logger.info(chalk.green.bold('✓') + ' Done')
+  );
 }
 
 /** @hidden */
 export function isAttached(): boolean {
   return attached;
-}
-
-/** @hidden */
-export function onDone(getState: () => IState): void {
-  if (toTeardown()) logger.info(chalk.green.bold('✓') + ' Done');
-
-  const { triggered } = getState();
-  if (triggered) {
-    switch (triggered.type) {
-      case 'exception':
-      case 'rejection':
-        error(triggered.arg as Error, { logger, debug: true });
-        break;
-      case 'exit':
-        if (triggered.arg !== 0) {
-          error(Error(`Spawned process exited with code ${triggered.arg}`), {
-            logger
-          });
-        }
-        break;
-      default:
-        break;
-    }
-  }
 }

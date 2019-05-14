@@ -1,4 +1,4 @@
-import attach, { isAttached, onDone } from '~/utils/attach';
+import attach, { isAttached } from '~/utils/attach';
 import { attach as _attach, options, resolver, add, on } from 'exits';
 import logger from '~/utils/logger';
 import { IOfType } from '~/types';
@@ -64,24 +64,14 @@ describe(`exits callbacks`, () => {
 
     expect(mocks.on).toHaveBeenCalledTimes(2);
     expect(mocks.on.mock.calls[1][0]).toBe('done');
-    expect(mocks.on.mock.calls[1][1]).toBe(onDone);
+    expect(typeof mocks.on.mock.calls[1][1]).toBe('function');
   });
+
   test(`onDone doesn't throw`, () => {
-    expect(() => onDone(() => ({ triggered: null } as any))).not.toThrow();
-    expect(() =>
-      onDone(() => ({ triggered: { type: 'exception', arg: Error() } } as any))
-    ).not.toThrow();
-    expect(() =>
-      onDone(() => ({ triggered: { type: 'rejection', arg: Error() } } as any))
-    ).not.toThrow();
-    expect(() =>
-      onDone(() => ({ triggered: { type: 'exit', arg: 0 } } as any))
-    ).not.toThrow();
-    expect(() =>
-      onDone(() => ({ triggered: { type: 'exit', arg: 1 } } as any))
-    ).not.toThrow();
-    expect(() =>
-      onDone(() => ({ triggered: { type: 'foo' } } as any))
-    ).not.toThrow();
+    expect(attach()).toBeUndefined();
+    expect(typeof mocks.on.mock.calls[1][1]).toBe('function');
+    const onDone = mocks.on.mock.calls[1][1];
+
+    expect(() => onDone()).not.toThrow();
   });
 });
