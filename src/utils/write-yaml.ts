@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
 import uuid from 'uuid/v4';
-import { add, ADD_TYPES } from '~/utils/teardown';
+import { add, ADD_TYPES } from '~/lifecycle';
 import { TMP_DIR } from '~/constants';
 import { rejects } from 'errorish';
 

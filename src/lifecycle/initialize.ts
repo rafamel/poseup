@@ -9,6 +9,7 @@ import logger, { setLevel } from '~/utils/logger';
  * - Checks docker & docker-compose binaries are available
  */
 export default async function initialize(options: IOptions): Promise<void> {
+  // TODO: always set level: set default if not options.log
   if (options.log) setLevel(options.log);
   if (options.environment) process.env.NODE_ENV = options.environment;
 

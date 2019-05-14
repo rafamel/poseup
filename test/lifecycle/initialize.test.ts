@@ -1,4 +1,4 @@
-import initialize from '~/utils/initialize';
+import initialize from '~/lifecycle/initialize';
 import has from '~/utils/has';
 import logger, { setLevel } from '~/utils/logger';
 import { IOfType } from '~/types';

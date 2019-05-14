@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import containerLs from '~/utils/container-ls';
 import logger from '~/utils/logger';
 import { IPurgeOptions } from '~/types';
-import initialize from '~/utils/initialize';
+import { initialize } from '~/lifecycle';
 import spawn from '~/utils/spawn';
 import table from 'as-table';
 

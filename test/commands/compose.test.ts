@@ -1,19 +1,19 @@
 import compose from '~/commands/compose';
-import initialize from '~/utils/initialize';
+import initialize from '~/lifecycle/initialize';
 import builder from '~/builder';
 import write from '~/utils/write-yaml';
 import { getCmd as getCleanCmd } from '~/commands/clean';
-import { add } from '~/utils/teardown';
+import add from '~/lifecycle/add';
 import spawn from '~/utils/spawn';
 import { STOP_WAIT_TIME } from '~/constants';
 import path from 'path';
 import { IOfType } from '~/types';
 
-jest.mock('~/utils/initialize');
+jest.mock('~/lifecycle/initialize');
 jest.mock('~/builder');
 jest.mock('~/utils/write-yaml');
 jest.mock('~/commands/clean');
-jest.mock('~/utils/teardown');
+jest.mock('~/lifecycle/add');
 jest.mock('~/utils/spawn');
 
 const mocks: IOfType<jest.Mock<any, any>> = {

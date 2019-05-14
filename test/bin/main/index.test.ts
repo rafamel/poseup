@@ -6,6 +6,8 @@ import purge from '~/bin/main/purge';
 import { IOfType } from '~/types';
 import argv from 'string-argv';
 
+// TODO: remove string-argv dep
+
 jest.mock('~/bin/main/compose');
 jest.mock('~/bin/main/run');
 jest.mock('~/bin/main/clean');

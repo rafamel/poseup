@@ -1,4 +1,4 @@
-import { add } from '~/utils/teardown';
+import add from '~/lifecycle/add';
 import writeYaml from '~/utils/write-yaml';
 import { TMP_DIR } from '~/constants';
 import fs from 'fs-extra';
@@ -7,7 +7,7 @@ import path from 'path';
 import uuid from 'uuid/v4';
 import { IOfType } from '~/types';
 
-jest.mock('~/utils/teardown');
+jest.mock('~/lifecycle/add');
 const mocks: IOfType<jest.Mock<any, any>> = {
   add
 } as any;

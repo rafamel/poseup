@@ -1,12 +1,12 @@
 import clean from '~/commands/clean/clean';
-import initialize from '~/utils/initialize';
+import initialize from '~/lifecycle/initialize';
 import getCmd from '~/commands/clean/get-cmd';
 import builder from '~/builder';
 import spawn from '~/utils/spawn';
 import { wait } from 'promist';
 import { IOfType } from '~/types';
 
-jest.mock('~/utils/initialize');
+jest.mock('~/lifecycle/initialize');
 jest.mock('~/commands/clean/get-cmd');
 jest.mock('~/builder');
 jest.mock('~/utils/spawn');

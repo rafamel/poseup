@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import main from './main';
-import attach from '~/utils/attach';
+import { attach } from '~/lifecycle';
 import { terminate } from 'exits';
 import logger from '~/utils/logger';
 import { ensure, Errorish } from 'errorish';

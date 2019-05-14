@@ -3,12 +3,11 @@ import builder from '~/builder';
 import { IComposeOptions } from '~/types';
 import logger from '~/utils/logger';
 import chalk from 'chalk';
-import initialize from '~/utils/initialize';
+import { initialize, add, ADD_TYPES } from '~/lifecycle';
 import write from '~/utils/write-yaml';
 import { getCmd as getCleanCmd } from './clean';
 import { STOP_WAIT_TIME } from '~/constants';
 import spawn from '~/utils/spawn';
-import { add, ADD_TYPES } from '~/utils/teardown';
 
 export default async function compose(
   options: IComposeOptions = {}

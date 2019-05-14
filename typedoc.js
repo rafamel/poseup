@@ -19,7 +19,7 @@ module.exports = {
     '**/src/*',
     '**/src/!(commands|utils|types)/**/*',
     '**/types/!(options)*',
-    '**/utils/**/!(attach|teardown)*',
+    '**/lifecycle/**/!(attach|teardown)*',
     '**/src/commands/!(compose|purge)*',
     '**/src/commands/run/!(index)*',
     '**/src/commands/clean/!(clean)*'

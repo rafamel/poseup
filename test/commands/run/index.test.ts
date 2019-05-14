@@ -1,11 +1,11 @@
 import run from '~/commands/run';
-import initialize from '~/utils/initialize';
+import initialize from '~/lifecycle/initialize';
 import builder from '~/builder';
 import list from '~/commands/run/list';
 import { getCmd as getCleanCmd } from '~/commands/clean';
 import spawn from '~/utils/spawn';
 import write from '~/utils/write-yaml';
-import { add } from '~/utils/teardown';
+import add from '~/lifecycle/add';
 import runTask from '~/commands/run/task';
 import { setLevel } from '~/utils/logger';
 import { wait } from 'promist';
@@ -13,13 +13,13 @@ import { STOP_WAIT_TIME } from '~/constants';
 import { IOfType } from '~/types';
 
 setLevel('silent');
-jest.mock('~/utils/initialize');
+jest.mock('~/lifecycle/initialize');
 jest.mock('~/builder');
 jest.mock('~/commands/run/list');
 jest.mock('~/commands/clean');
 jest.mock('~/utils/spawn');
 jest.mock('~/utils/write-yaml');
-jest.mock('~/utils/teardown');
+jest.mock('~/lifecycle/add');
 jest.mock('~/commands/run/task');
 
 const mocks: IOfType<jest.Mock<any, any>> = {

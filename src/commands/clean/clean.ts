@@ -1,6 +1,6 @@
 import builder from '~/builder';
 import { ICleanOptions } from '~/types';
-import initialize from '~/utils/initialize';
+import { initialize } from '~/lifecycle';
 import spawn from '~/utils/spawn';
 import getCmd from './get-cmd';
 

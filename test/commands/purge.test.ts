@@ -1,5 +1,5 @@
 import purge from '~/commands/purge';
-import initialize from '~/utils/initialize';
+import initialize from '~/lifecycle/initialize';
 import spawn from '~/utils/spawn';
 import containerLs from '~/utils/container-ls';
 import { setLevel } from '~/utils/logger';
@@ -10,7 +10,7 @@ import { IOfType } from '~/types';
 setLevel('silent');
 afterEach(() => setLevel('silent'));
 
-jest.mock('~/utils/initialize');
+jest.mock('~/lifecycle/initialize');
 jest.mock('~/utils/spawn');
 jest.mock('~/utils/container-ls');
 
