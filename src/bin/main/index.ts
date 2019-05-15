@@ -7,6 +7,8 @@ import compose from './compose';
 import run from './run';
 import clean from './clean';
 import purge from './purge';
+import { IOptions, TLogger } from '~/types';
+import { setLevel } from '~/utils/logger';
 
 export default async function main(argv: string[]): Promise<void> {
   const pkg = await loadPackage(__dirname, { title: true });
@@ -19,6 +21,10 @@ export default async function main(argv: string[]): Promise<void> {
       $ poseup [command] [options]
 
     Options:
+      -d, --dir <dir>     Project directory
+      -f, --file <path>   Path for config file [js,json,yml,yaml]
+      -e, --env <env>     Node environment
+      --log <level>       Logging level
       -h, --help     Show help
       -v, --version  Show version number
 
@@ -27,15 +33,23 @@ export default async function main(argv: string[]): Promise<void> {
       run            Runs tasks
       clean          Cleans not persisted containers and networks -optionally, also volumes
       purge          Purges dangling containers, networks, and volumes system-wide
+
+    Examples:
+      $ poseup --log debug compose -- up
+      $ poseup -d ./foo -e development clean
   `;
 
   const types = {
+    '--dir': String,
+    '--file': String,
+    '--env': String,
+    '--log': String,
     '--help': Boolean,
     '--version': Boolean
   };
 
-  const { options, aliases } = flags(help);
-  safePairs(types, options, { fail: true, bidirectional: true });
+  const { options: base, aliases } = flags(help);
+  safePairs(types, base, { fail: true, bidirectional: true });
   Object.assign(types, aliases);
   const cmd = arg(types, { argv, permissive: false, stopAtPositional: true });
 
@@ -46,16 +60,27 @@ export default async function main(argv: string[]): Promise<void> {
     throw Error(`Poseup requires a command`);
   }
 
+  const options: IOptions = {
+    directory: cmd['--dir'],
+    file: cmd['--file'],
+    environment: cmd['--env'],
+    log: cmd['--log'] as TLogger
+  };
+  if (options.log) setLevel(options.log);
+
   const args = cmd._.slice(1);
   switch (cmd._[0]) {
     case 'compose':
-      return compose(args);
+      return compose(
+        args,
+        options
+      );
     case 'run':
-      return run(args);
+      return run(args, options);
     case 'clean':
-      return clean(args);
+      return clean(args, options);
     case 'purge':
-      return purge(args);
+      return purge(args, options);
     default:
       throw Error('Unknown command: ' + cmd._[0]);
   }

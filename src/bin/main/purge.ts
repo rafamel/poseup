@@ -3,9 +3,12 @@ import { stripIndent as indent } from 'common-tags';
 import arg from 'arg';
 import { flags, safePairs } from 'cli-belt';
 import { purge as command } from '~/commands';
-import { TLogger } from '~/types';
+import { IOptions } from '~/types';
 
-export default async function purge(argv: string[]): Promise<void> {
+export default async function purge(
+  argv: string[],
+  options: IOptions
+): Promise<void> {
   const help = indent`
     Usage:
       $ poseup purge [options]
@@ -14,18 +17,16 @@ export default async function purge(argv: string[]): Promise<void> {
     
     Options:
       -f, --force       Skip confirmation
-      --log <level>     Logging level
       -h, --help        Show help
   `;
 
   const types = {
     '--force': Boolean,
-    '--log': String,
     '--help': Boolean
   };
 
-  const { options, aliases } = flags(help);
-  safePairs(types, options, { fail: true, bidirectional: true });
+  const { options: base, aliases } = flags(help);
+  safePairs(types, base, { fail: true, bidirectional: true });
   Object.assign(types, aliases);
   const cmd = arg(types, { argv, permissive: false, stopAtPositional: true });
 
@@ -34,6 +35,6 @@ export default async function purge(argv: string[]): Promise<void> {
 
   return command({
     force: cmd['--force'],
-    log: cmd['--log'] as TLogger
+    log: options.log
   });
 }
