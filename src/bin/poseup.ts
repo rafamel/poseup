@@ -2,7 +2,7 @@
 
 import main from './main';
 import { attach } from '~/lifecycle';
-import { terminate } from 'exits';
+import { terminate, state } from 'exits';
 import logger from '~/utils/logger';
 import { ensure, Errorish } from 'errorish';
 
@@ -10,6 +10,8 @@ import { ensure, Errorish } from 'errorish';
 attach();
 // Run main
 main(process.argv.slice(2)).catch((err) => {
+  if (state().triggered) return;
+
   err = ensure(err, { Error: Errorish });
 
   logger.error(err.message);
