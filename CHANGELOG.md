@@ -1,3 +1,33 @@
+# [0.4.0](https://github.com/rafamel/poseup/compare/v0.3.0...v0.4.0) (2019-05-15)
+
+
+### Bug Fixes
+
+* **deps:** updates dependencies ([f909430](https://github.com/rafamel/poseup/commit/f909430))
+* fixes dependencies usage to match updated versions ([8ae0474](https://github.com/rafamel/poseup/commit/8ae0474))
+* **lifecycle/manager:** doesn't duplicate added fns when attaching after they've been added ([890642d](https://github.com/rafamel/poseup/commit/890642d))
+* **lifecycle/teardown:** takes into account order of addition for equal types ([661cade](https://github.com/rafamel/poseup/commit/661cade))
+
+
+### Features
+
+* **bin:** doesn't run catch function if process is already terminating ([664043f](https://github.com/rafamel/poseup/commit/664043f))
+* **bin:** sets common flags to be taken by main poseup command ([041438e](https://github.com/rafamel/poseup/commit/041438e))
+* **lifecycle/add:** logs errors as warnings when occurring within exits hooks ([9662dd3](https://github.com/rafamel/poseup/commit/9662dd3))
+* **lifecycle/attach:** attach doesn't have any effect after the first call ([07f4c06](https://github.com/rafamel/poseup/commit/07f4c06))
+* **lifecycle/initialize:** always resets logging level; if absent, sets default ([2097055](https://github.com/rafamel/poseup/commit/2097055))
+* **utils/logger:** adds logger prefixes ([f17e7e2](https://github.com/rafamel/poseup/commit/f17e7e2))
+
+
+### BREAKING CHANGES
+
+* **bin:** When running poseup on CLI, common flags (log, file, dir, env) were previously
+taken by `poseup compose`, `poseup run`, `poseup clean` and `poseup purge`. Now these options are
+taken by the main command -`poseup`-, so, as an example, to set the logging level you'd run `poseup
+--log debug clean` instead of `poseup clean --log debug`.
+
+
+
 # [0.3.0](https://github.com/rafamel/poseup/compare/v0.2.0...v0.3.0) (2019-04-30)
 
 

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>poseup 0.3.0</title>
+	<title>poseup 0.4.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">poseup 0.3.0</a>
+					<a href="index.html" class="title">poseup 0.4.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> poseup 0.3.0</h1>
+			<h1> poseup 0.4.0</h1>
 		</div>
 	</div>
 </header>
@@ -100,12 +100,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="tlogger" class="tsd-anchor"></a>
 					<h3>TLogger</h3>
-					<div class="tsd-signature tsd-kind-icon">TLogger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">LogLevelDesc</span></div>
+					<div class="tsd-signature tsd-kind-icon">TLogger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"trace"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"debug"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"info"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"warn"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"error"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"silent"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/types/options.ts#L3">types/options.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/types/options.ts#L4">types/options.ts:4</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A logging level value.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -114,16 +119,16 @@
 					<a name="attach" class="tsd-anchor"></a>
 					<h3>attach</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">attach<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">attach<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/utils/attach.ts#L10">utils/attach.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/lifecycle/attach.ts#L7">lifecycle/attach.ts:7</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -137,7 +142,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/commands/clean/clean.ts#L7">commands/clean/clean.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/commands/clean/clean.ts#L7">commands/clean/clean.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -160,7 +165,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/commands/compose.ts#L13">commands/compose.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/commands/compose.ts#L12">commands/compose.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -183,7 +188,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/commands/purge.ts#L9">commands/purge.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/commands/purge.ts#L9">commands/purge.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -206,7 +211,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/commands/run/index.ts#L16">commands/run/index.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/commands/run/index.ts#L15">commands/run/index.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -229,7 +234,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/dae365b/src/utils/teardown.ts#L42">utils/teardown.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/poseup/blob/04ae736/src/lifecycle/teardown.ts#L4">lifecycle/teardown.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
