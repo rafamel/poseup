@@ -2,7 +2,7 @@ import hasbin from 'hasbin';
 
 async function bin(name: string): Promise<boolean> {
   return new Promise((resolve) => {
-    hasbin(name, (result) => resolve(!!result));
+    hasbin(name, (result: boolean) => resolve(!!result));
   });
 }
 

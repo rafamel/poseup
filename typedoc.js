@@ -17,11 +17,11 @@ module.exports = {
   exclude: [
     '**/__mocks__/**/*',
     '**/src/*',
-    '**/src/!(commands|utils|types)/**/*',
-    '**/types/!(options)*',
-    '**/lifecycle/**/!(attach|teardown)*',
+    '**/src/!(commands|lifecycle|types)/**/*',
     '**/src/commands/!(compose|purge)*',
     '**/src/commands/run/!(index)*',
-    '**/src/commands/clean/!(clean)*'
+    '**/src/commands/clean/!(clean)*',
+    '**/lifecycle/**/!(attach|teardown)*',
+    '**/types/!(options)*'
   ]
 };
