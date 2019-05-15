@@ -4,9 +4,6 @@ import run from '~/bin/main/run';
 import clean from '~/bin/main/clean';
 import purge from '~/bin/main/purge';
 import { IOfType } from '~/types';
-import argv from 'string-argv';
-
-// TODO: remove string-argv dep
 
 jest.mock('~/bin/main/compose');
 jest.mock('~/bin/main/run');
@@ -24,21 +21,21 @@ const mv = [mocks.console, mocks.compose, mocks.run, mocks.clean, mocks.purge];
 beforeEach(() => mv.forEach((mock) => mock.mockClear()));
 
 test(`shows help`, async () => {
-  await expect(main(argv('--help'))).resolves.toBeUndefined();
-  await expect(main(argv('-h'))).resolves.toBeUndefined();
+  await expect(main(['--help'])).resolves.toBeUndefined();
+  await expect(main(['-h'])).resolves.toBeUndefined();
 
   expect(mocks.console).toHaveBeenCalledTimes(2);
   mv.slice(1).forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`shows version`, async () => {
-  await expect(main(argv('--version'))).resolves.toBeUndefined();
-  await expect(main(argv('-v'))).resolves.toBeUndefined();
+  await expect(main(['--version'])).resolves.toBeUndefined();
+  await expect(main(['-v'])).resolves.toBeUndefined();
 
   expect(mocks.console).toHaveBeenCalledTimes(2);
   mv.slice(1).forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`fails on unknown command`, async () => {
-  await expect(main(argv('pos'))).rejects.toThrowErrorMatchingInlineSnapshot(
+  await expect(main(['pos'])).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Unknown command: pos"`
   );
 
@@ -53,14 +50,16 @@ test(`shows help and fails on no command`, async () => {
   mv.slice(1).forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`fails on unknown arg`, async () => {
-  await expect(main(argv('-e dev'))).rejects.toThrowErrorMatchingInlineSnapshot(
+  await expect(
+    main('-e dev'.split(' '))
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Unknown or unexpected option: -e"`
   );
 
   mv.forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`suceeds on compose`, async () => {
-  const args = argv('compose --foo bar baz');
+  const args = 'compose --foo bar baz'.split(' ');
   await expect(main(args)).resolves.toBeUndefined();
 
   expect(mocks.compose).toHaveBeenCalledTimes(1);
@@ -71,7 +70,7 @@ test(`suceeds on compose`, async () => {
     .forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`suceeds on run`, async () => {
-  const args = argv('run --foo bar baz');
+  const args = 'run --foo bar baz'.split(' ');
   await expect(main(args)).resolves.toBeUndefined();
 
   expect(mocks.run).toHaveBeenCalledTimes(1);
@@ -82,7 +81,7 @@ test(`suceeds on run`, async () => {
     .forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`suceeds on clean`, async () => {
-  const args = argv('clean --foo bar baz');
+  const args = 'clean --foo bar baz'.split(' ');
   await expect(main(args)).resolves.toBeUndefined();
 
   expect(mocks.clean).toHaveBeenCalledTimes(1);
@@ -93,7 +92,7 @@ test(`suceeds on clean`, async () => {
     .forEach((mock) => expect(mock).not.toHaveBeenCalled());
 });
 test(`suceeds on purge`, async () => {
-  const args = argv('purge --foo bar baz');
+  const args = 'purge --foo bar baz'.split(' ');
   await expect(main(args)).resolves.toBeUndefined();
 
   expect(mocks.purge).toHaveBeenCalledTimes(1);

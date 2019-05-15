@@ -1,7 +1,7 @@
 import compose from '~/bin/main/compose';
 import { compose as command } from '~/commands';
 import { IOfType } from '~/types';
-import argv from 'string-argv';
+import { oneLine } from 'common-tags';
 
 jest.mock('~/commands');
 const mocks: IOfType<jest.Mock<any, any>> = {
@@ -12,25 +12,25 @@ const mocks: IOfType<jest.Mock<any, any>> = {
 beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 
 test(`shows help`, async () => {
-  await expect(compose(argv('--help'))).resolves.toBeUndefined();
-  await expect(compose(argv('-h'))).resolves.toBeUndefined();
-  await expect(compose(argv('-e dev --help'))).resolves.toBeUndefined();
+  await expect(compose(['--help'])).resolves.toBeUndefined();
+  await expect(compose(['-h'])).resolves.toBeUndefined();
+  await expect(compose('-e dev --help'.split(' '))).resolves.toBeUndefined();
 
   expect(mocks.console).toHaveBeenCalledTimes(3);
   expect(mocks.compose).not.toHaveBeenCalled();
 });
 test(`fails on positional`, async () => {
-  await expect(compose(argv('pos'))).rejects.toThrowErrorMatchingInlineSnapshot(
+  await expect(compose(['pos'])).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Unknown command: pos"`
   );
-  await expect(compose(argv('-e dev pos'))).rejects.toThrowError();
-  await expect(compose(argv('pos -e dev'))).rejects.toThrowError();
+  await expect(compose('-e dev pos'.split(' '))).rejects.toThrowError();
+  await expect(compose('pos -e dev'.split(' '))).rejects.toThrowError();
 
   expect(mocks.compose).not.toHaveBeenCalled();
 });
 test(`fails on unknown arg`, async () => {
   await expect(
-    compose(argv('-e dev -p'))
+    compose('-e dev -p'.split(' '))
   ).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Unknown or unexpected option: -p"`
   );
@@ -54,7 +54,7 @@ test(`suceeds w/ no args`, async () => {
   });
 });
 test(`passes docker args`, async () => {
-  await expect(compose(argv('-- foo --bar baz'))).resolves.toBeUndefined();
+  await expect(compose('-- foo --bar baz'.split(' '))).resolves.toBeUndefined();
 
   expect(mocks.compose).toHaveBeenCalledTimes(1);
   expect(mocks.compose).toHaveBeenCalledWith({
@@ -70,9 +70,8 @@ test(`passes docker args`, async () => {
   });
 });
 test(`passes all args`, async () => {
-  const args = argv(
-    '--write foo/bar.yml --stop --clean --dry --env dev --dir ./foo/bar --file foo/bar.js --log debug'
-  );
+  const args = oneLine`--write foo/bar.yml --stop --clean --dry --env dev
+    --dir ./foo/bar --file foo/bar.js --log debug`.split(' ');
   await expect(compose(args)).resolves.toBeUndefined();
 
   expect(mocks.compose).toHaveBeenCalledTimes(1);
@@ -89,9 +88,8 @@ test(`passes all args`, async () => {
   });
 });
 test(`passes all args as aliases and docker args`, async () => {
-  const args = argv(
-    '-w foo/bar.yml -s -c -e dev -d ./foo/bar -f foo/bar.js -- foo --bar baz'
-  );
+  const args = oneLine`-w foo/bar.yml -s -c -e dev -d ./foo/bar
+    -f foo/bar.js -- foo --bar baz`.split(' ');
   await expect(compose(args)).resolves.toBeUndefined();
 
   expect(mocks.compose).toHaveBeenCalledTimes(1);

@@ -1,7 +1,7 @@
 import run from '~/bin/main/run';
 import { run as command } from '~/commands';
 import { IOfType } from '~/types';
-import argv from 'string-argv';
+import { oneLine } from 'common-tags';
 
 jest.mock('~/commands');
 const mocks: IOfType<jest.Mock<any, any>> = {
@@ -12,23 +12,23 @@ const mocks: IOfType<jest.Mock<any, any>> = {
 beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 
 test(`shows help`, async () => {
-  await expect(run(argv('--help'))).resolves.toBeUndefined();
-  await expect(run(argv('-h'))).resolves.toBeUndefined();
-  await expect(run(argv('-e dev --help'))).resolves.toBeUndefined();
+  await expect(run(['--help'])).resolves.toBeUndefined();
+  await expect(run(['-h'])).resolves.toBeUndefined();
+  await expect(run('-e dev --help'.split(' '))).resolves.toBeUndefined();
 
   expect(mocks.console).toHaveBeenCalledTimes(3);
   expect(mocks.run).not.toHaveBeenCalled();
 });
 test(`doesn't fail on positional`, async () => {
-  await expect(run(argv('pos'))).resolves.toBeUndefined();
-  await expect(run(argv('-e dev pos'))).resolves.toBeUndefined();
-  await expect(run(argv('pos -e dev'))).resolves.toBeUndefined();
+  await expect(run(['pos'])).resolves.toBeUndefined();
+  await expect(run('-e dev pos'.split(' '))).resolves.toBeUndefined();
+  await expect(run('pos -e dev'.split(' '))).resolves.toBeUndefined();
 
   expect(mocks.run).toHaveBeenCalledTimes(3);
 });
 test(`fails on unknown arg`, async () => {
   await expect(
-    run(argv('-e dev -p'))
+    run('-e dev -p'.split(' '))
   ).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Unknown or unexpected option: -p"`
   );
@@ -52,7 +52,7 @@ test(`suceeds w/ no args`, async () => {
   });
 });
 test(`passes tasks`, async () => {
-  await expect(run(argv('task1 task2 task3'))).resolves.toBeUndefined();
+  await expect(run('task1 task2 task3'.split(' '))).resolves.toBeUndefined();
 
   expect(mocks.run).toHaveBeenCalledTimes(1);
   expect(mocks.run).toHaveBeenCalledWith({
@@ -68,9 +68,8 @@ test(`passes tasks`, async () => {
   });
 });
 test(`passes all args`, async () => {
-  const args = argv(
-    '--list --sandbox --timeout 10 --no-detect --env dev --dir ./foo/bar --file foo/bar.js --log debug'
-  );
+  const args = oneLine`--list --sandbox --timeout 10 --no-detect --env dev
+    --dir ./foo/bar --file foo/bar.js --log debug`.split(' ');
   await expect(run(args)).resolves.toBeUndefined();
 
   expect(mocks.run).toHaveBeenCalledTimes(1);
@@ -87,9 +86,8 @@ test(`passes all args`, async () => {
   });
 });
 test(`passes all args as aliases and tasks`, async () => {
-  const args = argv(
-    '-l -s -t 10 -e dev -d ./foo/bar -f foo/bar.js task1 task2 task3'
-  );
+  const args = oneLine`-l -s -t 10 -e dev -d ./foo/bar
+    -f foo/bar.js task1 task2 task3`.split(' ');
   await expect(run(args)).resolves.toBeUndefined();
 
   expect(mocks.run).toHaveBeenCalledTimes(1);
