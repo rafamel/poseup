@@ -51,7 +51,7 @@ In contrast with other solutions, *poseup* integrates seamlessly with `docker-co
 ## Usage
 
 - [CLI](#cli)
-  - [`poseup compose`](#poseup-compose) runs `docker-compose` as per your [`poseup.config`](#configuration) file.
+  - [`poseup` options](#poseup-options) runs `docker-compose` as per your [`poseup.config`](#configuration) file.
   - [`poseup run`](#poseup-run) is a task runner for docker.
   - [`poseup clean`](#poseup-clean) cleans all non persisted containers.
   - [`poseup purge`](#poseup-purge) purges volumes, networks, and images from your system.
@@ -66,6 +66,60 @@ In contrast with other solutions, *poseup* integrates seamlessly with `docker-co
 
 ### CLI
 
+#### `poseup` options
+
+<!-- markdownlint-disable MD040 MD031 -->
+```
+Usage:
+  $ poseup [option]
+  $ poseup [command] [options]
+
+Options:
+  -d, --dir <dir>     Project directory
+  -f, --file <path>   Path for config file [js,json,yml,yaml]
+  -e, --env <env>     Node environment
+  --log <level>       Logging level
+  -h, --help     Show help
+  -v, --version  Show version number
+
+Commands:
+  compose        Runs docker-compose
+  run            Runs tasks
+  clean          Cleans not persisted containers and networks -optionally, also volumes
+  purge          Purges dangling containers, networks, and volumes system-wide
+
+Examples:
+  $ poseup --log debug compose -- up
+  $ poseup -d ./foo -e development clean
+```
+<!-- markdownlint-enable MD040 MD031 -->
+
+##### `log`
+
+Sets logging level. Can be one of `silent`, `trace`, `debug`, `info`, `warn`, `error`.
+
+Example: `poseup --log debug clean`
+
+##### `file`
+
+Sets the *poseup* configuration file as an absolute or relative path to *cwd.* By default, *poseup* will attempt to find it in the project directory -if passed- or *cwd*, and up.
+
+Example: `poseup --file ../poseup.development.js compose -- up`
+
+##### `dir`
+
+Sets the project directory for *docker* as an absolute or relative path to *cwd.* By default, it is the directory where the poseup configuration file is found.
+
+Example: `poseup --dir ../ compose -- dowm`
+
+##### `env`
+
+Assigns an arbitrary value to `process.env.NODE_ENV`.
+
+Example: `poseup --env development compose -- up`
+
+The above would be equivalent to `NODE_ENV=development poseup compose -- up`
+
 #### `poseup compose`
 
 Runs `docker-compose` as per the services defined in your [`poseup.config`](#configuration) or, alternatively, produces a docker compose file from the `compose` object of your poseup configuration.
@@ -74,7 +128,8 @@ Example: `poseup compose -- up`
 
 <!-- markdownlint-disable MD040 MD031 -->
 ```
-Usage: poseup compose [options] -- [dockerArgs]
+Usage:
+  $ poseup compose [options] -- [dockerArgs]
 
 Runs docker-compose
 
@@ -83,11 +138,7 @@ Options:
   -s, --stop          Stop all services on exit
   -c, --clean         Run clean on exit
   --dry               Dry run -write docker compose file only
-  -e, --env <env>     Node environment
-  -d, --dir <dir>     Project directory
-  -f, --file <path>   Path for config file [js,json,yml,yaml]
-  --log <level>       Logging level
-  -h, --help          output usage information
+  -h, --help          Show help
 ```
 <!-- markdownlint-enable MD040 MD031 -->
 
@@ -103,20 +154,17 @@ A task runner. Runs a task or a series of tasks -defined in your [`poseup.config
 
 <!-- markdownlint-disable MD040 MD031 -->
 ```
-Usage: poseup run [options] [tasks]
+Usage:
+  $ poseup run [options] [tasks]
 
 Runs tasks
 
 Options:
   -l, --list               List tasks
   -s, --sandbox            Create new containers for all services, remove all on exit
-  -t, --timeout <seconds>  Timeout for waiting time after starting services before running commands [60 by default]
+  -t, --timeout <seconds>  Timeout for waiting time after starting services before running commands [${RUN_WAIT_TIMEOUT} by default]
   --no-detect              Prevent service initialization auto detection and wait until timeout instead
-  -e, --env <env>          Node environment
-  -d, --dir <dir>          Project directory
-  -f, --file <path>        Path for config file [js,json,yml,yaml]
-  --log <level>            Logging level
-  -h, --help               output usage information
+  -h, --help               Show help
 ```
 <!-- markdownlint-enable MD040 MD031 -->
 
@@ -126,17 +174,14 @@ Cleans all services absent from the `persist` array of your [`poseup.config`](#c
 
 <!-- markdownlint-disable MD040 MD031 -->
 ```
-Usage: poseup clean [options]
+Usage:
+  $ poseup clean [options]
 
 Cleans not persisted containers and networks -optionally, also volumes
 
 Options:
   -v, --volumes      Clean volumes not associated with persisted containers
-  -e, --env <env>    Node environment
-  -d, --dir <dir>    Project directory
-  -f, --file <path>  Path for config file [js,json,yml,yaml]
-  --log <level>      Logging level
-  -h, --help         output usage information
+  -h, --help         Show help
 ```
 <!-- markdownlint-enable MD040 MD031 -->
 
@@ -146,52 +191,16 @@ Shorthand for a serial run of `docker volume prune`, `docker network prune`, `do
 
 <!-- markdownlint-disable MD040 MD031 -->
 ```
-Usage: poseup purge [options]
+Usage:
+  $ poseup purge [options]
 
 Purges dangling containers, networks, and volumes system-wide
 
 Options:
-  -f, --force    Skip confirmation
-  --log <level>  Logging level
-  -h, --help     output usage information
+  -f, --force       Skip confirmation
+  -h, --help        Show help
 ```
 <!-- markdownlint-enable MD040 MD031 -->
-
-#### Common options
-
-##### `log`
-
-*Taken by: [`compose`,](#poseup-compose) [`run`,](#poseup-run) [`clean`,](#poseup-clean) [`purge`.](#poseup-purge)*
-
-Sets logging level. Can be one of `silent`, `trace`, `debug`, `info`, `warn`, `error`.
-
-Example: `poseup clean --log debug`
-
-##### `file`
-
-*Taken by: [`compose`,](#poseup-compose) [`run`,](#poseup-run) [`clean`.](#poseup-clean)*
-
-Sets the *poseup* configuration file as an absolute or relative path to *cwd.* By default, *poseup* will attempt to find it in the project directory -if passed- or *cwd*, and up.
-
-Example: `poseup compose --file ../poseup.development.js -- up`
-
-##### `dir`
-
-*Taken by: [`compose`,](#poseup-compose) [`run`,](#poseup-run) [`clean`.](#poseup-clean)*
-
-Sets the project directory for *docker* as an absolute or relative path to *cwd.* By default, it is the directory where the poseup configuration file is found.
-
-Example: `poseup compose --dir ../ -- dowm`
-
-##### `env`
-
-*Taken by: [`compose`,](#poseup-compose) [`run`,](#poseup-run) [`clean`.](#poseup-clean)*
-
-Assigns an arbitrary value to `process.env.NODE_ENV`.
-
-Example: `poseup compose --env development -- up`
-
-The above would be equivalent to `NODE_ENV=development poseup compose -- up`
 
 ### Configuration
 
@@ -445,4 +454,4 @@ module.exports = slim(
 However, when running *poseup* on the CLI, the program will also listen to termination events through [`exits`](https://github.com/rafamel/exits) and run cleanup tasks either at end of execution or termination signals. In order to handle these cleanup tasks, you have two options:
 
 - Call [`attach`](https://rafamel.github.io/poseup/globals.html#attach) before any of the command functions. This will produce identical behavior to that of the CLI.
-- Call [`teardown`](https://rafamel.github.io/poseup/globals.html#teardown) after running any of the command functions to manually initialize the run of cleanup tasks and handle errors.
+- Call [`teardown`](https://rafamel.github.io/poseup/globals.html#teardown) after running any of the command functions to manually initialize the run of cleanup tasks.
