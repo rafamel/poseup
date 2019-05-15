@@ -1,6 +1,7 @@
 import has from '~/utils/has';
 import { IOptions } from '~/types';
 import logger, { setLevel } from '~/utils/logger';
+import { DEFAULT_LOG_LEVEL } from '~/constants';
 
 /**
  * Should be called by command functions.
@@ -9,8 +10,7 @@ import logger, { setLevel } from '~/utils/logger';
  * - Checks docker & docker-compose binaries are available
  */
 export default async function initialize(options: IOptions): Promise<void> {
-  // TODO: always set level: set default if not options.log
-  if (options.log) setLevel(options.log);
+  setLevel(options.log || DEFAULT_LOG_LEVEL);
   if (options.environment) process.env.NODE_ENV = options.environment;
 
   // Check binaries are available: docker docker-compose

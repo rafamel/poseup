@@ -2,6 +2,7 @@ import initialize from '~/lifecycle/initialize';
 import has from '~/utils/has';
 import logger, { setLevel } from '~/utils/logger';
 import { IOfType } from '~/types';
+import { DEFAULT_LOG_LEVEL } from '~/constants';
 
 logger.setLevel('silent');
 jest.mock('~/utils/logger');
@@ -19,7 +20,8 @@ afterEach(() => (process.env.NODE_ENV = env));
 describe(`options`, () => {
   test(`succeeds w/ empty options object`, async () => {
     await expect(initialize({})).resolves.toBeUndefined();
-    expect(mocks.setLevel).not.toHaveBeenCalled();
+    expect(mocks.setLevel).toHaveBeenCalledTimes(1);
+    expect(mocks.setLevel).toHaveBeenCalledWith(DEFAULT_LOG_LEVEL);
     expect(process.env.NODE_ENV).toBe(env);
   });
   test(`sets log when passed`, async () => {
