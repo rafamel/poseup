@@ -26,7 +26,7 @@ export default function add(
       await fn();
     } catch (e) {
       const err = ensure(e, { Error: Errorish });
-      logger.error(err.message);
+      logger.warn(err.message);
       if (err.root.stack) logger.trace(err.root.stack);
     }
   }, type);
