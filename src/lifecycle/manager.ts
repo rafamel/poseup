@@ -10,7 +10,7 @@ export default {
     attached = true;
 
     attach();
-    fns.forEach(([fn, type]) => this.add(fn, type));
+    fns.forEach(([fn, type]) => add(fn, type));
   },
   add(fn: () => any | Promise<any>, type: ADD_TYPES): void {
     fns.push([fn, type]);
