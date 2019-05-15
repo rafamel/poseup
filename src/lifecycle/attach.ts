@@ -5,8 +5,10 @@ import chalk from 'chalk';
 import logger from '~/utils/logger';
 
 export default function attach(): void {
+  if (manager.isAttached()) return;
   // Attachment must go first (other potential errors must be catched)
   manager.attach();
+
   options({
     spawned: {
       signals: 'none',
