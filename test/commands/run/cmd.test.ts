@@ -1,21 +1,19 @@
 import runCmd from '~/commands/run/cmd';
 import spawn from '~/utils/spawn';
-import up from 'find-up';
+import nrp from 'npm-run-path';
 import { setLevel } from '~/utils/logger';
 import { IOfType } from '~/types';
 
 setLevel('silent');
 jest.mock('~/utils/spawn');
-jest.mock('find-up');
+jest.mock('npm-run-path');
 
 const mocks: IOfType<jest.Mock<any, any>> = {
   spawn,
-  up
+  env: nrp.env
 } as any;
 
 beforeEach(() => Object.values(mocks).forEach((mocks) => mocks.mockClear()));
-
-mocks.up.mockImplementation(async () => null);
 
 describe(`task.command`, () => {
   test(`succeeds`, async () => {
@@ -30,39 +28,26 @@ describe(`task.command`, () => {
 });
 describe(`spawn call`, () => {
   test(`succeeds`, async () => {
-    mocks.up.mockImplementationOnce(async () => '/up/foo/bar');
+    const response = {};
+    mocks.env.mockImplementationOnce(() => response);
 
     await expect(runCmd({ cmd: ['foo'] }, 'foo/bar')).resolves.toBeUndefined();
     await expect(
       runCmd({ cmd: ['foo', 'bar', 'baz'] }, 'foo/bar')
     ).resolves.toBeUndefined();
-    expect(mocks.up).toHaveBeenCalledTimes(2);
-    expect(mocks.up).toHaveBeenNthCalledWith(1, 'node_modules/.bin', {
-      cwd: 'foo/bar',
-      type: 'directory'
-    });
-    expect(mocks.up).toHaveBeenNthCalledWith(2, 'node_modules/.bin', {
-      cwd: 'foo/bar',
-      type: 'directory'
-    });
+    expect(mocks.env).toHaveBeenCalledTimes(2);
+    expect(mocks.env).toHaveBeenNthCalledWith(1, { cwd: 'foo/bar' });
+    expect(mocks.env).toHaveBeenNthCalledWith(2, { cwd: 'foo/bar' });
     expect(mocks.spawn).toHaveBeenCalledTimes(2);
     expect(mocks.spawn.mock.calls[0][0]).toBe('foo');
     expect(mocks.spawn.mock.calls[0][1]).toEqual([]);
-    expect(mocks.spawn.mock.calls[0][2]).toHaveProperty('env');
-    expect(
-      mocks.spawn.mock.calls[0][2].env.PATH.split(':')[0].includes(
-        '/up/foo/bar'
-      )
-    ).toBe(true);
+    expect(mocks.spawn.mock.calls[0][2]).toEqual({ cwd: 'foo/bar', env: {} });
+    expect(mocks.spawn.mock.calls[0][2].env).toBe(response);
 
     expect(mocks.spawn.mock.calls[1][0]).toBe('foo');
     expect(mocks.spawn.mock.calls[1][1]).toEqual(['bar', 'baz']);
-    expect(mocks.spawn.mock.calls[1][2]).toHaveProperty('env');
-    expect(
-      mocks.spawn.mock.calls[1][2].env.PATH.split(':')[0].includes(
-        '/up/foo/bar'
-      )
-    ).toBe(false);
+    expect(mocks.spawn.mock.calls[0][2]).toEqual({ cwd: 'foo/bar', env: {} });
+    expect(mocks.spawn.mock.calls[0][2].env).toBe(response);
   });
   test(`fails`, async () => {
     mocks.spawn.mockImplementationOnce(() => Promise.reject(Error()));
