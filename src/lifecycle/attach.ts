@@ -1,4 +1,4 @@
-import { options, resolver, on } from 'exits';
+import { options, resolver, on, add } from 'exits';
 import { ADD_TYPES } from './add';
 import manager from './manager';
 import chalk from 'chalk';
@@ -33,7 +33,7 @@ export default function attach(): void {
       logger.info('\n' + chalk.yellow.bold('-') + ' Waiting on termination');
     }
   });
-  manager.add(() => {
+  add(() => {
     if (manager.isPending()) {
       logger.info(chalk.yellow.bold('-') + ' Preparing exit');
     }

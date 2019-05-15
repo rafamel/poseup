@@ -1,6 +1,6 @@
 import attach from '~/lifecycle/attach';
 import manager from '~/lifecycle/manager';
-import { options, resolver, on } from 'exits';
+import { options, resolver, on, add } from 'exits';
 import { IOfType } from '~/types';
 import { ADD_TYPES } from '~/lifecycle';
 import { setLevel } from '~/utils/logger';
@@ -12,11 +12,11 @@ const mocks: IOfType<jest.Mock> = {
   isAttached: manager.isAttached,
   attach: manager.attach,
   isPending: manager.isPending,
-  add: manager.add,
   flush: manager.flush,
   options,
   resolver,
-  on
+  on,
+  add
 } as any;
 
 beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
