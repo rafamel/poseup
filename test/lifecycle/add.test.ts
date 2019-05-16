@@ -16,13 +16,13 @@ beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 test(`calls manager.add w/ fn and type`, () => {
   expect(add(ADD_TYPES.START_LOG, '', () => {})).toBeUndefined();
   expect(mocks.add).toHaveBeenCalledTimes(1);
-  expect(typeof mocks.add.mock.calls[0][0]).toBe('function');
-  expect(mocks.add.mock.calls[0][1]).toBe(ADD_TYPES.START_LOG);
+  expect(mocks.add.mock.calls[0][0]).toBe(ADD_TYPES.START_LOG);
+  expect(typeof mocks.add.mock.calls[0][1]).toBe('function');
 });
 test(`fn executes and is awaited for but nevers errors out`, async () => {
   const fn = jest.fn().mockImplementation(() => wait(250));
   add(ADD_TYPES.START_LOG, '', fn);
-  const cb = mocks.add.mock.calls[0][0];
+  const cb = mocks.add.mock.calls[0][1];
   expect(fn).not.toHaveBeenCalled();
 
   const before = Date.now();

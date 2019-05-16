@@ -2,7 +2,7 @@ import { attach, add } from 'exits';
 import { ADD_TYPES } from './add';
 
 let attached = false;
-let fns: Array<[() => any | Promise<any>, ADD_TYPES]> = [];
+let fns: Array<[ADD_TYPES, () => any | Promise<any>]> = [];
 
 export default {
   attach(): void {
@@ -10,11 +10,11 @@ export default {
     attached = true;
 
     attach();
-    fns.forEach(([fn, type]) => add(fn, type));
+    fns.forEach(([type, fn]) => add(type, fn));
   },
-  add(fn: () => any | Promise<any>, type: ADD_TYPES): void {
-    fns.push([fn, type]);
-    if (attached) add(fn, type);
+  add(type: ADD_TYPES, fn: () => any | Promise<any>): void {
+    fns.push([type, fn]);
+    if (attached) add(type, fn);
   },
   get(): typeof fns {
     return fns.concat();

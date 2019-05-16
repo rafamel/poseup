@@ -14,7 +14,7 @@ beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 test(`get`, () => {
   expect(manager.get()).toEqual([]);
   const fns = manager.get();
-  fns.push([() => {}, ADD_TYPES.START_LOG]);
+  fns.push([ADD_TYPES.START_LOG, () => {}]);
   expect(manager.get()).toEqual([]);
 });
 test(`isPending`, () => {
@@ -22,16 +22,16 @@ test(`isPending`, () => {
 });
 test(`add wo/ attachment`, () => {
   const fns = [(): void => {}, (): void => {}];
-  expect(manager.add(fns[0], ADD_TYPES.START_LOG)).toBeUndefined();
-  expect(manager.add(fns[1], ADD_TYPES.STOP)).toBeUndefined();
+  expect(manager.add(ADD_TYPES.START_LOG, fns[0])).toBeUndefined();
+  expect(manager.add(ADD_TYPES.STOP, fns[1])).toBeUndefined();
   expect(mocks.add).not.toHaveBeenCalled();
 
   const arr = manager.get();
   expect(arr).toHaveLength(2);
-  expect(arr[0][0]).toBe(fns[0]);
-  expect(arr[0][1]).toBe(ADD_TYPES.START_LOG);
-  expect(arr[1][0]).toBe(fns[1]);
-  expect(arr[1][1]).toBe(ADD_TYPES.STOP);
+  expect(arr[0][0]).toBe(ADD_TYPES.START_LOG);
+  expect(arr[0][1]).toBe(fns[0]);
+  expect(arr[1][0]).toBe(ADD_TYPES.STOP);
+  expect(arr[1][1]).toBe(fns[1]);
   expect(manager.isPending()).toBe(true);
 });
 test(`isAttached`, () => {
@@ -42,8 +42,8 @@ test(`attach`, () => {
   expect(mocks.attach).toHaveBeenCalledTimes(1);
   expect(mocks.attach).toHaveBeenCalledWith();
   expect(mocks.add).toHaveBeenCalledTimes(2);
-  expect(mocks.add.mock.calls[0][1]).toBe(ADD_TYPES.START_LOG);
-  expect(mocks.add.mock.calls[1][1]).toBe(ADD_TYPES.STOP);
+  expect(mocks.add.mock.calls[0][0]).toBe(ADD_TYPES.START_LOG);
+  expect(mocks.add.mock.calls[1][0]).toBe(ADD_TYPES.STOP);
   expect(manager.get()).toHaveLength(2);
   expect(manager.isAttached()).toBe(true);
 });
@@ -55,16 +55,16 @@ test(`attach doesn't run twice`, () => {
 });
 test(`add w/ attachment`, () => {
   const fn = (): void => {};
-  expect(manager.add(fn, ADD_TYPES.CLEAN)).toBeUndefined();
+  expect(manager.add(ADD_TYPES.CLEAN, fn)).toBeUndefined();
 
   expect(mocks.add).toHaveBeenCalledTimes(1);
-  expect(mocks.add.mock.calls[0][0]).toBe(fn);
-  expect(mocks.add.mock.calls[0][1]).toBe(ADD_TYPES.CLEAN);
+  expect(mocks.add.mock.calls[0][0]).toBe(ADD_TYPES.CLEAN);
+  expect(mocks.add.mock.calls[0][1]).toBe(fn);
 
   const arr = manager.get();
   expect(arr).toHaveLength(3);
-  expect(arr[2][0]).toBe(fn);
-  expect(arr[2][1]).toBe(ADD_TYPES.CLEAN);
+  expect(arr[2][0]).toBe(ADD_TYPES.CLEAN);
+  expect(arr[2][1]).toBe(fn);
 });
 test(`flush`, () => {
   expect(manager.flush()).toBeUndefined();

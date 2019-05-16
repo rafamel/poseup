@@ -5,7 +5,7 @@ export default async function teardown(): Promise<void> {
   const fns = manager
     .get()
     .map(
-      ([fn, type], index): [() => any | Promise<any>, ADD_TYPES, number] => {
+      ([type, fn], index): [() => any | Promise<any>, ADD_TYPES, number] => {
         return [fn, type, index];
       }
     )

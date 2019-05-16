@@ -17,8 +17,8 @@ beforeEach(() => Object.values(mocks).forEach((mock) => mock.mockClear()));
 test(`teardown calls fns in reverse order`, async () => {
   const create = (): any => jest.fn().mockImplementation(() => wait(500));
   const fns = [create(), create(), create(), create(), create()];
-  const arr = fns.map((fn) => [fn, 0]);
-  arr[0] = [arr[0][0], 1];
+  const arr = fns.map((fn) => [0, fn]);
+  arr[0] = [1, arr[0][1]];
   mocks.get.mockImplementationOnce(() => arr);
 
   const p = timed(teardown());
@@ -47,14 +47,14 @@ test(`teardown calls fns in reverse order`, async () => {
 });
 test(`teardown only executes fns once`, async () => {
   const fn = jest.fn();
-  mocks.get.mockImplementationOnce(() => [[fn, 0]]);
+  mocks.get.mockImplementationOnce(() => [[0, fn]]);
 
   await expect(teardown()).resolves.toBeUndefined();
   expect(fn).toHaveBeenCalledTimes(1);
 });
 test(`calls flush on end`, async () => {
   const fn = jest.fn().mockImplementation(() => wait(150));
-  mocks.get.mockImplementationOnce(() => [[fn, 0]]);
+  mocks.get.mockImplementationOnce(() => [[0, fn]]);
 
   const p = teardown();
   await wait(75);

@@ -33,11 +33,11 @@ export default function attach(): void {
       logger.info('\n' + chalk.yellow.bold('-') + ' Waiting on termination');
     }
   });
-  add(() => {
+  add(ADD_TYPES.START_LOG, () => {
     if (manager.isPending()) {
       logger.info(chalk.yellow.bold('-') + ' Preparing exit');
     }
-  }, ADD_TYPES.START_LOG);
+  });
   on('done', () => {
     if (manager.isPending()) {
       logger.info(chalk.green.bold('✓') + ' Done');

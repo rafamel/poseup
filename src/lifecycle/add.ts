@@ -4,14 +4,14 @@ import { ensure, Errorish } from 'errorish';
 import manager from './manager';
 
 /**
- * Sets priority: larger runs first
+ * Sets priority index: larger runs last
  */
 export enum ADD_TYPES {
-  START_LOG = 10,
-  STOP = 3,
+  START_LOG = 0,
+  STOP = 1,
   CLEAN = 2,
   // File removal must go last in order for them to still exist on clean/stop
-  REMOVE_TEMP_FILES = 1
+  REMOVE_TEMP_FILES = 3
 }
 
 export default function add(
@@ -19,7 +19,7 @@ export default function add(
   message: string,
   fn: () => any | Promise<any>
 ): void {
-  manager.add(async (): Promise<any> => {
+  manager.add(type, async function(): Promise<any> {
     logger.info('  ' + chalk.gray.dim('+ ' + message));
 
     try {
@@ -29,5 +29,5 @@ export default function add(
       logger.warn(err.message);
       if (err.root.stack) logger.trace(err.root.stack);
     }
-  }, type);
+  });
 }

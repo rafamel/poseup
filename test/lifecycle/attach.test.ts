@@ -69,12 +69,12 @@ test(`hooks`, () => {
     expect(mocks.on.mock.calls[1][0]).toBe('done');
     expect(typeof mocks.on.mock.calls[1][1]).toBe('function');
     expect(mocks.add).toHaveBeenCalledTimes(1);
-    expect(typeof mocks.add.mock.calls[0][0]).toBe('function');
-    expect(mocks.add.mock.calls[0][1]).toBe(ADD_TYPES.START_LOG);
+    expect(mocks.add.mock.calls[0][0]).toBe(ADD_TYPES.START_LOG);
+    expect(typeof mocks.add.mock.calls[0][1]).toBe('function');
 
     const triggered = mocks.on.mock.calls[0][1];
     const done = mocks.on.mock.calls[1][1];
-    const added = mocks.add.mock.calls[0][0];
+    const added = mocks.add.mock.calls[0][1];
 
     expect(triggered).not.toThrow();
     expect(done).not.toThrow();
