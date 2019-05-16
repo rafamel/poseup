@@ -120,7 +120,7 @@
     "cli-belt": "^0.3.0",
     "common-tags": "^1.8.0",
     "errorish": "^0.4.0",
-    "exits": "^0.5.1",
+    "exits": "^1.0.0",
     "find-up": "^4.0.0",
     "fs-extra": "^8.0.1",
     "hasbin": "^1.2.3",
