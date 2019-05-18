@@ -1,3 +1,13 @@
+## [0.4.2](https://github.com/rafamel/poseup/compare/v0.4.1...v0.4.2) (2019-05-18)
+
+
+### Bug Fixes
+
+* **deps:** updates dependencies ([fa17c5d](https://github.com/rafamel/poseup/commit/fa17c5d))
+* **utils/logger:** prevents logger methodFactory from being registered twice ([4ebe75d](https://github.com/rafamel/poseup/commit/4ebe75d))
+
+
+
 ## [0.4.1](https://github.com/rafamel/poseup/compare/v0.4.0...v0.4.1) (2019-05-16)
 
 
