@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>poseup 0.4.2</title>
+	<title>poseup 0.4.3</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">poseup 0.4.2</a>
+					<a href="index.html" class="title">poseup 0.4.3</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> poseup 0.4.2</h1>
+			<h1> poseup 0.4.3</h1>
 		</div>
 	</div>
 </header>
@@ -125,7 +125,6 @@
 				</ul>
 				<h3 id="cli">CLI</h3>
 				<h4 id="poseup-options"><code>poseup</code> options</h4>
-				<!-- markdownlint-disable MD040 MD031 -->
 				<pre><code>Usage:
   $ poseup [option]
   $ poseup [command] [options]
@@ -146,8 +145,7 @@ Commands:
 
 Examples:
   $ poseup --log <span class="hljs-builtin-name">debug</span> compose -- up
-  $ poseup -d ./foo -e development clean</code></pre><!-- markdownlint-enable MD040 MD031 -->
-				<h5 id="log"><code>log</code></h5>
+  $ poseup -d ./foo -e development clean</code></pre><h5 id="log"><code>log</code></h5>
 				<p>Sets logging level. Can be one of <code>silent</code>, <code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>.</p>
 				<p>Example: <code>poseup --log debug clean</code></p>
 				<h5 id="file"><code>file</code></h5>
@@ -163,7 +161,6 @@ Examples:
 				<h4 id="poseup-compose"><code>poseup compose</code></h4>
 				<p>Runs <code>docker-compose</code> as per the services defined in your <a href="#configuration"><code>poseup.config</code></a> or, alternatively, produces a docker compose file from the <code>compose</code> object of your poseup configuration.</p>
 				<p>Example: <code>poseup compose -- up</code></p>
-				<!-- markdownlint-disable MD040 MD031 -->
 				<pre><code>Usage:
   $ poseup compose [options] -- [dockerArgs]
 
@@ -174,13 +171,11 @@ Options:
   -s, --stop          Stop all services on <span class="hljs-keyword">exit</span>
   -c, --clean         Run clean on <span class="hljs-keyword">exit</span>
   --dry               Dry run -write docker compose file only
-  -h, --help          Show help</code></pre><!-- markdownlint-enable MD040 MD031 -->
-				<h5 id="generating-a-docker-compose-file">Generating a <code>docker-compose</code> file</h5>
+  -h, --help          Show help</code></pre><h5 id="generating-a-docker-compose-file">Generating a <code>docker-compose</code> file</h5>
 				<p>To generate a <code>docker-compose</code> compatible file, you can just run: <code>poseup compose --dry --write docker-compose.yml</code>.</p>
 				<p><a href="#environments">If your <code>poseup.config</code> configuration depends on <code>NODE_ENV</code>,</a> you could just run <code>poseup compose -e development --dry --write docker-compose.development.yml</code> to get the <code>docker-compose</code> configuration for the <code>development</code> environment.</p>
 				<h4 id="poseup-run"><code>poseup run</code></h4>
 				<p>A task runner. Runs a task or a series of tasks -defined in your <a href="#configuration"><code>poseup.config</code></a>- in a one off primary container while starting its dependent services, or in a single use sandbox -which creates new containers for the task runner and all its services, and removes them after the task has finished execution.</p>
-				<!-- markdownlint-disable MD040 MD031 -->
 				<pre><code>Usage:
   $ poseup <span class="hljs-builtin-name">run</span> [options] [tasks]
 
@@ -191,10 +186,8 @@ Options:
   -s, --sandbox            Create new containers <span class="hljs-keyword">for</span> all services, <span class="hljs-builtin-name">remove</span> all on exit
   -t, --timeout &lt;seconds&gt;  Timeout <span class="hljs-keyword">for</span> waiting time after starting services before running commands [<span class="hljs-variable">${RUN_WAIT_TIMEOUT}</span> by default]
   --no-detect              Prevent<span class="hljs-built_in"> service </span>initialization auto detection <span class="hljs-keyword">and</span> wait until timeout instead
-  -h, --help               Show help</code></pre><!-- markdownlint-enable MD040 MD031 -->
-				<h4 id="poseup-clean"><code>poseup clean</code></h4>
+  -h, --help               Show help</code></pre><h4 id="poseup-clean"><code>poseup clean</code></h4>
 				<p>Cleans all services absent from the <code>persist</code> array of your <a href="#configuration"><code>poseup.config</code></a> file.</p>
-				<!-- markdownlint-disable MD040 MD031 -->
 				<pre><code>Usage:
   <span class="hljs-symbol">$</span> poseup clean [<span class="hljs-keyword">options</span>]
 
@@ -202,10 +195,8 @@ Cleans <span class="hljs-keyword">not</span> persisted containers <span class="h
 
 <span class="hljs-keyword">Options</span>:
   -v, --volumes      Clean volumes <span class="hljs-keyword">not</span> associated with persisted containers
-  -h, --help         Show help</code></pre><!-- markdownlint-enable MD040 MD031 -->
-				<h4 id="poseup-purge"><code>poseup purge</code></h4>
+  -h, --help         Show help</code></pre><h4 id="poseup-purge"><code>poseup purge</code></h4>
 				<p>Shorthand for a serial run of <code>docker volume prune</code>, <code>docker network prune</code>, <code>docker image prune --all</code>, and <code>docker container ls --all</code>.</p>
-				<!-- markdownlint-disable MD040 MD031 -->
 				<pre><code>Usage:
   $ poseup purge [<span class="hljs-keyword">options</span>]
 
@@ -213,8 +204,7 @@ Purges dangling containers, networks, <span class="hljs-built_in">and</span> vol
 
 Option<span class="hljs-variable">s:</span>
   -<span class="hljs-keyword">f</span>, --force       Skip confirmation
-  -h, --<span class="hljs-keyword">help</span>        Show <span class="hljs-keyword">help</span></code></pre><!-- markdownlint-enable MD040 MD031 -->
-				<h3 id="configuration">Configuration</h3>
+  -h, --<span class="hljs-keyword">help</span>        Show <span class="hljs-keyword">help</span></code></pre><h3 id="configuration">Configuration</h3>
 				<p>A <em>poseup</em> configuration file is the single <strong>most important thing</strong> for you to make your <em>poseup</em> usage worthwhile. It contains the project name, the persisted containers, any number of tasks, and a <code>docker-compose</code> configuration object containing services, volumes, and networks definition. Before you jump in, you can check out an example <a href="#example">here.</a></p>
 				<h4 id="extensions">Extensions</h4>
 				<p>Valid configuration files are <code>.js</code>, <code>.json</code>, or <code>.yml</code> files, though you&#39;ll have to use a <code>.js</code> file in order to be able to define different configurations depending on environment on the same file. See <a href="#environments">environments.</a></p>

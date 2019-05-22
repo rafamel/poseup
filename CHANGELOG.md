@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/rafamel/poseup/compare/v0.4.2...v0.4.3) (2019-05-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency exits to v2 ([#9](https://github.com/rafamel/poseup/issues/9)) ([894a557](https://github.com/rafamel/poseup/commit/894a557))
+
+
+
 ## [0.4.2](https://github.com/rafamel/poseup/compare/v0.4.1...v0.4.2) (2019-05-18)
 
 
