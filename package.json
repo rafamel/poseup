@@ -25,7 +25,7 @@
   "scripts": {
     "start": "kpo start --",
     "build": "kpo build --",
-    "build.force": "kpo build.force --",
+    "build.pack": "kpo build.pack --",
     "commit": "kpo commit --",
     "semantic": "kpo semantic --",
     "release": "kpo release --",
@@ -63,13 +63,12 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-env": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
-    "@pika/pack": "^0.3.7",
     "@types/common-tags": "^1.8.0",
     "@types/find-up": "^2.1.1",
     "@types/jest": "^24.0.13",
@@ -103,11 +102,12 @@
     "eslint-restricted-globals": "^0.2.0",
     "husky": "^2.3.0",
     "jest-cli": "^24.8.0",
-    "kpo": "^0.9.1",
+    "kpo": "^0.9.0",
     "markdownlint-cli": "^0.16.0",
     "onchange": "^6.0.0",
     "prettier": "^1.17.1",
     "slimconf": "^0.9.1",
+    "standard-pkg": "^0.4.1",
     "ttypescript": "^1.5.6",
     "typedoc": "^0.14.2",
     "typescript": "3.4.5"
@@ -140,8 +140,5 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
-  },
-  "@pika/pack": {
-    "pipeline": []
   }
 }

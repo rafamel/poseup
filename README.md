@@ -68,7 +68,6 @@ In contrast with other solutions, *poseup* integrates seamlessly with `docker-co
 
 #### `poseup` options
 
-<!-- markdownlint-disable MD040 MD031 -->
 ```
 Usage:
   $ poseup [option]
@@ -92,7 +91,6 @@ Examples:
   $ poseup --log debug compose -- up
   $ poseup -d ./foo -e development clean
 ```
-<!-- markdownlint-enable MD040 MD031 -->
 
 ##### `log`
 
@@ -126,7 +124,6 @@ Runs `docker-compose` as per the services defined in your [`poseup.config`](#con
 
 Example: `poseup compose -- up`
 
-<!-- markdownlint-disable MD040 MD031 -->
 ```
 Usage:
   $ poseup compose [options] -- [dockerArgs]
@@ -140,7 +137,6 @@ Options:
   --dry               Dry run -write docker compose file only
   -h, --help          Show help
 ```
-<!-- markdownlint-enable MD040 MD031 -->
 
 ##### Generating a `docker-compose` file
 
@@ -152,7 +148,6 @@ To generate a `docker-compose` compatible file, you can just run: `poseup compos
 
 A task runner. Runs a task or a series of tasks -defined in your [`poseup.config`](#configuration)- in a one off primary container while starting its dependent services, or in a single use sandbox -which creates new containers for the task runner and all its services, and removes them after the task has finished execution.
 
-<!-- markdownlint-disable MD040 MD031 -->
 ```
 Usage:
   $ poseup run [options] [tasks]
@@ -166,13 +161,11 @@ Options:
   --no-detect              Prevent service initialization auto detection and wait until timeout instead
   -h, --help               Show help
 ```
-<!-- markdownlint-enable MD040 MD031 -->
 
 #### `poseup clean`
 
 Cleans all services absent from the `persist` array of your [`poseup.config`](#configuration) file.
 
-<!-- markdownlint-disable MD040 MD031 -->
 ```
 Usage:
   $ poseup clean [options]
@@ -183,13 +176,11 @@ Options:
   -v, --volumes      Clean volumes not associated with persisted containers
   -h, --help         Show help
 ```
-<!-- markdownlint-enable MD040 MD031 -->
 
 #### `poseup purge`
 
 Shorthand for a serial run of `docker volume prune`, `docker network prune`, `docker image prune --all`, and `docker container ls --all`.
 
-<!-- markdownlint-disable MD040 MD031 -->
 ```
 Usage:
   $ poseup purge [options]
@@ -200,7 +191,6 @@ Options:
   -f, --force       Skip confirmation
   -h, --help        Show help
 ```
-<!-- markdownlint-enable MD040 MD031 -->
 
 ### Configuration
 
