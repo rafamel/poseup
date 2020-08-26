@@ -76,7 +76,7 @@
     "@types/lodash.isequal": "^4.5.5",
     "@types/loglevel": "^1.5.4",
     "@types/pify": "^3.0.2",
-    "@types/uuid": "^3.4.4",
+    "@types/uuid": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "@zerollup/ts-transform-paths": "^1.7.1",
@@ -129,7 +129,7 @@
     "loglevel": "^1.6.1",
     "npm-run-path": "^3.1.0",
     "promist": "^0.7.0",
-    "uuid": "^3.3.2"
+    "uuid": "^8.0.0"
   },
   "husky": {
     "hooks": {
